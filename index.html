@@ -1136,6 +1136,20 @@ let CUR_SIM='geral';
 // ═══ DATA INIT ═══
 const T=buildTurma(RAW_AFA);
 
+// ── helpers: retorna dados de um simulado específico ──────────────────────
+function simSlot(a,n){
+  if(n===1&&a.rank>0)return{port:a.port,mate:a.mate,fisi:a.fisi,ingl:a.ingl,m_port:a.m_port,m_mate:a.m_mate,m_fisi:a.m_fisi,m_ingl:a.m_ingl,media:a.media,gtot:a.gtot,aprov:a.aprov,motivo:a.motivo||'',ok_port:a.ok_port,ok_mate:a.ok_mate,ok_fisi:a.ok_fisi,ok_ingl:a.ok_ingl,ok_red:a.ok_red,red:a.red,rank:a.rank,simN:1,label:'Sim. 1 (28/02)',avgs:T.avgs,sorted:T.sorted1};
+  if(n===2&&(a.s2_rank||0)>0)return{port:a.s2_port||0,mate:a.s2_mate||0,fisi:a.s2_fisi||0,ingl:a.s2_ingl||0,m_port:a.s2_m_port||0,m_mate:a.s2_m_mate||0,m_fisi:a.s2_m_fisi||0,m_ingl:a.s2_m_ingl||0,media:a.s2_media||0,gtot:a.s2_gtot||0,aprov:a.s2_aprov||false,motivo:a.motivo2||'',ok_port:a.ok2_port,ok_mate:a.ok2_mate,ok_fisi:a.ok2_fisi,ok_ingl:a.ok2_ingl,ok_red:a.ok2_red||false,red:a.s2_red||'Não',rank:a.s2_rank||0,simN:2,label:'Sim. 2 (07/03)',avgs:T.avgs2,sorted:T.sorted2};
+  if(n===3&&(a.s3_rank||0)>0)return{port:a.s3_port||0,mate:a.s3_mate||0,fisi:a.s3_fisi||0,ingl:a.s3_ingl||0,m_port:a.s3_m_port||0,m_mate:a.s3_m_mate||0,m_fisi:a.s3_m_fisi||0,m_ingl:a.s3_m_ingl||0,media:a.s3_media||0,gtot:a.s3_gtot||0,aprov:a.s3_aprov||false,motivo:a.motivo3||'',ok_port:a.ok3_port,ok_mate:a.ok3_mate,ok_fisi:a.ok3_fisi,ok_ingl:a.ok3_ingl,ok_red:a.ok3_red||false,red:a.s3_red||'Não',rank:a.s3_rank||0,simN:3,label:'Sim. 3 (28/03)',avgs:T.avgs3,sorted:T.sorted3};
+  if(n===4&&(a.s4_rank||0)>0)return{port:a.s4_port||0,mate:a.s4_mate||0,fisi:a.s4_fisi||0,ingl:a.s4_ingl||0,m_port:a.s4_m_port||0,m_mate:a.s4_m_mate||0,m_fisi:a.s4_m_fisi||0,m_ingl:a.s4_m_ingl||0,media:a.s4_media||0,gtot:a.s4_gtot||0,aprov:a.s4_aprov||false,motivo:a.motivo4||'',ok_port:a.ok4_port,ok_mate:a.ok4_mate,ok_fisi:a.ok4_fisi,ok_ingl:a.ok4_ingl,ok_red:a.ok4_red||false,red:a.s4_red||'Não',rank:a.s4_rank||0,simN:4,label:'Sim. 4 (25/04)',avgs:T.avgs4,sorted:T.sorted4};
+  return null;
+}
+function lastSim(a){return simSlot(a,4)||simSlot(a,3)||simSlot(a,2)||simSlot(a,1);}
+function prevSim(a){
+  for(let n=3;n>=1;n--){if(simSlot(a,n+1)&&simSlot(a,n))return simSlot(a,n);}
+  return null;
+}
+
 (()=>{
   const sel=document.getElementById('uniSelRk');
   [...new Set(T.list.map(a=>a.unidade))].sort().forEach(u=>{
@@ -1377,7 +1391,8 @@ function abrirDashboard(a){
   document.getElementById('dashInfo').textContent=
     rankInfo+rank2Info+rank3Info+rank4Info+' · '+a.unidade+' · Última MP: '+lastMedia.toFixed(2)+' · '+(lastAprov?'✓ Aprovado':'✗ Reprovado');
   const dd=document.getElementById('destDiv');
-  if(a.rank<=3&&a.rank>0){dd.style.display='block';document.getElementById('destText').textContent=`#${a.rank}º — AFA`;}
+  const _ls=lastSim(a);
+  if(_ls&&_ls.rank<=3&&_ls.rank>0){dd.style.display='block';document.getElementById('destText').textContent=`#${_ls.rank}º — AFA (${_ls.label})`;}
   else dd.style.display='none';
   buildNotas();buildGrafico();buildPlano();buildAnalise();buildEstudos();buildRelatorio();
   goTab('pNotas',document.querySelector('.tab-btn'));
@@ -1389,96 +1404,86 @@ function abrirDashboard(a){
 // ═══ BUILD NOTAS ═══
 function buildNotas(){
   const a=atual;
-  const has2=(a.s2_rank||0)>0||(a.s2_media||0)>0;
-  const s1={port:a.port,mate:a.mate,fisi:a.fisi,ingl:a.ingl,
-    m_port:a.m_port,m_mate:a.m_mate,m_fisi:a.m_fisi,m_ingl:a.m_ingl,
-    media:a.media,gtot:a.gtot,aprov:a.aprov,motivo:a.motivo,
-    ok_port:a.ok_port,ok_mate:a.ok_mate,ok_fisi:a.ok_fisi,ok_ingl:a.ok_ingl,red:a.red,rank:a.rank};
-  const s2=has2?{port:a.s2_port||0,mate:a.s2_mate||0,fisi:a.s2_fisi||0,ingl:a.s2_ingl||0,
-    m_port:a.s2_m_port||0,m_mate:a.s2_m_mate||0,m_fisi:a.s2_m_fisi||0,m_ingl:a.s2_m_ingl||0,
-    media:a.s2_media||0,gtot:a.s2_gtot||0,aprov:a.s2_aprov,motivo:a.motivo2||'',
-    ok_port:a.ok2_port,ok_mate:a.ok2_mate,ok_fisi:a.ok2_fisi,ok_ingl:a.ok2_ingl,red:a.s2_red,rank:a.s2_rank||0}:null;
+  const cur=lastSim(a), prv=prevSim(a);
+  if(!cur){document.getElementById('pNotas').innerHTML='<div class="card fade-in"><p style="padding:20px">Sem dados disponíveis.</p></div>';return;}
+  const hasPrv=!!prv;
 
   const dFmt=d=>d===null?'—':d>0?`<span style="color:#16a34a;font-weight:800">▲+${d.toFixed(2)}</span>`:
     d<0?`<span style="color:#dc2626;font-weight:800">▼${d.toFixed(2)}</span>`:
     `<span style="color:#6b7280;font-weight:700">= 0</span>`;
-  const dRank=has2&&s1.rank>0&&s2.rank>0?s1.rank-s2.rank:null;
+  const dRank=hasPrv&&cur.rank>0&&prv.rank>0?prv.rank-cur.rank:null;
 
   const discs=[
-    {nome:'Português',emoji:'📖',cor:'#3b82f6',ac1:s1.port,n1:s1.m_port,ok1:s1.ok_port,ac2:has2?s2.port:null,n2:has2?s2.m_port:null,ok2:has2?s2.ok_port:null},
-    {nome:'Matemática',emoji:'📐',cor:'#8b5cf6',ac1:s1.mate,n1:s1.m_mate,ok1:s1.ok_mate,ac2:has2?s2.mate:null,n2:has2?s2.m_mate:null,ok2:has2?s2.ok_mate:null},
-    {nome:'Física',emoji:'⚡',cor:'#f59e0b',ac1:s1.fisi,n1:s1.m_fisi,ok1:s1.ok_fisi,ac2:has2?s2.fisi:null,n2:has2?s2.m_fisi:null,ok2:has2?s2.ok_fisi:null},
-    {nome:'Inglês',emoji:'🌐',cor:'#10b981',ac1:s1.ingl,n1:s1.m_ingl,ok1:s1.ok_ingl,ac2:has2?s2.ingl:null,n2:has2?s2.m_ingl:null,ok2:has2?s2.ok_ingl:null},
+    {nome:'Português',emoji:'📖',cor:'#3b82f6',ac1:cur.port,n1:cur.m_port,ok1:cur.ok_port,ac2:hasPrv?prv.port:null,n2:hasPrv?prv.m_port:null,ok2:hasPrv?prv.ok_port:null},
+    {nome:'Matemática',emoji:'📐',cor:'#8b5cf6',ac1:cur.mate,n1:cur.m_mate,ok1:cur.ok_mate,ac2:hasPrv?prv.mate:null,n2:hasPrv?prv.m_mate:null,ok2:hasPrv?prv.ok_mate:null},
+    {nome:'Física',emoji:'⚡',cor:'#f59e0b',ac1:cur.fisi,n1:cur.m_fisi,ok1:cur.ok_fisi,ac2:hasPrv?prv.fisi:null,n2:hasPrv?prv.m_fisi:null,ok2:hasPrv?prv.ok_fisi:null},
+    {nome:'Inglês',emoji:'🌐',cor:'#10b981',ac1:cur.ingl,n1:cur.m_ingl,ok1:cur.ok_ingl,ac2:hasPrv?prv.ingl:null,n2:hasPrv?prv.m_ingl:null,ok2:hasPrv?prv.ok_ingl:null},
   ];
 
   document.getElementById('pNotas').innerHTML=`
   <div class="card fade-in">
     <div class="card-head"><h2>📊 Desempenho — ${a.nome.split(' ')[0]}</h2></div>
-    <p class="card-sub">${has2?'Comparativo Simulado 1 (28/02) vs Simulado 2 (07/03).':'Resultado do Simulado 1 — 28/02/2026.'}</p>
+    <p class="card-sub">${hasPrv?`Comparativo ${prv.label} vs ${cur.label}.`:`Resultado do ${cur.label}.`}</p>
     <div class="stat-grid" style="margin-bottom:20px">
-      <div class="stat-item"><div class="s-label">Ranking Sim. 1</div><div class="s-val" style="color:var(--navy)">${s1.rank>0?'#'+s1.rank+'º':'—'}</div><div class="s-hint">de ${T.sorted1.length}</div></div>
-      ${has2?`<div class="stat-item"><div class="s-label">Ranking Sim. 2</div><div class="s-val" style="color:var(--navy)">${s2.rank>0?'#'+s2.rank+'º':'—'}</div><div class="s-hint">de ${T.sorted2.length}</div></div>
-      <div class="stat-item"><div class="s-label">Variação</div><div class="s-val" style="color:${dRank>0?'#16a34a':dRank<0?'#dc2626':'#6b7280'}">${dRank===null?'—':dRank>0?'▲+'+dRank:dRank<0?'▼'+dRank:'=0'}</div><div class="s-hint">posições</div></div>`:''}
-      <div class="stat-item"><div class="s-label">MP Sim. 1</div><div class="s-val" style="color:${s1.aprov?'#16a34a':'#dc2626'}">${s1.media.toFixed(2)}</div><div class="s-hint">${s1.aprov?'✓ Aprovado':'✗ Reprovado'}</div></div>
-      ${has2?`<div class="stat-item"><div class="s-label">MP Sim. 2</div><div class="s-val" style="color:${s2.aprov?'#16a34a':'#dc2626'}">${s2.media.toFixed(2)}</div><div class="s-hint">${s2.aprov?'✓ Aprovado':'✗ Reprovado'}</div></div>
-      <div class="stat-item"><div class="s-label">∆ Média</div><div class="s-val">${dFmt(s2.media-s1.media)}</div><div class="s-hint">evolução</div></div>`:''}
+      ${hasPrv?`<div class="stat-item"><div class="s-label">Ranking ${prv.label}</div><div class="s-val" style="color:var(--navy)">${prv.rank>0?'#'+prv.rank+'º':'—'}</div><div class="s-hint">de ${prv.sorted.length}</div></div>`:''}
+      <div class="stat-item"><div class="s-label">Ranking ${cur.label}</div><div class="s-val" style="color:var(--navy)">${cur.rank>0?'#'+cur.rank+'º':'—'}</div><div class="s-hint">de ${cur.sorted.length}</div></div>
+      ${hasPrv?`<div class="stat-item"><div class="s-label">Variação</div><div class="s-val" style="color:${dRank>0?'#16a34a':dRank<0?'#dc2626':'#6b7280'}">${dRank===null?'—':dRank>0?'▲+'+dRank:dRank<0?'▼'+dRank:'=0'}</div><div class="s-hint">posições</div></div>`:''}
+      ${hasPrv?`<div class="stat-item"><div class="s-label">MP ${prv.label}</div><div class="s-val" style="color:${prv.aprov?'#16a34a':'#dc2626'}">${prv.media.toFixed(2)}</div><div class="s-hint">${prv.aprov?'✓ Aprovado':'✗ Reprovado'}</div></div>`:''}
+      <div class="stat-item"><div class="s-label">MP ${cur.label}</div><div class="s-val" style="color:${cur.aprov?'#16a34a':'#dc2626'}">${cur.media.toFixed(2)}</div><div class="s-hint">${cur.aprov?'✓ Aprovado':'✗ Reprovado'}</div></div>
+      ${hasPrv?`<div class="stat-item"><div class="s-label">∆ Média</div><div class="s-val">${dFmt(cur.media-prv.media)}</div><div class="s-hint">evolução</div></div>`:''}
     </div>
     <div class="disc-grid">
       ${discs.map(d=>`<div class="disc-card" style="border-left:4px solid ${d.cor}">
         <div class="dc-name">${d.emoji} ${d.nome}</div>
         <div style="display:flex;justify-content:space-between;align-items:flex-end;margin:4px 0">
-          <div><div style="font-size:11px;color:var(--text3);font-weight:600">Sim. 1</div>
-            <div class="dc-val" style="font-size:26px;color:${d.ok1?'#16a34a':'#dc2626'}">${d.n1.toFixed(2)}</div>
-            <div class="dc-max">${d.ac1}/16</div></div>
-          ${has2?`<div style="text-align:right"><div style="font-size:11px;color:var(--text3);font-weight:600">Sim. 2</div>
-            <div style="font-size:26px;font-weight:900;color:${d.ok2?'#16a34a':'#dc2626'}">${d.n2.toFixed(2)}</div>
-            <div style="font-size:11px;color:var(--text3)">${d.ac2}/16</div></div>`:''}
+          ${hasPrv?`<div><div style="font-size:11px;color:var(--text3);font-weight:600">${prv.label}</div>
+            <div class="dc-val" style="font-size:26px;color:${d.ok2?'#16a34a':'#dc2626'}">${d.n2.toFixed(2)}</div>
+            <div class="dc-max">${d.ac2}/16</div></div>`:''}
+          <div ${hasPrv?'style="text-align:right"':''}><div style="font-size:11px;color:var(--text3);font-weight:600">${cur.label}</div>
+            <div style="font-size:26px;font-weight:900;color:${d.ok1?'#16a34a':'#dc2626'}">${d.n1.toFixed(2)}</div>
+            <div style="font-size:11px;color:var(--text3)">${d.ac1}/16</div></div>
         </div>
-        ${has2?`<div style="text-align:center;font-size:13px;margin-top:4px">${dFmt(d.n2-d.n1)}</div>`:''}
+        ${hasPrv?`<div style="text-align:center;font-size:13px;margin-top:4px">${dFmt(d.n1-d.n2)}</div>`:''}
         <div style="margin-top:6px">
-          <span class="chip ${d.ok1?'chip-aprov':'chip-reprov'}" style="font-size:10px">S1: ${d.ok1?'✓':'✗'}</span>
-          ${has2?`<span class="chip ${d.ok2?'chip-aprov':'chip-reprov'}" style="font-size:10px;margin-left:4px">S2: ${d.ok2?'✓':'✗'}</span>`:''}
+          ${hasPrv?`<span class="chip ${d.ok2?'chip-aprov':'chip-reprov'}" style="font-size:10px">${prv.label.slice(0,6)}: ${d.ok2?'✓':'✗'}</span>`:''}
+          <span class="chip ${d.ok1?'chip-aprov':'chip-reprov'}" style="font-size:10px;${hasPrv?'margin-left:4px':''}">${cur.label.slice(0,6)}: ${d.ok1?'✓':'✗'}</span>
         </div>
       </div>`).join('')}
     </div>
-    ${has2?`<h3 style="font-size:14px;font-weight:800;color:var(--navy);margin:20px 0 8px">📋 Comparativo</h3>
+    ${hasPrv?`<h3 style="font-size:14px;font-weight:800;color:var(--navy);margin:20px 0 8px">📋 Comparativo ${prv.label} → ${cur.label}</h3>
     <table class="dtable"><thead><tr>
-      <th style="text-align:left">Disciplina</th><th>Ac. S1</th><th>Nota S1</th>
-      <th>Ac. S2</th><th>Nota S2</th><th>∆</th><th>S2</th>
+      <th style="text-align:left">Disciplina</th><th>Ac. ${prv.label.slice(0,6)}</th><th>Nota ${prv.label.slice(0,6)}</th>
+      <th>Ac. ${cur.label.slice(0,6)}</th><th>Nota ${cur.label.slice(0,6)}</th><th>∆</th><th>${cur.label.slice(0,6)}</th>
     </tr></thead><tbody>
       ${discs.map(d=>`<tr>
         <td><strong style="color:${d.cor}">${d.emoji} ${d.nome}</strong></td>
-        <td style="text-align:center">${d.ac1}/16</td>
-        <td style="text-align:center;font-weight:700;color:${d.ok1?'#16a34a':'#dc2626'}">${d.n1.toFixed(2)}</td>
         <td style="text-align:center">${d.ac2}/16</td>
         <td style="text-align:center;font-weight:700;color:${d.ok2?'#16a34a':'#dc2626'}">${d.n2.toFixed(2)}</td>
-        <td style="text-align:center">${dFmt(d.n2-d.n1)}</td>
-        <td style="text-align:center">${d.ok2?'<span class="chip chip-aprov" style="font-size:10px">✓</span>':'<span class="chip chip-reprov" style="font-size:10px">✗</span>'}</td>
+        <td style="text-align:center">${d.ac1}/16</td>
+        <td style="text-align:center;font-weight:700;color:${d.ok1?'#16a34a':'#dc2626'}">${d.n1.toFixed(2)}</td>
+        <td style="text-align:center">${dFmt(d.n1-d.n2)}</td>
+        <td style="text-align:center">${d.ok1?'<span class="chip chip-aprov" style="font-size:10px">✓</span>':'<span class="chip chip-reprov" style="font-size:10px">✗</span>'}</td>
       </tr>`).join('')}
       <tr style="background:#f0f4ff">
         <td><strong>MP</strong></td>
-        <td style="text-align:center">${s1.gtot}/64</td>
-        <td style="text-align:center;font-weight:900;color:${s1.aprov?'#16a34a':'#dc2626'}">${s1.media.toFixed(2)}</td>
-        <td style="text-align:center">${s2.gtot}/64</td>
-        <td style="text-align:center;font-weight:900;color:${s2.aprov?'#16a34a':'#dc2626'}">${s2.media.toFixed(2)}</td>
-        <td style="text-align:center">${dFmt(s2.media-s1.media)}</td>
-        <td style="text-align:center">${s2.aprov?'<span class="chip chip-aprov" style="font-size:10px">Aprov.</span>':'<span class="chip chip-reprov" style="font-size:10px">Reprov.</span>'}</td>
+        <td colspan="2" style="text-align:center;font-weight:800;color:${prv.aprov?'#16a34a':'#dc2626'}">${prv.media.toFixed(2)}</td>
+        <td colspan="2" style="text-align:center;font-weight:800;color:${cur.aprov?'#16a34a':'#dc2626'}">${cur.media.toFixed(2)}</td>
+        <td style="text-align:center">${dFmt(cur.media-prv.media)}</td>
+        <td style="text-align:center">${cur.aprov?'<span class="chip chip-aprov" style="font-size:10px">✓</span>':'<span class="chip chip-reprov" style="font-size:10px">✗</span>'}</td>
       </tr>
     </tbody></table>`:''}
-    ${!s1.aprov?`<div class="warn-box" style="margin-top:14px"><h5>⚠️ Sim.1 — ${s1.motivo}</h5></div>`:''}
-    ${has2&&!s2.aprov?`<div class="warn-box" style="margin-top:8px"><h5>⚠️ Sim.2 — ${s2.motivo}</h5></div>`:''}
   </div>`;
 }
 
 // ═══ BUILD GRÁFICO ═══
 function buildGrafico(){
   const a=atual;
-  const has2=(a.s2_rank||0)>0||(a.s2_media||0)>0;
-  const avg=T.avgs;
-
+  const cur=lastSim(a), prv=prevSim(a);
+  if(!cur){document.getElementById('pGrafico').innerHTML='<div class="card fade-in"><p style="padding:20px">Sem dados disponíveis.</p></div>';return;}
+  const avg=cur.avgs;
   const labels=['Português','Matemática','Física','Inglês'];
-  const s1vals=[a.m_port,a.m_mate,a.m_fisi,a.m_ingl];
-  const s2vals=has2?[a.s2_m_port||0,a.s2_m_mate||0,a.s2_m_fisi||0,a.s2_m_ingl||0]:null;
+  const curVals=[cur.m_port,cur.m_mate,cur.m_fisi,cur.m_ingl];
+  const prvVals=prv?[prv.m_port,prv.m_mate,prv.m_fisi,prv.m_ingl]:null;
   const avgVals=[avg.port,avg.mate,avg.fisi,avg.ingl];
 
   if(chartObjRadar){chartObjRadar.destroy();chartObjRadar=null;}
@@ -1488,23 +1493,23 @@ function buildGrafico(){
   <div class="card fade-in">
     <div class="card-head"><h2>📈 Gráficos — ${a.nome.split(' ')[0]}</h2></div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:16px">
-      <div><h3 style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:12px">Radar — vs Média da Turma</h3>
+      <div><h3 style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:12px">Radar — ${cur.label} vs Média da Turma</h3>
         <canvas id="radarChart" height="260"></canvas></div>
-      <div><h3 style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:12px">${has2?'Barras — Sim.1 vs Sim.2':'Barras — Notas por Disciplina'}</h3>
+      <div><h3 style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:12px">${prv?`Barras — ${prv.label} vs ${cur.label}`:`Barras — ${cur.label}`}</h3>
         <canvas id="barChart" height="260"></canvas></div>
     </div>
   </div>`;
 
   setTimeout(()=>{
   const rCtx=document.getElementById('radarChart').getContext('2d');
-  const datasets=[{label:'Sim. 1',data:s1vals,backgroundColor:'rgba(59,130,246,0.2)',borderColor:'#3b82f6',borderWidth:2,pointBackgroundColor:'#3b82f6'}];
-  if(has2)datasets.push({label:'Sim. 2',data:s2vals,backgroundColor:'rgba(16,185,129,0.2)',borderColor:'#10b981',borderWidth:2,pointBackgroundColor:'#10b981'});
+  const datasets=[{label:cur.label,data:curVals,backgroundColor:'rgba(59,130,246,0.2)',borderColor:'#3b82f6',borderWidth:2,pointBackgroundColor:'#3b82f6'}];
+  if(prvVals)datasets.unshift({label:prv.label,data:prvVals,backgroundColor:'rgba(16,185,129,0.2)',borderColor:'#10b981',borderWidth:2,pointBackgroundColor:'#10b981'});
   datasets.push({label:'Média Turma',data:avgVals,backgroundColor:'rgba(156,163,175,0.1)',borderColor:'#9ca3af',borderWidth:1.5,borderDash:[4,4],pointBackgroundColor:'#9ca3af'});
   chartObjRadar=new Chart(rCtx,{type:'radar',data:{labels,datasets},options:{scales:{r:{min:0,max:10,ticks:{stepSize:2}}},plugins:{legend:{position:'bottom'}}}});
 
   const bCtx=document.getElementById('barChart').getContext('2d');
-  const bDatasets=[{label:'Sim. 1',data:s1vals,backgroundColor:'rgba(59,130,246,0.8)'}];
-  if(has2)bDatasets.push({label:'Sim. 2',data:s2vals,backgroundColor:'rgba(16,185,129,0.8)'});
+  const bDatasets=[{label:cur.label,data:curVals,backgroundColor:'rgba(59,130,246,0.8)'}];
+  if(prvVals)bDatasets.unshift({label:prv.label,data:prvVals,backgroundColor:'rgba(16,185,129,0.8)'});
   chartObjBar=new Chart(bCtx,{type:'bar',data:{labels,datasets:bDatasets},options:{scales:{y:{min:0,max:10,ticks:{stepSize:2}}},plugins:{legend:{position:'bottom'}}}});
   },120);
 }
@@ -1513,12 +1518,12 @@ function buildGrafico(){
 function buildPlano(){
   const a=atual;
   const CORTE=7.41;
-  const has2=(a.s2_rank||0)>0||(a.s2_media||0)>0;
+  const cur=lastSim(a), prv=prevSim(a);
+  if(!cur){document.getElementById('pPlano').innerHTML='<div class="card fade-in"><p style="padding:20px">Sem dados disponíveis.</p></div>';return;}
 
-  // Use best available media for chance calculation
-  const mediaRef=has2?Math.max(a.media,a.s2_media||0):a.media;
-  const reprovDiscs=[a.ok_port,a.ok_mate,a.ok_fisi,a.ok_ingl].filter(x=>!x).length;
-  const reprovRed=!a.ok_red;
+  const mediaRef=cur.media;
+  const reprovDiscs=[cur.ok_port,cur.ok_mate,cur.ok_fisi,cur.ok_ingl].filter(x=>!x).length;
+  const reprovRed=!cur.ok_red;
 
   let chanceBase=mediaRef>=CORTE?100:Math.round((mediaRef/CORTE)*100);
   const penalidade=reprovDiscs*18+(reprovRed?15:0);
@@ -1531,7 +1536,7 @@ function buildPlano(){
   document.getElementById('pPlano').innerHTML=`
   <div class="card fade-in" style="border:2px solid ${chanceBorda}">
     <div class="card-head"><h2 style="color:${chanceCor}">🎯 Chance de Classificação na AFA</h2></div>
-    <p class="card-sub" style="margin-bottom:20px">Baseada na MP vs corte histórico (7,41 = 100%). Penalidade por disciplinas eliminatórias.</p>
+    <p class="card-sub" style="margin-bottom:20px">Baseada na MP do ${cur.label} vs corte histórico (7,41 = 100%). Penalidade por disciplinas eliminatórias.</p>
     <div style="margin-bottom:28px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <span style="font-size:28px;font-weight:900;color:${chanceCor}">${chance}%</span>
@@ -1547,16 +1552,16 @@ function buildPlano(){
       </div>
     </div>
     <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
-      <div class="stat-item"><div class="s-label">MP Sim. 1</div><div class="s-val" style="color:${a.media>=CORTE?'#16a34a':'#dc2626'}">${a.media.toFixed(2)}</div><div class="s-hint">de 10,0</div></div>
-      ${has2?`<div class="stat-item"><div class="s-label">MP Sim. 2</div><div class="s-val" style="color:${(a.s2_media||0)>=CORTE?'#16a34a':'#dc2626'}">${(a.s2_media||0).toFixed(2)}</div><div class="s-hint">de 10,0</div></div>`:''}
+      ${prv?`<div class="stat-item"><div class="s-label">MP ${prv.label}</div><div class="s-val" style="color:${prv.media>=CORTE?'#16a34a':'#dc2626'}">${prv.media.toFixed(2)}</div><div class="s-hint">de 10,0</div></div>`:''}
+      <div class="stat-item"><div class="s-label">MP ${cur.label}</div><div class="s-val" style="color:${cur.media>=CORTE?'#16a34a':'#dc2626'}">${cur.media.toFixed(2)}</div><div class="s-hint">de 10,0</div></div>
       <div class="stat-item"><div class="s-label">Corte AFA</div><div class="s-val" style="color:var(--navy)">${CORTE}</div><div class="s-hint">= 100%</div></div>
       <div class="stat-item"><div class="s-label">Critérios elim.</div><div class="s-val" style="color:${reprovDiscs+reprovRed>0?'#dc2626':'#16a34a'}">${reprovDiscs+(reprovRed?1:0)}</div><div class="s-hint">disciplina(s)</div></div>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
-      ${[{nome:'Português',nota:a.m_port,ok:a.ok_port,cor:'#3b82f6'},
-         {nome:'Matemática',nota:a.m_mate,ok:a.ok_mate,cor:'#8b5cf6'},
-         {nome:'Física',nota:a.m_fisi,ok:a.ok_fisi,cor:'#f59e0b'},
-         {nome:'Inglês',nota:a.m_ingl,ok:a.ok_ingl,cor:'#10b981'}].map(d=>`
+      ${[{nome:'Português',nota:cur.m_port,ok:cur.ok_port,cor:'#3b82f6'},
+         {nome:'Matemática',nota:cur.m_mate,ok:cur.ok_mate,cor:'#8b5cf6'},
+         {nome:'Física',nota:cur.m_fisi,ok:cur.ok_fisi,cor:'#f59e0b'},
+         {nome:'Inglês',nota:cur.m_ingl,ok:cur.ok_ingl,cor:'#10b981'}].map(d=>`
         <div>
           <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:3px">
             <span>${d.nome}</span>
@@ -1570,7 +1575,7 @@ function buildPlano(){
       <div style="font-size:11px;color:var(--text3);font-weight:600">▲ Linha central = mínimo 5,0</div>
     </div>
     ${reprovDiscs>0||reprovRed?`<div style="padding:10px 14px;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;font-size:12px;color:#b91c1c;font-weight:700">
-      ⚠️ Eliminado por: ${[!a.ok_port?'Português':'',!a.ok_mate?'Matemática':'',!a.ok_fisi?'Física':'',!a.ok_ingl?'Inglês':'',!a.ok_red?'Redação não entregue':''].filter(Boolean).join(' · ')}
+      ⚠️ Eliminado por: ${[!cur.ok_port?'Português':'',!cur.ok_mate?'Matemática':'',!cur.ok_fisi?'Física':'',!cur.ok_ingl?'Inglês':'',!cur.ok_red?'Redação não entregue':''].filter(Boolean).join(' · ')}
     </div>`:`<div style="padding:10px 14px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;font-size:12px;color:#15803d;font-weight:700">
       ✅ Aprovado em todos os critérios mínimos — foco em elevar a MP até 7,41
     </div>`}
@@ -1589,7 +1594,7 @@ function buildPlano(){
     <li>Para classificar, a MP precisa ser ≥ 7,41</li>
     <li>Priorize as disciplinas abaixo de 5,0 antes de elevar as que já passaram</li>
   </ul></div>
-  ${!a.ok_red?`<div class="warn-box"><h5>⚠️ Redação não entregue</h5><ul><li>Critério eliminatório — entrega obrigatória</li></ul></div>`:''}`;
+  ${!cur.ok_red?`<div class="warn-box"><h5>⚠️ Redação não entregue</h5><ul><li>Critério eliminatório — entrega obrigatória</li></ul></div>`:''}`;
 }
 
 // ═══ BUILD ANÁLISE ═══
@@ -1714,11 +1719,14 @@ function buildAnalise(){
   const a=atual;
   const CORTE=7.41;
   const TOTAL_Q=16;
+  const cur=lastSim(a);
+  if(!cur){document.getElementById('pAnalise').innerHTML='<div class="card fade-in"><p style="padding:20px">Sem dados disponíveis.</p></div>';return;}
+
   const discs=[
-    {nome:'Português',ac:a.port,nota:a.m_port,cor:'#3b82f6',emoji:'📖'},
-    {nome:'Matemática',ac:a.mate,nota:a.m_mate,cor:'#8b5cf6',emoji:'📐'},
-    {nome:'Física',ac:a.fisi,nota:a.m_fisi,cor:'#f59e0b',emoji:'⚡'},
-    {nome:'Inglês',ac:a.ingl,nota:a.m_ingl,cor:'#10b981',emoji:'🌐'},
+    {nome:'Português',ac:cur.port,nota:cur.m_port,cor:'#3b82f6',emoji:'📖'},
+    {nome:'Matemática',ac:cur.mate,nota:cur.m_mate,cor:'#8b5cf6',emoji:'📐'},
+    {nome:'Física',ac:cur.fisi,nota:cur.m_fisi,cor:'#f59e0b',emoji:'⚡'},
+    {nome:'Inglês',ac:cur.ingl,nota:cur.m_ingl,cor:'#10b981',emoji:'🌐'},
   ];
 
   const ic=d=>{const p=(d.ac/TOTAL_Q)*100;
@@ -1747,7 +1755,7 @@ function buildAnalise(){
   document.getElementById('pAnalise').innerHTML=`
   <div class="card fade-in">
     <div class="card-head"><h2>📋 Análise de Performance — ${a.nome.split(' ')[0]}</h2></div>
-    <p class="card-sub">Indicadores pedagógicos baseados no Simulado 1 (28/02/2026).</p>
+    <p class="card-sub">Indicadores pedagógicos baseados no ${cur.label}.</p>
   </div>
   <div class="card fade-in">
     <div class="card-head"><h2>🔬 Índice de Confiabilidade (IC)</h2></div>
@@ -1842,22 +1850,23 @@ function buildAnalise(){
 function buildEstudos(){
   const a = atual;
 
-  // Determine weakest subjects by nota (sim1, or sim2 if available)
-  const has2 = (a.s2_rank||0)>0||(a.s2_media||0)>0;
+  // Determine weakest subjects by nota using the most recent simulado
+  const cur=lastSim(a), prv=prevSim(a);
+  if(!cur){document.getElementById('pEstudos').innerHTML='<div class="card fade-in"><p style="padding:20px">Sem dados disponíveis.</p></div>';return;}
 
   const discs = [
     {nome:'Português', emoji:'📖', cor:'#3b82f6',
-     nota: has2 ? (a.m_port + (a.s2_m_port||0))/2 : a.m_port,
-     nota1: a.m_port, nota2: a.s2_m_port||null, ok: a.ok_port},
+     nota: prv ? (cur.m_port + prv.m_port)/2 : cur.m_port,
+     nota1: cur.m_port, nota2: prv?prv.m_port:null, ok: cur.ok_port},
     {nome:'Matemática', emoji:'📐', cor:'#8b5cf6',
-     nota: has2 ? (a.m_mate + (a.s2_m_mate||0))/2 : a.m_mate,
-     nota1: a.m_mate, nota2: a.s2_m_mate||null, ok: a.ok_mate},
+     nota: prv ? (cur.m_mate + prv.m_mate)/2 : cur.m_mate,
+     nota1: cur.m_mate, nota2: prv?prv.m_mate:null, ok: cur.ok_mate},
     {nome:'Física', emoji:'⚡', cor:'#f59e0b',
-     nota: has2 ? (a.m_fisi + (a.s2_m_fisi||0))/2 : a.m_fisi,
-     nota1: a.m_fisi, nota2: a.s2_m_fisi||null, ok: a.ok_fisi},
+     nota: prv ? (cur.m_fisi + prv.m_fisi)/2 : cur.m_fisi,
+     nota1: cur.m_fisi, nota2: prv?prv.m_fisi:null, ok: cur.ok_fisi},
     {nome:'Inglês', emoji:'🌐', cor:'#10b981',
-     nota: has2 ? (a.m_ingl + (a.s2_m_ingl||0))/2 : a.m_ingl,
-     nota1: a.m_ingl, nota2: a.s2_m_ingl||null, ok: a.ok_ingl},
+     nota: prv ? (cur.m_ingl + prv.m_ingl)/2 : cur.m_ingl,
+     nota1: cur.m_ingl, nota2: prv?prv.m_ingl:null, ok: cur.ok_ingl},
   ];
 
   // Sort by nota ascending (worst first = highest priority)
@@ -1947,19 +1956,19 @@ function buildEstudos(){
   document.getElementById('pEstudos').innerHTML = `
   <div class="card fade-in">
     <div class="card-head"><h2>📚 Plano de Estudos — ${a.nome.split(' ')[0]}</h2></div>
-    <p class="card-sub">Gerado com base no desempenho individual. Disciplinas com menor nota têm mais dias de foco. <strong>3 matérias por dia · 2h cada · 6h/dia.</strong></p>
+    <p class="card-sub">Gerado com base no ${cur.label}${prv?' e '+prv.label:''}. Disciplinas com menor nota têm mais dias de foco. <strong>3 matérias por dia · 2h cada · 6h/dia.</strong></p>
   </div>
 
   <!-- Prioridades -->
   <div class="card fade-in">
     <div class="card-head"><h2>🎯 Prioridade por Disciplina</h2></div>
-    <p class="card-sub">Ordenado da maior para a menor dificuldade ${has2?'(média dos 2 simulados)':'(simulado 1)'}.</p>
+    <p class="card-sub">Ordenado da maior para a menor dificuldade (${prv?'média '+cur.label+' e '+prv.label:cur.label}).</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
       ${sorted.map((d,i)=>{const p=prio(i); return `
         <div style="border:2px solid ${p.cor}33;background:${p.bg};border-radius:12px;padding:16px;border-left:4px solid ${p.cor}">
           <div style="font-size:13px;font-weight:900;color:var(--navy)">${d.emoji} ${d.nome}</div>
           <div style="font-size:28px;font-weight:900;color:${d.nota<5?'#dc2626':d.nota<7.41?'#d97706':'#16a34a'};margin:4px 0">${d.nota.toFixed(2)}</div>
-          ${has2?`<div style="font-size:11px;color:var(--text3)">S1: ${d.nota1.toFixed(2)} · S2: ${d.nota2!==null?d.nota2.toFixed(2):'—'}</div>`:''}
+          ${prv?`<div style="font-size:11px;color:var(--text3)">${cur.label}: ${d.nota1.toFixed(2)} · ${prv.label}: ${d.nota2!==null?d.nota2.toFixed(2):'—'}</div>`:''}
           <div style="margin-top:6px"><span style="background:${p.cor};color:#fff;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:800">${p.label}</span></div>
           <div style="margin-top:8px;height:6px;background:#e5e9f0;border-radius:3px;overflow:hidden">
             <div style="height:100%;width:${Math.min(100,d.nota/10*100).toFixed(0)}%;background:${p.cor};border-radius:3px"></div>
