@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard AFA — Simulados 28/02 e 07/03/2026</title>
+<title>Dashboard AFA · EFOMM · EN — Simulados 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -218,12 +218,12 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
     <div class="hdr-chips">
       <div class="hdr-chip">
         <div class="hdr-chip-lbl">Simulados AFA</div>
-        <div class="hdr-chip-num">4</div>
+        <div class="hdr-chip-num">5</div>
         <div class="hdr-chip-sub">realizados</div>
       </div>
       <div class="hdr-chip">
         <div class="hdr-chip-lbl">EFOMM · EN</div>
-        <div class="hdr-chip-num">2</div>
+        <div class="hdr-chip-num">3</div>
         <div class="hdr-chip-sub">cada</div>
       </div>
     </div>
@@ -251,6 +251,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
       <p>Clique em um aluno para ver o relatório individual com notas detalhadas.</p>
       <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
         <button class="sim-btn active" id="sTabGeral" onclick="setSimTab('geral',this)">🏅 Geral</button>
+        <button class="sim-btn" id="sTab5" onclick="setSimTab('s5',this)">📅 Simulado 5</button>
         <button class="sim-btn" id="sTab4" onclick="setSimTab('s4',this)">📅 Simulado 4</button>
         <button class="sim-btn" id="sTab3" onclick="setSimTab('s3',this)">📅 Simulado 3</button>
         <button class="sim-btn" id="sTab2" onclick="setSimTab('s2',this)">📅 Simulado 2</button>
@@ -308,6 +309,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
     <div class="exam-subtabs" id="efommSimTabs">
       <button class="sub-tab-btn active" onclick="switchEfSim('s1',this)">🥇 1º Simulado · 14/03</button>
       <button class="sub-tab-btn" onclick="switchEfSim('s2',this)">🥈 2º Simulado · 11/04</button>
+      <button class="sub-tab-btn" onclick="switchEfSim('s3',this)">🥉 3º Simulado · 02/05</button>
     </div>
     <div id="efSim1Wrap">
       <div class="exam-subtabs">
@@ -501,6 +503,101 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
       </div>
     </div>
     </div><!-- /efSim2Wrap -->
+    <!-- 3rd Sim EFOMM -->
+    <div id="efSim3Wrap" style="display:none">
+      <div class="exam-subtabs">
+        <button class="sub-tab-btn active" onclick="switchEfS3Tab('d1',this)">📅 1º Dia · 02/05</button>
+        <button class="sub-tab-btn" onclick="switchEfS3Tab('d2',this)">📅 2º Dia · 09/05</button>
+        <button class="sub-tab-btn" onclick="switchEfS3Tab('geral',this)">🏆 Geral</button>
+      </div>
+    <div id="efS3D1Wrap">
+      <div class="legend-box"><strong>3º Simulado · 1º Dia · 02/05/2026 · Português (20q) · Inglês (20q):</strong>
+        <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>✓ Classificado = ≥ 50% em todas</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>✗ Reprovado = abaixo do mínimo em ao menos 1</div>
+      </div>
+      <div class="ranking-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+          <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EFOMM — 3º Simulado · 02/05/2026</h2>
+            <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEfS3">0</span> · Classificados: <span id="aprovEfS3" style="color:var(--green);font-weight:700">0</span> · Reprovados: <span id="reprovEfS3" style="color:var(--red);font-weight:700">0</span></p></div>
+          <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEfS3" placeholder="🔍 Buscar pelo nome..." oninput="renderEfommS3()">
+        </div>
+        <div class="ranking-filters">
+          <button class="filter-btn active" onclick="setFEfS3('todos',this)">🏆 Todos<span class="fb-desc">Turma completa</span></button>
+          <button class="filter-btn" onclick="setFEfS3('aprov',this)">✅ Classificados<span class="fb-desc">Aprovados</span></button>
+          <button class="filter-btn" onclick="setFEfS3('reprov',this)">❌ Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+          <button class="filter-btn" onclick="setFEfS3('unidade',this)">🏫 Por Unidade<span class="fb-desc">Filtrar</span></button>
+        </div>
+        <div id="uniWrapEfS3" style="display:none;margin-bottom:14px">
+          <select id="uniSelEfS3" onchange="renderEfommS3()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">— Todas as unidades —</option></select>
+        </div>
+        <table class="ranking-table"><thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>Média</th><th>Status</th>
+        </tr></thead><tbody id="bodyEfS3"></tbody></table>
+        <div class="stat-grid" id="statsEfS3" style="margin-top:20px"></div>
+      </div>
+    </div><!-- /efS3D1Wrap -->
+    <div id="efS3D2Wrap" style="display:none">
+      <div class="legend-box"><strong>3º Simulado · 2º Dia · 09/05/2026 · Matemática (20q) · Física (20q):</strong>
+        <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>✓ Pós-Classificado = ≥ 50% em Mat e Fís</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>✗ Reprovado = abaixo do mínimo em ao menos 1</div>
+      </div>
+      <div class="ranking-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+          <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EFOMM — 3º Simulado · 2º Dia · 09/05/2026</h2>
+            <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEfS3D2">0</span> · Classificados: <span id="aprovEfS3D2" style="color:var(--green);font-weight:700">0</span> · Reprovados: <span id="reprovEfS3D2" style="color:var(--red);font-weight:700">0</span></p></div>
+          <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEfS3D2" placeholder="🔍 Buscar pelo nome..." oninput="renderEfommS3D2()">
+        </div>
+        <div class="ranking-filters">
+          <button class="filter-btn active" onclick="setFEfS3D2('todos',this)">🏆 Todos<span class="fb-desc">Turma completa</span></button>
+          <button class="filter-btn" onclick="setFEfS3D2('aprov',this)">✅ Classificados<span class="fb-desc">Aprovados</span></button>
+          <button class="filter-btn" onclick="setFEfS3D2('reprov',this)">❌ Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+          <button class="filter-btn" onclick="setFEfS3D2('unidade',this)">🏫 Por Unidade<span class="fb-desc">Filtrar</span></button>
+        </div>
+        <div id="uniWrapEfS3D2" style="display:none;margin-bottom:14px">
+          <select id="uniSelEfS3D2" onchange="renderEfommS3D2()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">— Todas as unidades —</option></select>
+        </div>
+        <table class="ranking-table"><thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>Média</th><th>Status</th>
+        </tr></thead><tbody id="bodyEfS3D2"></tbody></table>
+        <div class="stat-grid" id="statsEfS3D2" style="margin-top:20px"></div>
+      </div>
+    </div>
+    <div id="efS3GeralWrap" style="display:none">
+      <div class="legend-box"><strong>3º Simulado · Geral (Por+Mat+Ing+Fís combinados):</strong>
+        <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>✓ Classificado / Pós-Classificado</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>✗ Reprovado</div>
+      </div>
+      <div class="ranking-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+          <div><h2 style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:2px">EFOMM — 3º Simulado · Ranking Geral</h2>
+            <p style="font-size:13px;color:var(--text3)">Total: <span id="totalEfS3G">0</span> · Classificados: <span id="aprovEfS3G" style="color:var(--green);font-weight:700">0</span> · Reprovados: <span id="reprovEfS3G" style="color:var(--red);font-weight:700">0</span></p></div>
+          <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchEfS3G" placeholder="🔍 Buscar pelo nome..." oninput="renderEfommS3Geral()">
+        </div>
+        <div class="ranking-filters">
+          <button class="filter-btn active" onclick="setFEfS3G('todos',this)">🏆 Todos<span class="fb-desc">Turma completa</span></button>
+          <button class="filter-btn" onclick="setFEfS3G('aprov',this)">✅ Classificados<span class="fb-desc">Aprovados</span></button>
+          <button class="filter-btn" onclick="setFEfS3G('reprov',this)">❌ Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+          <button class="filter-btn" onclick="setFEfS3G('unidade',this)">🏫 Por Unidade<span class="fb-desc">Filtrar</span></button>
+        </div>
+        <div id="uniWrapEfS3G" style="display:none;margin-bottom:14px">
+          <select id="uniSelEfS3G" onchange="renderEfommS3Geral()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)"><option value="">— Todas as unidades —</option></select>
+        </div>
+        <table class="ranking-table"><thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>Média</th><th>Status</th>
+        </tr></thead><tbody id="bodyEfS3G"></tbody></table>
+        <div class="stat-grid" id="statsEfS3G" style="margin-top:20px"></div>
+      </div>
+    </div>
+    </div><!-- /efSim3Wrap -->
   </div>
 </div>
 
@@ -888,42 +985,42 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 const RAW_AFA = [
 {unidade:"NOVA IGUACU",nome:"MIGUEL COSTA",ra:"MT23134281",rank:1,aprov:true,port:14,mate:12,ingl:9,fisi:13,m_port:8.75,m_mate:7.5,m_ingl:5.625,m_fisi:8.125,media:7.5,red:"Sim",s2_rank:2,s2_port:13,s2_mate:13,s2_ingl:13,s2_fisi:12,s2_m_port:8.13,s2_m_mate:8.13,s2_m_ingl:8.13,s2_m_fisi:7.5,s2_media:7.97,s2_red:"Sim",s2_aprov:true,s3_rank:7,s3_port:14,s3_mate:10,s3_ingl:12,s3_fisi:10,s3_m_port:8.75,s3_m_mate:6.25,s3_m_ingl:7.5,s3_m_fisi:6.25,s3_media:7.19,s3_red:"Sim",s3_aprov:true,s4_rank:4,s4_port:10,s4_mate:11,s4_ingl:14,s4_fisi:7,s4_m_port:6.25,s4_m_mate:6.88,s4_m_ingl:8.75,s4_m_fisi:4.38,s4_media:6.56,s4_red:"Não",s4_aprov:false},
 {unidade:"TAQUARA",nome:"VAGNER SOUZA",ra:"MT25198953",rank:2,aprov:true,port:15,mate:10,ingl:13,fisi:9,m_port:9.375,m_mate:6.25,m_ingl:8.125,m_fisi:5.625,media:7.3438,red:"Sim",s2_rank:24,s2_port:13,s2_mate:7,s2_ingl:16,s2_fisi:5,s2_m_port:8.13,s2_m_mate:4.38,s2_m_ingl:10.0,s2_m_fisi:3.13,s2_media:6.41,s2_red:"Sim",s2_aprov:false},
-{unidade:"NOVA IGUACU",nome:"PEDRO WERNECK",ra:"MT25188095",rank:3,aprov:true,port:12,mate:13,ingl:12,fisi:10,m_port:7.5,m_mate:8.125,m_ingl:7.5,m_fisi:6.25,media:7.3438,red:"Sim",s2_rank:4,s2_port:15,s2_mate:11,s2_ingl:13,s2_fisi:10,s2_m_port:9.38,s2_m_mate:6.88,s2_m_ingl:8.13,s2_m_fisi:6.25,s2_media:7.66,s2_red:"Sim",s2_aprov:true,s3_rank:2,s3_port:14,s3_mate:11,s3_ingl:15,s3_fisi:11,s3_m_port:8.75,s3_m_mate:6.88,s3_m_ingl:9.38,s3_m_fisi:6.88,s3_media:7.97,s3_red:"Sim",s3_aprov:true},
-{unidade:"BANGU",nome:"MARCOS CARVALHO",ra:"MT20041455",rank:4,aprov:true,port:12,mate:12,ingl:12,fisi:10,m_port:7.5,m_mate:7.5,m_ingl:7.5,m_fisi:6.25,media:7.1875,red:"Sim",s2_rank:1,s2_port:15,s2_mate:15,s2_ingl:14,s2_fisi:13,s2_m_port:9.38,s2_m_mate:9.38,s2_m_ingl:8.75,s2_m_fisi:8.13,s2_media:8.91,s2_red:"Sim",s2_aprov:true,s3_rank:9,s3_port:13,s3_mate:10,s3_ingl:15,s3_fisi:8,s3_m_port:8.13,s3_m_mate:6.25,s3_m_ingl:9.38,s3_m_fisi:5,s3_media:7.19,s3_red:"Sim",s3_aprov:true,s4_rank:5,s4_port:10,s4_mate:10,s4_ingl:16,s4_fisi:5,s4_m_port:6.25,s4_m_mate:6.25,s4_m_ingl:10.00,s4_m_fisi:3.13,s4_media:6.41,s4_red:"Sim",s4_aprov:false},
-{unidade:"TAQUARA",nome:"PEDRO CONCEICAO",ra:"MT25189275",rank:5,aprov:true,port:14,mate:11,ingl:11,fisi:8,m_port:8.75,m_mate:6.875,m_ingl:6.875,m_fisi:5.0,media:6.875,red:"Sim",s2_rank:29,s2_port:14,s2_mate:5,s2_ingl:16,s2_fisi:5,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:10.0,s2_m_fisi:3.13,s2_media:6.25,s2_red:"Sim",s2_aprov:false,s3_rank:1,s3_port:14,s3_mate:13,s3_ingl:15,s3_fisi:11,s3_m_port:8.75,s3_m_mate:8.13,s3_m_ingl:9.38,s3_m_fisi:6.88,s3_media:8.28,s3_red:"Sim",s3_aprov:true,s4_rank:9,s4_port:11,s4_mate:8,s4_ingl:14,s4_fisi:5,s4_m_port:6.88,s4_m_mate:5.00,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.94,s4_red:"Sim",s4_aprov:false},
+{unidade:"NOVA IGUACU",nome:"PEDRO WERNECK",ra:"MT25188095",rank:3,aprov:true,port:12,mate:13,ingl:12,fisi:10,m_port:7.5,m_mate:8.125,m_ingl:7.5,m_fisi:6.25,media:7.3438,red:"Sim",s2_rank:4,s2_port:15,s2_mate:11,s2_ingl:13,s2_fisi:10,s2_m_port:9.38,s2_m_mate:6.88,s2_m_ingl:8.13,s2_m_fisi:6.25,s2_media:7.66,s2_red:"Sim",s2_aprov:true,s3_rank:2,s3_port:14,s3_mate:11,s3_ingl:15,s3_fisi:11,s3_m_port:8.75,s3_m_mate:6.88,s3_m_ingl:9.38,s3_m_fisi:6.88,s3_media:7.97,s3_red:"Sim",s3_aprov:true,s5_rank:3,s5_port:11,s5_mate:10,s5_ingl:14,s5_fisi:7,s5_m_port:6.88,s5_m_mate:6.25,s5_m_ingl:8.75,s5_m_fisi:4.38,s5_media:6.56,s5_red:"Sim",s5_aprov:false},
+{unidade:"BANGU",nome:"MARCOS CARVALHO",ra:"MT20041455",rank:4,aprov:true,port:12,mate:12,ingl:12,fisi:10,m_port:7.5,m_mate:7.5,m_ingl:7.5,m_fisi:6.25,media:7.1875,red:"Sim",s2_rank:1,s2_port:15,s2_mate:15,s2_ingl:14,s2_fisi:13,s2_m_port:9.38,s2_m_mate:9.38,s2_m_ingl:8.75,s2_m_fisi:8.13,s2_media:8.91,s2_red:"Sim",s2_aprov:true,s3_rank:9,s3_port:13,s3_mate:10,s3_ingl:15,s3_fisi:8,s3_m_port:8.13,s3_m_mate:6.25,s3_m_ingl:9.38,s3_m_fisi:5,s3_media:7.19,s3_red:"Sim",s3_aprov:true,s4_rank:5,s4_port:10,s4_mate:10,s4_ingl:16,s4_fisi:5,s4_m_port:6.25,s4_m_mate:6.25,s4_m_ingl:10.00,s4_m_fisi:3.13,s4_media:6.41,s4_red:"Sim",s4_aprov:false,s5_rank:5,s5_port:12,s5_mate:8,s5_ingl:14,s5_fisi:7,s5_m_port:7.5,s5_m_mate:5,s5_m_ingl:8.75,s5_m_fisi:4.38,s5_media:6.41,s5_red:"Sim",s5_aprov:false},
+{unidade:"TAQUARA",nome:"PEDRO CONCEICAO",ra:"MT25189275",rank:5,aprov:true,port:14,mate:11,ingl:11,fisi:8,m_port:8.75,m_mate:6.875,m_ingl:6.875,m_fisi:5.0,media:6.875,red:"Sim",s2_rank:29,s2_port:14,s2_mate:5,s2_ingl:16,s2_fisi:5,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:10.0,s2_m_fisi:3.13,s2_media:6.25,s2_red:"Sim",s2_aprov:false,s3_rank:1,s3_port:14,s3_mate:13,s3_ingl:15,s3_fisi:11,s3_m_port:8.75,s3_m_mate:8.13,s3_m_ingl:9.38,s3_m_fisi:6.88,s3_media:8.28,s3_red:"Sim",s3_aprov:true,s4_rank:9,s4_port:11,s4_mate:8,s4_ingl:14,s4_fisi:5,s4_m_port:6.88,s4_m_mate:5.00,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.94,s4_red:"Sim",s4_aprov:false,s5_rank:8,s5_port:12,s5_mate:8,s5_ingl:15,s5_fisi:5,s5_m_port:7.5,s5_m_mate:5,s5_m_ingl:9.38,s5_m_fisi:3.13,s5_media:6.25,s5_red:"Sim",s5_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #6",ra:"MT19023589",rank:6,aprov:true,port:10,mate:11,ingl:11,fisi:12,m_port:6.25,m_mate:6.875,m_ingl:6.875,m_fisi:7.5,media:6.875,red:"Sim"},
 {unidade:"NOVA IGUACU",nome:"MARIA COSTA",ra:"MT25170952",rank:7,aprov:true,port:10,mate:13,ingl:11,fisi:10,m_port:6.25,m_mate:8.125,m_ingl:6.875,m_fisi:6.25,media:6.875,red:"Sim",s2_rank:13,s2_port:15,s2_mate:12,s2_ingl:15,s2_fisi:7,s2_m_port:9.38,s2_m_mate:7.5,s2_m_ingl:9.38,s2_m_fisi:4.38,s2_media:7.66,s2_red:"Sim",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #8",ra:"MT21057715",rank:8,aprov:true,port:13,mate:12,ingl:10,fisi:7,m_port:8.125,m_mate:7.5,m_ingl:6.25,m_fisi:4.375,media:6.5625,red:"Sim"},
-{unidade:"BANGU",nome:"LUCIANO OLIVEIRA",ra:"MT22096622",rank:9,aprov:true,port:11,mate:10,ingl:14,fisi:7,m_port:6.875,m_mate:6.25,m_ingl:8.75,m_fisi:4.375,media:6.5625,red:"Sim",s2_rank:5,s2_port:12,s2_mate:8,s2_ingl:16,s2_fisi:13,s2_m_port:7.5,s2_m_mate:5.0,s2_m_ingl:10.0,s2_m_fisi:8.13,s2_media:7.66,s2_red:"Sim",s2_aprov:true,s3_rank:4,s3_port:14,s3_mate:8,s3_ingl:16,s3_fisi:11,s3_m_port:8.75,s3_m_mate:5,s3_m_ingl:10,s3_m_fisi:6.88,s3_media:7.66,s3_red:"Sim",s3_aprov:true},
+{unidade:"BANGU",nome:"LUCIANO OLIVEIRA",ra:"MT22096622",rank:9,aprov:true,port:11,mate:10,ingl:14,fisi:7,m_port:6.875,m_mate:6.25,m_ingl:8.75,m_fisi:4.375,media:6.5625,red:"Sim",s2_rank:5,s2_port:12,s2_mate:8,s2_ingl:16,s2_fisi:13,s2_m_port:7.5,s2_m_mate:5.0,s2_m_ingl:10.0,s2_m_fisi:8.13,s2_media:7.66,s2_red:"Sim",s2_aprov:true,s3_rank:4,s3_port:14,s3_mate:8,s3_ingl:16,s3_fisi:11,s3_m_port:8.75,s3_m_mate:5,s3_m_ingl:10,s3_m_fisi:6.88,s3_media:7.66,s3_red:"Sim",s3_aprov:true,s5_rank:15,s5_port:11,s5_mate:9,s5_ingl:14,s5_fisi:4,s5_m_port:6.88,s5_m_mate:5.63,s5_m_ingl:8.75,s5_m_fisi:2.5,s5_media:5.94,s5_red:"Sim",s5_aprov:false},
 {unidade:"NOVA IGUACU",nome:"BERNARDO SILVA",ra:"MT21062021",rank:10,aprov:true,port:9,mate:11,ingl:14,fisi:7,m_port:5.625,m_mate:6.875,m_ingl:8.75,m_fisi:4.375,media:6.4062,red:"Sim",s2_rank:19,s2_port:14,s2_mate:11,s2_ingl:15,s2_fisi:3,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:9.38,s2_m_fisi:1.88,s2_media:6.72,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"PEDRO PINTO",ra:"MT22089403",rank:11,aprov:true,port:11,mate:7,ingl:13,fisi:7,m_port:6.875,m_mate:4.375,m_ingl:8.125,m_fisi:4.375,media:5.9375,red:"Sim",s2_rank:25,s2_port:14,s2_mate:9,s2_ingl:13,s2_fisi:5,s2_m_port:8.75,s2_m_mate:5.63,s2_m_ingl:8.13,s2_m_fisi:3.13,s2_media:6.41,s2_red:"Não",s2_aprov:false,s3_rank:45,s3_port:10,s3_mate:4,s3_ingl:13,s3_fisi:5,s3_m_port:6.25,s3_m_mate:2.5,s3_m_ingl:8.13,s3_m_fisi:3.13,s3_media:5,s3_red:"Sim",s3_aprov:false},
-{unidade:"BANGU",nome:"MANUELLE VERNECH",ra:"MT25173634",rank:12,aprov:true,port:10,mate:7,ingl:13,fisi:7,m_port:6.25,m_mate:4.375,m_ingl:8.125,m_fisi:4.375,media:5.7812,red:"Sim",s2_rank:20,s2_port:15,s2_mate:7,s2_ingl:16,s2_fisi:4,s2_m_port:9.38,s2_m_mate:4.38,s2_m_ingl:10.0,s2_m_fisi:2.5,s2_media:6.56,s2_red:"Sim",s2_aprov:false},
-{unidade:"CAMPO GRANDE",nome:"BRENO OLIVEIRA",ra:"MT23120876",rank:13,aprov:false,port:13,mate:12,ingl:11,fisi:6,m_port:8.125,m_mate:7.5,m_ingl:6.875,m_fisi:3.75,media:6.5625,red:"Sim",s2_rank:35,s2_port:14,s2_mate:9,s2_ingl:13,s2_fisi:3,s2_m_port:8.75,s2_m_mate:5.63,s2_m_ingl:8.13,s2_m_fisi:1.88,s2_media:6.09,s2_red:"Sim",s2_aprov:false,s3_rank:36,s3_port:9,s3_mate:7,s3_ingl:14,s3_fisi:5,s3_m_port:5.63,s3_m_mate:4.38,s3_m_ingl:8.75,s3_m_fisi:3.13,s3_media:5.47,s3_red:"Não",s3_aprov:false,s4_rank:22,s4_port:10,s4_mate:6,s4_ingl:14,s4_fisi:5,s4_m_port:6.25,s4_m_mate:3.75,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.47,s4_red:"Não",s4_aprov:false},
+{unidade:"BANGU",nome:"MANUELLE VERNECH",ra:"MT25173634",rank:12,aprov:true,port:10,mate:7,ingl:13,fisi:7,m_port:6.25,m_mate:4.375,m_ingl:8.125,m_fisi:4.375,media:5.7812,red:"Sim",s2_rank:20,s2_port:15,s2_mate:7,s2_ingl:16,s2_fisi:4,s2_m_port:9.38,s2_m_mate:4.38,s2_m_ingl:10.0,s2_m_fisi:2.5,s2_media:6.56,s2_red:"Sim",s2_aprov:false,s5_rank:22,s5_port:10,s5_mate:3,s5_ingl:15,s5_fisi:5,s5_m_port:6.25,s5_m_mate:1.88,s5_m_ingl:9.38,s5_m_fisi:3.13,s5_media:5.16,s5_red:"Sim",s5_aprov:false},
+{unidade:"CAMPO GRANDE",nome:"BRENO OLIVEIRA",ra:"MT23120876",rank:13,aprov:false,port:13,mate:12,ingl:11,fisi:6,m_port:8.125,m_mate:7.5,m_ingl:6.875,m_fisi:3.75,media:6.5625,red:"Sim",s2_rank:35,s2_port:14,s2_mate:9,s2_ingl:13,s2_fisi:3,s2_m_port:8.75,s2_m_mate:5.63,s2_m_ingl:8.13,s2_m_fisi:1.88,s2_media:6.09,s2_red:"Sim",s2_aprov:false,s3_rank:36,s3_port:9,s3_mate:7,s3_ingl:14,s3_fisi:5,s3_m_port:5.63,s3_m_mate:4.38,s3_m_ingl:8.75,s3_m_fisi:3.13,s3_media:5.47,s3_red:"Não",s3_aprov:false,s4_rank:22,s4_port:10,s4_mate:6,s4_ingl:14,s4_fisi:5,s4_m_port:6.25,s4_m_mate:3.75,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.47,s4_red:"Não",s4_aprov:false,s5_rank:27,s5_port:10,s5_mate:7,s5_ingl:13,s5_fisi:2,s5_m_port:6.25,s5_m_mate:4.38,s5_m_ingl:8.13,s5_m_fisi:1.25,s5_media:5,s5_red:"Não",s5_aprov:false},
 {unidade:"MADUREIRA",nome:"GUSTAVO OLIVEIRA",ra:"MT22058218",rank:14,aprov:false,port:9,mate:10,ingl:11,fisi:12,m_port:5.625,m_mate:6.25,m_ingl:6.875,m_fisi:7.5,media:6.5625,red:"Não",s2_rank:6,s2_port:13,s2_mate:11,s2_ingl:14,s2_fisi:10,s2_m_port:8.13,s2_m_mate:6.88,s2_m_ingl:8.75,s2_m_fisi:6.25,s2_media:7.5,s2_red:"Sim",s2_aprov:true,s3_rank:3,s3_port:11,s3_mate:9,s3_ingl:16,s3_fisi:14,s3_m_port:6.88,s3_m_mate:5.63,s3_m_ingl:10,s3_m_fisi:8.75,s3_media:7.81,s3_red:"Sim",s3_aprov:true,s4_rank:7,s4_port:10,s4_mate:6,s4_ingl:14,s4_fisi:9,s4_m_port:6.25,s4_m_mate:3.75,s4_m_ingl:8.75,s4_m_fisi:5.63,s4_media:6.09,s4_red:"Sim",s4_aprov:false},
 {unidade:"BANGU",nome:"JOÃO TEODORO",ra:"MT23126717",rank:15,aprov:false,port:12,mate:8,ingl:14,fisi:7,m_port:7.5,m_mate:5.0,m_ingl:8.75,m_fisi:4.375,media:6.4062,red:"Não",s2_rank:8,s2_port:14,s2_mate:8,s2_ingl:16,s2_fisi:9,s2_m_port:8.75,s2_m_mate:5.0,s2_m_ingl:10.0,s2_m_fisi:5.63,s2_media:7.34,s2_red:"Sim",s2_aprov:true,s3_rank:16,s3_port:14,s3_mate:7,s3_ingl:13,s3_fisi:6,s3_m_port:8.75,s3_m_mate:4.38,s3_m_ingl:8.13,s3_m_fisi:3.75,s3_media:6.25,s3_red:"Sim",s3_aprov:false},
 {unidade:"BANGU",nome:"PEDRO SEGUNDO",ra:"MT21056205",rank:16,aprov:false,port:11,mate:14,ingl:6,fisi:10,m_port:6.875,m_mate:8.75,m_ingl:3.75,m_fisi:6.25,media:6.4062,red:"Não"},
 {unidade:"MADUREIRA",nome:"LOHAYNE SANTOS",ra:"MT24164287",rank:17,aprov:false,port:9,mate:12,ingl:9,fisi:11,m_port:5.625,m_mate:7.5,m_ingl:5.625,m_fisi:6.875,media:6.4062,red:"Não"},
 {unidade:"CAMPO GRANDE",nome:"BERNARDO SILVA",ra:"MT22099527",rank:18,aprov:false,port:12,mate:9,ingl:14,fisi:5,m_port:7.5,m_mate:5.625,m_ingl:8.75,m_fisi:3.125,media:6.25,red:"Sim",s2_rank:42,s2_port:14,s2_mate:6,s2_ingl:12,s2_fisi:6,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:7.5,s2_m_fisi:3.75,s2_media:5.94,s2_red:"Não",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"JOÃO DIAS",ra:"MT23122104",rank:19,aprov:false,port:13,mate:8,ingl:14,fisi:5,m_port:8.125,m_mate:5.0,m_ingl:8.75,m_fisi:3.125,media:6.25,red:"Não",s2_rank:26,s2_port:14,s2_mate:8,s2_ingl:15,s2_fisi:4,s2_m_port:8.75,s2_m_mate:5.0,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.41,s2_red:"Não",s2_aprov:false,s3_rank:22,s3_port:13,s3_mate:6,s3_ingl:15,s3_fisi:4,s3_m_port:8.13,s3_m_mate:3.75,s3_m_ingl:9.38,s3_m_fisi:2.5,s3_media:5.94,s3_red:"Sim",s3_aprov:false,s4_rank:36,s4_port:13,s4_mate:5,s4_ingl:8,s4_fisi:6,s4_m_port:8.13,s4_m_mate:3.13,s4_m_ingl:5.00,s4_m_fisi:3.75,s4_media:5.00,s4_red:"Não",s4_aprov:false},
+{unidade:"MADUREIRA",nome:"JOÃO DIAS",ra:"MT23122104",rank:19,aprov:false,port:13,mate:8,ingl:14,fisi:5,m_port:8.125,m_mate:5.0,m_ingl:8.75,m_fisi:3.125,media:6.25,red:"Não",s2_rank:26,s2_port:14,s2_mate:8,s2_ingl:15,s2_fisi:4,s2_m_port:8.75,s2_m_mate:5.0,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.41,s2_red:"Não",s2_aprov:false,s3_rank:22,s3_port:13,s3_mate:6,s3_ingl:15,s3_fisi:4,s3_m_port:8.13,s3_m_mate:3.75,s3_m_ingl:9.38,s3_m_fisi:2.5,s3_media:5.94,s3_red:"Sim",s3_aprov:false,s4_rank:36,s4_port:13,s4_mate:5,s4_ingl:8,s4_fisi:6,s4_m_port:8.13,s4_m_mate:3.13,s4_m_ingl:5.00,s4_m_fisi:3.75,s4_media:5.00,s4_red:"Não",s4_aprov:false,s5_rank:19,s5_port:13,s5_mate:5,s5_ingl:14,s5_fisi:2,s5_m_port:8.13,s5_m_mate:3.13,s5_m_ingl:8.75,s5_m_fisi:1.25,s5_media:5.31,s5_red:"Não",s5_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #20",ra:"MTERRORA20",rank:20,aprov:false,port:12,mate:10,ingl:13,fisi:5,m_port:7.5,m_mate:6.25,m_ingl:8.125,m_fisi:3.125,media:6.25,red:"Não"},
-{unidade:"MADUREIRA",nome:"MARYA JUND",ra:"MT25169335",rank:21,aprov:false,port:12,mate:10,ingl:13,fisi:5,m_port:7.5,m_mate:6.25,m_ingl:8.125,m_fisi:3.125,media:6.25,red:"Não",s2_rank:15,s2_port:16,s2_mate:10,s2_ingl:15,s2_fisi:4,s2_m_port:10.0,s2_m_mate:6.25,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:7.03,s2_red:"Não",s2_aprov:false,s4_rank:11,s4_port:11,s4_mate:8,s4_ingl:13,s4_fisi:5,s4_m_port:6.88,s4_m_mate:5.00,s4_m_ingl:8.13,s4_m_fisi:3.13,s4_media:5.78,s4_red:"Sim",s4_aprov:false},
+{unidade:"MADUREIRA",nome:"MARYA JUND",ra:"MT25169335",rank:21,aprov:false,port:12,mate:10,ingl:13,fisi:5,m_port:7.5,m_mate:6.25,m_ingl:8.125,m_fisi:3.125,media:6.25,red:"Não",s2_rank:15,s2_port:16,s2_mate:10,s2_ingl:15,s2_fisi:4,s2_m_port:10.0,s2_m_mate:6.25,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:7.03,s2_red:"Não",s2_aprov:false,s4_rank:11,s4_port:11,s4_mate:8,s4_ingl:13,s4_fisi:5,s4_m_port:6.88,s4_m_mate:5.00,s4_m_ingl:8.13,s4_m_fisi:3.13,s4_media:5.78,s4_red:"Sim",s4_aprov:false,s5_rank:9,s5_port:12,s5_mate:10,s5_ingl:13,s5_fisi:5,s5_m_port:7.5,s5_m_mate:6.25,s5_m_ingl:8.13,s5_m_fisi:3.13,s5_media:6.25,s5_red:"Não",s5_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #22",ra:"MTERRORA5",rank:22,aprov:false,port:11,mate:12,ingl:8,fisi:9,m_port:6.875,m_mate:7.5,m_ingl:5.0,m_fisi:5.625,media:6.25,red:"Não"},
 {unidade:"MADUREIRA",nome:"FELIPE SARDINHA",ra:"MT25169566",rank:23,aprov:false,port:11,mate:12,ingl:8,fisi:9,m_port:6.875,m_mate:7.5,m_ingl:5.0,m_fisi:5.625,media:6.25,red:"Não"},
 {unidade:"BANGU",nome:"CAIO DINIZ",ra:"MT21065453",rank:24,aprov:false,port:11,mate:10,ingl:10,fisi:8,m_port:6.875,m_mate:6.25,m_ingl:6.25,m_fisi:5.0,media:6.0938,red:"Não",s2_rank:43,s2_port:14,s2_mate:11,s2_ingl:13,s2_fisi:0,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:8.13,s2_m_fisi:0.0,s2_media:5.94,s2_red:"Não",s2_aprov:false},
 {unidade:"BANGU",nome:"LEONARDO BORGES",ra:"MT23131139",rank:25,aprov:false,port:11,mate:8,ingl:13,fisi:6,m_port:6.875,m_mate:5.0,m_ingl:8.125,m_fisi:3.75,media:5.9375,red:"Sim",s2_rank:47,s2_port:14,s2_mate:7,s2_ingl:13,s2_fisi:3,s2_m_port:8.75,s2_m_mate:4.38,s2_m_ingl:8.13,s2_m_fisi:1.88,s2_media:5.78,s2_red:"Sim",s2_aprov:false,s3_rank:20,s3_port:12,s3_mate:6,s3_ingl:15,s3_fisi:6,s3_m_port:7.5,s3_m_mate:3.75,s3_m_ingl:9.38,s3_m_fisi:3.75,s3_media:6.09,s3_red:"Não",s3_aprov:false,s4_rank:51,s4_port:5,s4_mate:4,s4_ingl:14,s4_fisi:4,s4_m_port:3.13,s4_m_mate:2.50,s4_m_ingl:8.75,s4_m_fisi:2.50,s4_media:4.22,s4_red:"Sim",s4_aprov:false},
-{unidade:"MADUREIRA",nome:"RAFAELLA SANTOS",ra:"MT24162687",rank:26,aprov:false,port:12,mate:5,ingl:12,fisi:9,m_port:7.5,m_mate:3.125,m_ingl:7.5,m_fisi:5.625,media:5.9375,red:"Não",s2_rank:23,s2_port:15,s2_mate:6,s2_ingl:15,s2_fisi:5,s2_m_port:9.38,s2_m_mate:3.75,s2_m_ingl:9.38,s2_m_fisi:3.13,s2_media:6.41,s2_red:"Sim",s2_aprov:false},
+{unidade:"MADUREIRA",nome:"RAFAELLA SANTOS",ra:"MT24162687",rank:26,aprov:false,port:12,mate:5,ingl:12,fisi:9,m_port:7.5,m_mate:3.125,m_ingl:7.5,m_fisi:5.625,media:5.9375,red:"Não",s2_rank:23,s2_port:15,s2_mate:6,s2_ingl:15,s2_fisi:5,s2_m_port:9.38,s2_m_mate:3.75,s2_m_ingl:9.38,s2_m_fisi:3.13,s2_media:6.41,s2_red:"Sim",s2_aprov:false,s5_rank:13,s5_port:14,s5_mate:8,s5_ingl:13,s5_fisi:4,s5_m_port:8.75,s5_m_mate:5,s5_m_ingl:8.13,s5_m_fisi:2.5,s5_media:6.09,s5_red:"Não",s5_aprov:false},
 {unidade:"TAQUARA",nome:"YASMIM ROMÃO",ra:"MT23134059",rank:27,aprov:false,port:15,mate:11,ingl:5,fisi:6,m_port:9.375,m_mate:6.875,m_ingl:3.125,m_fisi:3.75,media:5.7812,red:"Sim",s2_rank:10,s2_port:15,s2_mate:9,s2_ingl:13,s2_fisi:9,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:8.13,s2_m_fisi:5.63,s2_media:7.19,s2_red:"Sim",s2_aprov:true,s4_rank:39,s4_port:10,s4_mate:5,s4_ingl:11,s4_fisi:5,s4_m_port:6.25,s4_m_mate:3.13,s4_m_ingl:6.88,s4_m_fisi:3.13,s4_media:4.84,s4_red:"Sim",s4_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #28",ra:"MT25197691",rank:28,aprov:false,port:11,mate:6,ingl:14,fisi:6,m_port:6.875,m_mate:3.75,m_ingl:8.75,m_fisi:3.75,media:5.7812,red:"Sim",s3_rank:30,s3_port:11,s3_mate:7,s3_ingl:13,s3_fisi:6,s3_m_port:6.88,s3_m_mate:4.38,s3_m_ingl:8.13,s3_m_fisi:3.75,s3_media:5.78,s3_red:"Sim",s3_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #29",ra:"MTERRORA11",rank:29,aprov:false,port:14,mate:6,ingl:12,fisi:5,m_port:8.75,m_mate:3.75,m_ingl:7.5,m_fisi:3.125,media:5.7812,red:"Não"},
 {unidade:"MADUREIRA",nome:"LUIZ REIS",ra:"MT24139594",rank:30,aprov:false,port:14,mate:6,ingl:12,fisi:5,m_port:8.75,m_mate:3.75,m_ingl:7.5,m_fisi:3.125,media:5.7812,red:"Não",s2_rank:40,s2_port:15,s2_mate:5,s2_ingl:14,s2_fisi:4,s2_m_port:9.38,s2_m_mate:3.13,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:5.94,s2_red:"Sim",s2_aprov:false,s3_rank:19,s3_port:13,s3_mate:5,s3_ingl:14,s3_fisi:7,s3_m_port:8.13,s3_m_mate:3.13,s3_m_ingl:8.75,s3_m_fisi:4.38,s3_media:6.09,s3_red:"Não",s3_aprov:false,s4_rank:38,s4_port:10,s4_mate:3,s4_ingl:14,s4_fisi:5,s4_m_port:6.25,s4_m_mate:1.88,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.00,s4_red:"Não",s4_aprov:false},
-{unidade:"CAMPO GRANDE",nome:"GABRIEL BORGES",ra:"MT19023548",rank:31,aprov:false,port:11,mate:8,ingl:13,fisi:5,m_port:6.875,m_mate:5.0,m_ingl:8.125,m_fisi:3.125,media:5.7812,red:"Não",s2_rank:50,s2_port:15,s2_mate:9,s2_ingl:8,s2_fisi:4,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:5.63,s2_red:"Sim",s2_aprov:false,s3_rank:71,s3_port:12,s3_mate:6,s3_ingl:6,s3_fisi:3,s3_m_port:7.5,s3_m_mate:3.75,s3_m_ingl:3.75,s3_m_fisi:1.88,s3_media:4.22,s3_red:"Não",s3_aprov:false,s4_rank:61,s4_port:1,s4_mate:4,s4_ingl:12,s4_fisi:4,s4_m_port:0.63,s4_m_mate:2.50,s4_m_ingl:7.50,s4_m_fisi:2.50,s4_media:3.28,s4_red:"Não",s4_aprov:false},
+{unidade:"CAMPO GRANDE",nome:"GABRIEL BORGES",ra:"MT19023548",rank:31,aprov:false,port:11,mate:8,ingl:13,fisi:5,m_port:6.875,m_mate:5.0,m_ingl:8.125,m_fisi:3.125,media:5.7812,red:"Não",s2_rank:50,s2_port:15,s2_mate:9,s2_ingl:8,s2_fisi:4,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:5.63,s2_red:"Sim",s2_aprov:false,s3_rank:71,s3_port:12,s3_mate:6,s3_ingl:6,s3_fisi:3,s3_m_port:7.5,s3_m_mate:3.75,s3_m_ingl:3.75,s3_m_fisi:1.88,s3_media:4.22,s3_red:"Não",s3_aprov:false,s4_rank:61,s4_port:1,s4_mate:4,s4_ingl:12,s4_fisi:4,s4_m_port:0.63,s4_m_mate:2.50,s4_m_ingl:7.50,s4_m_fisi:2.50,s4_media:3.28,s4_red:"Não",s4_aprov:false,s5_rank:40,s5_port:3,s5_mate:6,s5_ingl:8,s5_fisi:5,s5_m_port:1.88,s5_m_mate:3.75,s5_m_ingl:5,s5_m_fisi:3.13,s5_media:3.44,s5_red:"Não",s5_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #32",ra:"MTERRORA30",rank:32,aprov:false,port:7,mate:12,ingl:8,fisi:10,m_port:4.375,m_mate:7.5,m_ingl:5.0,m_fisi:6.25,media:5.7812,red:"Não"},
-{unidade:"MADUREIRA",nome:"SAMUEL FERNANDES",ra:"MT24156572",rank:33,aprov:false,port:7,mate:12,ingl:8,fisi:10,m_port:4.375,m_mate:7.5,m_ingl:5.0,m_fisi:6.25,media:5.7812,red:"Não",s2_rank:3,s2_port:14,s2_mate:12,s2_ingl:13,s2_fisi:11,s2_m_port:8.75,s2_m_mate:7.5,s2_m_ingl:8.13,s2_m_fisi:6.88,s2_media:7.81,s2_red:"Sim",s2_aprov:true,s3_rank:15,s3_port:13,s3_mate:13,s3_ingl:13,s3_fisi:10,s3_m_port:8.13,s3_m_mate:8.13,s3_m_ingl:8.13,s3_m_fisi:6.25,s3_media:7.66,s3_red:"Não",s3_aprov:false,s4_rank:3,s4_port:10,s4_mate:9,s4_ingl:12,s4_fisi:12,s4_m_port:6.25,s4_m_mate:5.63,s4_m_ingl:7.50,s4_m_fisi:7.50,s4_media:6.72,s4_red:"Não",s4_aprov:false},
-{unidade:"BANGU",nome:"SOPHIA BASTOS",ra:"MT25198466",rank:34,aprov:false,port:12,mate:5,ingl:15,fisi:4,m_port:7.5,m_mate:3.125,m_ingl:9.375,m_fisi:2.5,media:5.625,red:"Sim",s3_rank:17,s3_port:11,s3_mate:7,s3_ingl:15,s3_fisi:7,s3_m_port:6.88,s3_m_mate:4.38,s3_m_ingl:9.38,s3_m_fisi:4.38,s3_media:6.25,s3_red:"Sim",s3_aprov:false,s4_rank:31,s4_port:11,s4_mate:5,s4_ingl:15,s4_fisi:2,s4_m_port:6.88,s4_m_mate:3.13,s4_m_ingl:9.38,s4_m_fisi:1.25,s4_media:5.16,s4_red:"Não",s4_aprov:false},
+{unidade:"MADUREIRA",nome:"SAMUEL FERNANDES",ra:"MT24156572",rank:33,aprov:false,port:7,mate:12,ingl:8,fisi:10,m_port:4.375,m_mate:7.5,m_ingl:5.0,m_fisi:6.25,media:5.7812,red:"Não",s2_rank:3,s2_port:14,s2_mate:12,s2_ingl:13,s2_fisi:11,s2_m_port:8.75,s2_m_mate:7.5,s2_m_ingl:8.13,s2_m_fisi:6.88,s2_media:7.81,s2_red:"Sim",s2_aprov:true,s3_rank:15,s3_port:13,s3_mate:13,s3_ingl:13,s3_fisi:10,s3_m_port:8.13,s3_m_mate:8.13,s3_m_ingl:8.13,s3_m_fisi:6.25,s3_media:7.66,s3_red:"Não",s3_aprov:false,s4_rank:3,s4_port:10,s4_mate:9,s4_ingl:12,s4_fisi:12,s4_m_port:6.25,s4_m_mate:5.63,s4_m_ingl:7.50,s4_m_fisi:7.50,s4_media:6.72,s4_red:"Não",s4_aprov:false,s5_rank:14,s5_port:12,s5_mate:10,s5_ingl:10,s5_fisi:6,s5_m_port:7.5,s5_m_mate:6.25,s5_m_ingl:6.25,s5_m_fisi:3.75,s5_media:5.94,s5_red:"Sim",s5_aprov:false},
+{unidade:"BANGU",nome:"SOPHIA BASTOS",ra:"MT25198466",rank:34,aprov:false,port:12,mate:5,ingl:15,fisi:4,m_port:7.5,m_mate:3.125,m_ingl:9.375,m_fisi:2.5,media:5.625,red:"Sim",s3_rank:17,s3_port:11,s3_mate:7,s3_ingl:15,s3_fisi:7,s3_m_port:6.88,s3_m_mate:4.38,s3_m_ingl:9.38,s3_m_fisi:4.38,s3_media:6.25,s3_red:"Sim",s3_aprov:false,s4_rank:31,s4_port:11,s4_mate:5,s4_ingl:15,s4_fisi:2,s4_m_port:6.88,s4_m_mate:3.13,s4_m_ingl:9.38,s4_m_fisi:1.25,s4_media:5.16,s4_red:"Não",s4_aprov:false,s5_rank:10,s5_port:12,s5_mate:8,s5_ingl:15,s5_fisi:5,s5_m_port:7.5,s5_m_mate:5,s5_m_ingl:9.38,s5_m_fisi:3.13,s5_media:6.25,s5_red:"Não",s5_aprov:false},
 {unidade:"NOVA IGUACU",nome:"LUCAS FILIPAK",ra:"MT24160137",rank:35,aprov:false,port:10,mate:9,ingl:11,fisi:6,m_port:6.25,m_mate:5.625,m_ingl:6.875,m_fisi:3.75,media:5.625,red:"Sim",s2_rank:32,s2_port:11,s2_mate:7,s2_ingl:15,s2_fisi:7,s2_m_port:6.88,s2_m_mate:4.38,s2_m_ingl:9.38,s2_m_fisi:4.38,s2_media:6.25,s2_red:"Sim",s2_aprov:false},
 {unidade:"MADUREIRA",nome:"MONT' SILIO",ra:"MT25192345",rank:36,aprov:false,port:13,mate:5,ingl:11,fisi:7,m_port:8.125,m_mate:3.125,m_ingl:6.875,m_fisi:4.375,media:5.625,red:"Não"},
 {unidade:"MADUREIRA",nome:"LARA LIMA",ra:"MT25167057",rank:37,aprov:false,port:10,mate:9,ingl:8,fisi:9,m_port:6.25,m_mate:5.625,m_ingl:5.0,m_fisi:5.625,media:5.625,red:"Não",s2_rank:94,s2_port:13,s2_mate:3,s2_ingl:5,s2_fisi:4,s2_m_port:8.13,s2_m_mate:1.88,s2_m_ingl:3.13,s2_m_fisi:2.5,s2_media:3.91,s2_red:"Sim",s2_aprov:false},
-{unidade:"CAMPO GRANDE",nome:"ARTHUR ALBUQUERQUE",ra:"MT22097604",rank:38,aprov:false,port:13,mate:3,ingl:14,fisi:5,m_port:8.125,m_mate:1.875,m_ingl:8.75,m_fisi:3.125,media:5.4688,red:"Sim",s2_rank:44,s2_port:15,s2_mate:4,s2_ingl:14,s2_fisi:4,s2_m_port:9.38,s2_m_mate:2.5,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:5.78,s2_red:"Sim",s2_aprov:false,s3_rank:54,s3_port:11,s3_mate:4,s3_ingl:11,s3_fisi:4,s3_m_port:6.88,s3_m_mate:2.5,s3_m_ingl:6.88,s3_m_fisi:2.5,s3_media:4.69,s3_red:"Sim",s3_aprov:false,s4_rank:50,s4_port:4,s4_mate:4,s4_ingl:16,s4_fisi:4,s4_m_port:2.50,s4_m_mate:2.50,s4_m_ingl:10.00,s4_m_fisi:2.50,s4_media:4.38,s4_red:"Não",s4_aprov:false},
+{unidade:"CAMPO GRANDE",nome:"ARTHUR ALBUQUERQUE",ra:"MT22097604",rank:38,aprov:false,port:13,mate:3,ingl:14,fisi:5,m_port:8.125,m_mate:1.875,m_ingl:8.75,m_fisi:3.125,media:5.4688,red:"Sim",s2_rank:44,s2_port:15,s2_mate:4,s2_ingl:14,s2_fisi:4,s2_m_port:9.38,s2_m_mate:2.5,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:5.78,s2_red:"Sim",s2_aprov:false,s3_rank:54,s3_port:11,s3_mate:4,s3_ingl:11,s3_fisi:4,s3_m_port:6.88,s3_m_mate:2.5,s3_m_ingl:6.88,s3_m_fisi:2.5,s3_media:4.69,s3_red:"Sim",s3_aprov:false,s4_rank:50,s4_port:4,s4_mate:4,s4_ingl:16,s4_fisi:4,s4_m_port:2.50,s4_m_mate:2.50,s4_m_ingl:10.00,s4_m_fisi:2.50,s4_media:4.38,s4_red:"Não",s4_aprov:false,s5_rank:26,s5_port:11,s5_mate:3,s5_ingl:12,s5_fisi:6,s5_m_port:6.88,s5_m_mate:1.88,s5_m_ingl:7.5,s5_m_fisi:3.75,s5_media:5,s5_red:"Não",s5_aprov:false},
 {unidade:"TAQUARA",nome:"NIKOLAS SANTOS",ra:"MT24158446",rank:39,aprov:false,port:11,mate:11,ingl:6,fisi:7,m_port:6.875,m_mate:6.875,m_ingl:3.75,m_fisi:4.375,media:5.4688,red:"Sim",s2_rank:36,s2_port:13,s2_mate:9,s2_ingl:10,s2_fisi:7,s2_m_port:8.13,s2_m_mate:5.63,s2_m_ingl:6.25,s2_m_fisi:4.38,s2_media:6.09,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"MARIA MENEZES",ra:"MT22091896",rank:40,aprov:false,port:11,mate:5,ingl:14,fisi:5,m_port:6.875,m_mate:3.125,m_ingl:8.75,m_fisi:3.125,media:5.4688,red:"Sim",s2_rank:57,s2_port:12,s2_mate:5,s2_ingl:14,s2_fisi:4,s2_m_port:7.5,s2_m_mate:3.13,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:5.47,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"BEATRIZ VELLASCO",ra:"MT20040838",rank:41,aprov:false,port:14,mate:8,ingl:7,fisi:6,m_port:8.75,m_mate:5.0,m_ingl:4.375,m_fisi:3.75,media:5.4688,red:"Não"},
@@ -939,43 +1036,43 @@ const RAW_AFA = [
 {unidade:"MADUREIRA",nome:"JONAS AGUIAR",ra:"MT25187782",rank:51,aprov:false,port:13,mate:7,ingl:7,fisi:6,m_port:8.125,m_mate:4.375,m_ingl:4.375,m_fisi:3.75,media:5.1562,red:"Não"},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #52",ra:"MTERRORA13",rank:52,aprov:false,port:8,mate:7,ingl:11,fisi:7,m_port:5.0,m_mate:4.375,m_ingl:6.875,m_fisi:4.375,media:5.1562,red:"Não"},
 {unidade:"BANGU",nome:"EZEQUIEL TREZENA",ra:"MT25188749",rank:53,aprov:false,port:12,mate:6,ingl:9,fisi:5,m_port:7.5,m_mate:3.75,m_ingl:5.625,m_fisi:3.125,media:5.0,red:"Sim",s2_rank:37,s2_port:13,s2_mate:6,s2_ingl:13,s2_fisi:7,s2_m_port:8.13,s2_m_mate:3.75,s2_m_ingl:8.13,s2_m_fisi:4.38,s2_media:6.09,s2_red:"Sim",s2_aprov:false},
-{unidade:"TAQUARA",nome:"GUILHERME BLUM",ra:"MT19021575",rank:54,aprov:false,port:11,mate:10,ingl:5,fisi:6,m_port:6.875,m_mate:6.25,m_ingl:3.125,m_fisi:3.75,media:5.0,red:"Sim",s2_rank:28,s2_port:15,s2_mate:7,s2_ingl:11,s2_fisi:7,s2_m_port:9.38,s2_m_mate:4.38,s2_m_ingl:6.88,s2_m_fisi:4.38,s2_media:6.25,s2_red:"Sim",s2_aprov:false,s3_rank:26,s3_port:14,s3_mate:7,s3_ingl:13,s3_fisi:3,s3_m_port:8.75,s3_m_mate:4.38,s3_m_ingl:8.13,s3_m_fisi:1.88,s3_media:5.78,s3_red:"Sim",s3_aprov:false},
+{unidade:"TAQUARA",nome:"GUILHERME BLUM",ra:"MT19021575",rank:54,aprov:false,port:11,mate:10,ingl:5,fisi:6,m_port:6.875,m_mate:6.25,m_ingl:3.125,m_fisi:3.75,media:5.0,red:"Sim",s2_rank:28,s2_port:15,s2_mate:7,s2_ingl:11,s2_fisi:7,s2_m_port:9.38,s2_m_mate:4.38,s2_m_ingl:6.88,s2_m_fisi:4.38,s2_media:6.25,s2_red:"Sim",s2_aprov:false,s3_rank:26,s3_port:14,s3_mate:7,s3_ingl:13,s3_fisi:3,s3_m_port:8.75,s3_m_mate:4.38,s3_m_ingl:8.13,s3_m_fisi:1.88,s3_media:5.78,s3_red:"Sim",s3_aprov:false,s5_rank:24,s5_port:11,s5_mate:8,s5_ingl:12,s5_fisi:1,s5_m_port:6.88,s5_m_mate:5,s5_m_ingl:7.5,s5_m_fisi:0.63,s5_media:5,s5_red:"Sim",s5_aprov:false},
 {unidade:"TAQUARA",nome:"JOÃO PAULA",ra:"MT24147464",rank:55,aprov:false,port:10,mate:5,ingl:8,fisi:9,m_port:6.25,m_mate:3.125,m_ingl:5.0,m_fisi:5.625,media:5.0,red:"Sim",s2_rank:67,s2_port:14,s2_mate:6,s2_ingl:8,s2_fisi:4,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:5.0,s2_red:"Sim",s2_aprov:false,s3_rank:21,s3_port:13,s3_mate:7,s3_ingl:11,s3_fisi:7,s3_m_port:8.13,s3_m_mate:4.38,s3_m_ingl:6.88,s3_m_fisi:4.38,s3_media:5.94,s3_red:"Sim",s3_aprov:false},
-{unidade:"NOVA IGUACU",nome:"DAVI CARVALHO",ra:"MT25188145",rank:56,aprov:false,port:9,mate:10,ingl:5,fisi:8,m_port:5.625,m_mate:6.25,m_ingl:3.125,m_fisi:5.0,media:5.0,red:"Sim",s2_rank:12,s2_port:14,s2_mate:11,s2_ingl:10,s2_fisi:9,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:6.25,s2_m_fisi:5.63,s2_media:6.88,s2_red:"Sim",s2_aprov:true,s3_rank:37,s3_port:12,s3_mate:7,s3_ingl:11,s3_fisi:4,s3_m_port:7.5,s3_m_mate:4.38,s3_m_ingl:6.88,s3_m_fisi:2.5,s3_media:5.31,s3_red:"Sim",s3_aprov:false},
-{unidade:"NOVA IGUACU",nome:"LUIZA SANTOS",ra:"MT25188046",rank:57,aprov:false,port:8,mate:9,ingl:9,fisi:6,m_port:5.0,m_mate:5.625,m_ingl:5.625,m_fisi:3.75,media:5.0,red:"Sim",s4_rank:40,s4_port:9,s4_mate:3,s4_ingl:14,s4_fisi:5,s4_m_port:5.63,s4_m_mate:1.88,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:4.84,s4_red:"Sim",s4_aprov:false},
+{unidade:"NOVA IGUACU",nome:"DAVI CARVALHO",ra:"MT25188145",rank:56,aprov:false,port:9,mate:10,ingl:5,fisi:8,m_port:5.625,m_mate:6.25,m_ingl:3.125,m_fisi:5.0,media:5.0,red:"Sim",s2_rank:12,s2_port:14,s2_mate:11,s2_ingl:10,s2_fisi:9,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:6.25,s2_m_fisi:5.63,s2_media:6.88,s2_red:"Sim",s2_aprov:true,s3_rank:37,s3_port:12,s3_mate:7,s3_ingl:11,s3_fisi:4,s3_m_port:7.5,s3_m_mate:4.38,s3_m_ingl:6.88,s3_m_fisi:2.5,s3_media:5.31,s3_red:"Sim",s3_aprov:false,s5_rank:25,s5_port:11,s5_mate:7,s5_ingl:7,s5_fisi:7,s5_m_port:6.88,s5_m_mate:4.38,s5_m_ingl:4.38,s5_m_fisi:4.38,s5_media:5,s5_red:"Não",s5_aprov:false},
+{unidade:"NOVA IGUACU",nome:"LUIZA SANTOS",ra:"MT25188046",rank:57,aprov:false,port:8,mate:9,ingl:9,fisi:6,m_port:5.0,m_mate:5.625,m_ingl:5.625,m_fisi:3.75,media:5.0,red:"Sim",s4_rank:40,s4_port:9,s4_mate:3,s4_ingl:14,s4_fisi:5,s4_m_port:5.63,s4_m_mate:1.88,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:4.84,s4_red:"Sim",s4_aprov:false,s5_rank:30,s5_port:7,s5_mate:4,s5_ingl:12,s5_fisi:6,s5_m_port:4.38,s5_m_mate:2.5,s5_m_ingl:7.5,s5_m_fisi:3.75,s5_media:4.53,s5_red:"Sim",s5_aprov:false},
 {unidade:"NOVA IGUACU",nome:"SIDNEY LOURENÇO",ra:"MT25194226",rank:58,aprov:false,port:6,mate:8,ingl:11,fisi:7,m_port:3.75,m_mate:5.0,m_ingl:6.875,m_fisi:4.375,media:5.0,red:"Sim",s2_rank:69,s2_port:12,s2_mate:6,s2_ingl:10,s2_fisi:4,s2_m_port:7.5,s2_m_mate:3.75,s2_m_ingl:6.25,s2_m_fisi:2.5,s2_media:5.0,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"MATHEUS PINTO",ra:"MT20037883",rank:59,aprov:false,port:8,mate:9,ingl:7,fisi:8,m_port:5.0,m_mate:5.625,m_ingl:4.375,m_fisi:5.0,media:5.0,red:"Não",s2_rank:48,s2_port:12,s2_mate:8,s2_ingl:11,s2_fisi:6,s2_m_port:7.5,s2_m_mate:5.0,s2_m_ingl:6.88,s2_m_fisi:3.75,s2_media:5.78,s2_red:"Sim",s2_aprov:false,s3_rank:34,s3_port:12,s3_mate:11,s3_ingl:5,s3_fisi:7,s3_m_port:7.5,s3_m_mate:6.88,s3_m_ingl:3.13,s3_m_fisi:4.38,s3_media:5.47,s3_red:"Não",s3_aprov:false},
 {unidade:"NOVA IGUACU",nome:"GABRIEL ALVES",ra:"MT24161879",rank:60,aprov:false,port:12,mate:3,ingl:11,fisi:5,m_port:7.5,m_mate:1.875,m_ingl:6.875,m_fisi:3.125,media:4.8438,red:"Sim",s2_rank:18,s2_port:14,s2_mate:10,s2_ingl:14,s2_fisi:5,s2_m_port:8.75,s2_m_mate:6.25,s2_m_ingl:8.75,s2_m_fisi:3.13,s2_media:6.72,s2_red:"Sim",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #61",ra:"MTERRORA1",rank:61,aprov:false,port:12,mate:6,ingl:7,fisi:6,m_port:7.5,m_mate:3.75,m_ingl:4.375,m_fisi:3.75,media:4.8438,red:"Não"},
-{unidade:"MADUREIRA",nome:"DAVI SANTOS",ra:"MT22098230",rank:62,aprov:false,port:11,mate:4,ingl:11,fisi:5,m_port:6.875,m_mate:2.5,m_ingl:6.875,m_fisi:3.125,media:4.8438,red:"Não",s2_rank:33,s2_port:14,s2_mate:5,s2_ingl:13,s2_fisi:7,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:8.13,s2_m_fisi:4.38,s2_media:6.09,s2_red:"Sim",s2_aprov:false,s3_rank:73,s3_port:9,s3_mate:5,s3_ingl:11,s3_fisi:1,s3_m_port:5.63,s3_m_mate:3.13,s3_m_ingl:6.88,s3_m_fisi:0.63,s3_media:4.06,s3_red:"Sim",s3_aprov:false,s4_rank:52,s4_port:6,s4_mate:3,s4_ingl:13,s4_fisi:5,s4_m_port:3.75,s4_m_mate:1.88,s4_m_ingl:8.13,s4_m_fisi:3.13,s4_media:4.22,s4_red:"Não",s4_aprov:false},
+{unidade:"MADUREIRA",nome:"DAVI SANTOS",ra:"MT22098230",rank:62,aprov:false,port:11,mate:4,ingl:11,fisi:5,m_port:6.875,m_mate:2.5,m_ingl:6.875,m_fisi:3.125,media:4.8438,red:"Não",s2_rank:33,s2_port:14,s2_mate:5,s2_ingl:13,s2_fisi:7,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:8.13,s2_m_fisi:4.38,s2_media:6.09,s2_red:"Sim",s2_aprov:false,s3_rank:73,s3_port:9,s3_mate:5,s3_ingl:11,s3_fisi:1,s3_m_port:5.63,s3_m_mate:3.13,s3_m_ingl:6.88,s3_m_fisi:0.63,s3_media:4.06,s3_red:"Sim",s3_aprov:false,s4_rank:52,s4_port:6,s4_mate:3,s4_ingl:13,s4_fisi:5,s4_m_port:3.75,s4_m_mate:1.88,s4_m_ingl:8.13,s4_m_fisi:3.13,s4_media:4.22,s4_red:"Não",s4_aprov:false,s5_rank:20,s5_port:12,s5_mate:7,s5_ingl:10,s5_fisi:5,s5_m_port:7.5,s5_m_mate:4.38,s5_m_ingl:6.25,s5_m_fisi:3.13,s5_media:5.31,s5_red:"Não",s5_aprov:false},
 {unidade:"MADUREIRA",nome:"RICHARD GOMES",ra:"MT23118201",rank:63,aprov:false,port:9,mate:5,ingl:11,fisi:6,m_port:5.625,m_mate:3.125,m_ingl:6.875,m_fisi:3.75,media:4.8438,red:"Não",s3_rank:55,s3_port:9,s3_mate:4,s3_ingl:16,s3_fisi:1,s3_m_port:5.63,s3_m_mate:2.5,s3_m_ingl:10,s3_m_fisi:0.63,s3_media:4.69,s3_red:"Sim",s3_aprov:false,s4_rank:19,s4_port:6,s4_mate:4,s4_ingl:15,s4_fisi:10,s4_m_port:3.75,s4_m_mate:2.50,s4_m_ingl:9.38,s4_m_fisi:6.25,s4_media:5.47,s4_red:"Sim",s4_aprov:false},
-{unidade:"BANGU",nome:"LÍVIA BARBOSA",ra:"MT23122203",rank:64,aprov:false,port:11,mate:4,ingl:9,fisi:6,m_port:6.875,m_mate:2.5,m_ingl:5.625,m_fisi:3.75,media:4.6875,red:"Sim",s2_rank:17,s2_port:14,s2_mate:11,s2_ingl:15,s2_fisi:4,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.88,s2_red:"Sim",s2_aprov:false,s3_rank:53,s3_port:12,s3_mate:8,s3_ingl:6,s3_fisi:4,s3_m_port:7.5,s3_m_mate:5,s3_m_ingl:3.75,s3_m_fisi:2.5,s3_media:4.69,s3_red:"Sim",s3_aprov:false,s4_rank:16,s4_port:12,s4_mate:4,s4_ingl:14,s4_fisi:5,s4_m_port:7.50,s4_m_mate:2.50,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.47,s4_red:"Sim",s4_aprov:false},
+{unidade:"BANGU",nome:"LÍVIA BARBOSA",ra:"MT23122203",rank:64,aprov:false,port:11,mate:4,ingl:9,fisi:6,m_port:6.875,m_mate:2.5,m_ingl:5.625,m_fisi:3.75,media:4.6875,red:"Sim",s2_rank:17,s2_port:14,s2_mate:11,s2_ingl:15,s2_fisi:4,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.88,s2_red:"Sim",s2_aprov:false,s3_rank:53,s3_port:12,s3_mate:8,s3_ingl:6,s3_fisi:4,s3_m_port:7.5,s3_m_mate:5,s3_m_ingl:3.75,s3_m_fisi:2.5,s3_media:4.69,s3_red:"Sim",s3_aprov:false,s4_rank:16,s4_port:12,s4_mate:4,s4_ingl:14,s4_fisi:5,s4_m_port:7.50,s4_m_mate:2.50,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.47,s4_red:"Sim",s4_aprov:false,s5_rank:29,s5_port:12,s5_mate:7,s5_ingl:10,s5_fisi:2,s5_m_port:7.5,s5_m_mate:4.38,s5_m_ingl:6.25,s5_m_fisi:1.25,s5_media:4.84,s5_red:"Não",s5_aprov:false},
 {unidade:"NOVA IGUACU",nome:"JHONATAN SILVA",ra:"MT25192337",rank:65,aprov:false,port:10,mate:6,ingl:9,fisi:5,m_port:6.25,m_mate:3.75,m_ingl:5.625,m_fisi:3.125,media:4.6875,red:"Sim",s2_rank:59,s2_port:13,s2_mate:5,s2_ingl:11,s2_fisi:5,s2_m_port:8.13,s2_m_mate:3.13,s2_m_ingl:6.88,s2_m_fisi:3.13,s2_media:5.31,s2_red:"Sim",s2_aprov:false},
 {unidade:"NOVA IGUACU",nome:"DANILO PINTO",ra:"MT24153348",rank:66,aprov:false,port:10,mate:9,ingl:7,fisi:4,m_port:6.25,m_mate:5.625,m_ingl:4.375,m_fisi:2.5,media:4.6875,red:"Sim",s2_rank:45,s2_port:15,s2_mate:9,s2_ingl:10,s2_fisi:3,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:6.25,s2_m_fisi:1.88,s2_media:5.78,s2_red:"Sim",s2_aprov:false},
 {unidade:"NOVA IGUACU",nome:"LUCAS OLIVEIRA",ra:"MT24152068",rank:67,aprov:false,port:9,mate:6,ingl:8,fisi:7,m_port:5.625,m_mate:3.75,m_ingl:5.0,m_fisi:4.375,media:4.6875,red:"Sim",s2_rank:74,s2_port:13,s2_mate:4,s2_ingl:11,s2_fisi:3,s2_m_port:8.13,s2_m_mate:2.5,s2_m_ingl:6.88,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false},
-{unidade:"BANGU",nome:"CAUA LOPES",ra:"MT26203059",rank:68,aprov:false,port:11,mate:5,ingl:9,fisi:5,m_port:6.875,m_mate:3.125,m_ingl:5.625,m_fisi:3.125,media:4.6875,red:"Não",s2_rank:58,s2_port:15,s2_mate:5,s2_ingl:10,s2_fisi:4,s2_m_port:9.38,s2_m_mate:3.13,s2_m_ingl:6.25,s2_m_fisi:2.5,s2_media:5.31,s2_red:"Sim",s2_aprov:false,s4_rank:27,s4_port:7,s4_mate:6,s4_ingl:14,s4_fisi:7,s4_m_port:4.38,s4_m_mate:3.75,s4_m_ingl:8.75,s4_m_fisi:4.38,s4_media:5.31,s4_red:"Sim",s4_aprov:false},
+{unidade:"BANGU",nome:"CAUA LOPES",ra:"MT26203059",rank:68,aprov:false,port:11,mate:5,ingl:9,fisi:5,m_port:6.875,m_mate:3.125,m_ingl:5.625,m_fisi:3.125,media:4.6875,red:"Não",s2_rank:58,s2_port:15,s2_mate:5,s2_ingl:10,s2_fisi:4,s2_m_port:9.38,s2_m_mate:3.13,s2_m_ingl:6.25,s2_m_fisi:2.5,s2_media:5.31,s2_red:"Sim",s2_aprov:false,s4_rank:27,s4_port:7,s4_mate:6,s4_ingl:14,s4_fisi:7,s4_m_port:4.38,s4_m_mate:3.75,s4_m_ingl:8.75,s4_m_fisi:4.38,s4_media:5.31,s4_red:"Sim",s4_aprov:false,s5_rank:18,s5_port:9,s5_mate:6,s5_ingl:14,s5_fisi:6,s5_m_port:5.63,s5_m_mate:3.75,s5_m_ingl:8.75,s5_m_fisi:3.75,s5_media:5.47,s5_red:"Sim",s5_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #69",ra:"MTERRORA12",rank:69,aprov:false,port:9,mate:8,ingl:8,fisi:5,m_port:5.625,m_mate:5.0,m_ingl:5.0,m_fisi:3.125,media:4.6875,red:"Não"},
-{unidade:"MADUREIRA",nome:"MANUEL SILVA",ra:"MT24151557",rank:70,aprov:false,port:9,mate:8,ingl:8,fisi:5,m_port:5.625,m_mate:5.0,m_ingl:5.0,m_fisi:3.125,media:4.6875,red:"Não",s2_rank:72,s2_port:14,s2_mate:5,s2_ingl:8,s2_fisi:4,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:4.84,s2_red:"Sim",s2_aprov:false,s3_rank:63,s3_port:9,s3_mate:5,s3_ingl:9,s3_fisi:5,s3_m_port:5.63,s3_m_mate:3.13,s3_m_ingl:5.63,s3_m_fisi:3.13,s3_media:4.38,s3_red:"Não",s3_aprov:false,s4_rank:45,s4_port:8,s4_mate:5,s4_ingl:13,s4_fisi:4,s4_m_port:5.00,s4_m_mate:3.13,s4_m_ingl:8.13,s4_m_fisi:2.50,s4_media:4.69,s4_red:"Não",s4_aprov:false},
+{unidade:"MADUREIRA",nome:"MANUEL SILVA",ra:"MT24151557",rank:70,aprov:false,port:9,mate:8,ingl:8,fisi:5,m_port:5.625,m_mate:5.0,m_ingl:5.0,m_fisi:3.125,media:4.6875,red:"Não",s2_rank:72,s2_port:14,s2_mate:5,s2_ingl:8,s2_fisi:4,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:4.84,s2_red:"Sim",s2_aprov:false,s3_rank:63,s3_port:9,s3_mate:5,s3_ingl:9,s3_fisi:5,s3_m_port:5.63,s3_m_mate:3.13,s3_m_ingl:5.63,s3_m_fisi:3.13,s3_media:4.38,s3_red:"Não",s3_aprov:false,s4_rank:45,s4_port:8,s4_mate:5,s4_ingl:13,s4_fisi:4,s4_m_port:5.00,s4_m_mate:3.13,s4_m_ingl:8.13,s4_m_fisi:2.50,s4_media:4.69,s4_red:"Não",s4_aprov:false,s5_rank:32,s5_port:10,s5_mate:5,s5_ingl:10,s5_fisi:3,s5_m_port:6.25,s5_m_mate:3.13,s5_m_ingl:6.25,s5_m_fisi:1.88,s5_media:4.38,s5_red:"Não",s5_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #71",ra:"MTERRORA6",rank:71,aprov:false,port:8,mate:7,ingl:10,fisi:5,m_port:5.0,m_mate:4.375,m_ingl:6.25,m_fisi:3.125,media:4.6875,red:"Não"},
 {unidade:"MADUREIRA",nome:"GUILHERME LEAL",ra:"MT25177403",rank:72,aprov:false,port:8,mate:7,ingl:10,fisi:5,m_port:5.0,m_mate:4.375,m_ingl:6.25,m_fisi:3.125,media:4.6875,red:"Não"},
 {unidade:"CAMPO GRANDE",nome:"FERNANDO TRINDADE",ra:"MT22087480",rank:73,aprov:false,port:7,mate:8,ingl:10,fisi:5,m_port:4.375,m_mate:5.0,m_ingl:6.25,m_fisi:3.125,media:4.6875,red:"Não"},
 {unidade:"NOVA IGUACU",nome:"SAMUEL RIMOLO",ra:"MT25177932",rank:74,aprov:false,port:12,mate:7,ingl:4,fisi:6,m_port:7.5,m_mate:4.375,m_ingl:2.5,m_fisi:3.75,media:4.5312,red:"Sim",s2_rank:63,s2_port:15,s2_mate:9,s2_ingl:4,s2_fisi:5,s2_m_port:9.38,s2_m_mate:5.63,s2_m_ingl:2.5,s2_m_fisi:3.13,s2_media:5.16,s2_red:"Sim",s2_aprov:false,s3_rank:23,s3_port:12,s3_mate:7,s3_ingl:9,s3_fisi:10,s3_m_port:7.5,s3_m_mate:4.38,s3_m_ingl:5.63,s3_m_fisi:6.25,s3_media:5.94,s3_red:"Sim",s3_aprov:false,s4_rank:33,s4_port:8,s4_mate:8,s4_ingl:11,s4_fisi:6,s4_m_port:5.00,s4_m_mate:5.00,s4_m_ingl:6.88,s4_m_fisi:3.75,s4_media:5.16,s4_red:"Não",s4_aprov:false},
-{unidade:"BANGU",nome:"DANIEL VALENTIM",ra:"MT25197096",rank:75,aprov:false,port:9,mate:6,ingl:8,fisi:6,m_port:5.625,m_mate:3.75,m_ingl:5.0,m_fisi:3.75,media:4.5312,red:"Sim",s2_rank:101,s2_port:10,s2_mate:6,s2_ingl:2,s2_fisi:3,s2_m_port:6.25,s2_m_mate:3.75,s2_m_ingl:1.25,s2_m_fisi:1.88,s2_media:3.28,s2_red:"Sim",s2_aprov:false,s3_rank:88,s3_port:11,s3_mate:2,s3_ingl:2,s3_fisi:5,s3_m_port:6.88,s3_m_mate:1.25,s3_m_ingl:1.25,s3_m_fisi:3.13,s3_media:3.13,s3_red:"Sim",s3_aprov:false,s4_rank:69,s4_port:7,s4_mate:0,s4_ingl:2,s4_fisi:3,s4_m_port:4.38,s4_m_mate:0.00,s4_m_ingl:1.25,s4_m_fisi:1.88,s4_media:1.88,s4_red:"Sim",s4_aprov:false},
+{unidade:"BANGU",nome:"DANIEL VALENTIM",ra:"MT25197096",rank:75,aprov:false,port:9,mate:6,ingl:8,fisi:6,m_port:5.625,m_mate:3.75,m_ingl:5.0,m_fisi:3.75,media:4.5312,red:"Sim",s2_rank:101,s2_port:10,s2_mate:6,s2_ingl:2,s2_fisi:3,s2_m_port:6.25,s2_m_mate:3.75,s2_m_ingl:1.25,s2_m_fisi:1.88,s2_media:3.28,s2_red:"Sim",s2_aprov:false,s3_rank:88,s3_port:11,s3_mate:2,s3_ingl:2,s3_fisi:5,s3_m_port:6.88,s3_m_mate:1.25,s3_m_ingl:1.25,s3_m_fisi:3.13,s3_media:3.13,s3_red:"Sim",s3_aprov:false,s4_rank:69,s4_port:7,s4_mate:0,s4_ingl:2,s4_fisi:3,s4_m_port:4.38,s4_m_mate:0.00,s4_m_ingl:1.25,s4_m_fisi:1.88,s4_media:1.88,s4_red:"Sim",s4_aprov:false,s5_rank:43,s5_port:5,s5_mate:7,s5_ingl:6,s5_fisi:2,s5_m_port:3.13,s5_m_mate:4.38,s5_m_ingl:3.75,s5_m_fisi:1.25,s5_media:3.13,s5_red:"Não",s5_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #76",ra:"MT**",rank:76,aprov:false,port:10,mate:10,ingl:4,fisi:5,m_port:6.25,m_mate:6.25,m_ingl:2.5,m_fisi:3.125,media:4.5312,red:"Não",s2_rank:70,s2_port:11,s2_mate:6,s2_ingl:10,s2_fisi:5,s2_m_port:6.88,s2_m_mate:3.75,s2_m_ingl:6.25,s2_m_fisi:3.13,s2_media:5.0,s2_red:"Sim",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #77",ra:"MTERRORA7",rank:77,aprov:false,port:9,mate:8,ingl:6,fisi:6,m_port:5.625,m_mate:5.0,m_ingl:3.75,m_fisi:3.75,media:4.5312,red:"Não",s2_rank:77,s2_port:14,s2_mate:5,s2_ingl:8,s2_fisi:3,s2_m_port:8.75,s2_m_mate:3.13,s2_m_ingl:5.0,s2_m_fisi:1.88,s2_media:4.69,s2_red:"Sim",s2_aprov:false},
-{unidade:"MADUREIRA",nome:"GUILHERME NASCIMENTO",ra:"MT23111651",rank:78,aprov:false,port:9,mate:8,ingl:6,fisi:6,m_port:5.625,m_mate:5.0,m_ingl:3.75,m_fisi:3.75,media:4.5312,red:"Não",s2_rank:22,s2_port:11,s2_mate:10,s2_ingl:15,s2_fisi:6,s2_m_port:6.88,s2_m_mate:6.25,s2_m_ingl:9.38,s2_m_fisi:3.75,s2_media:6.56,s2_red:"Sim",s2_aprov:false,s4_rank:23,s4_port:9,s4_mate:6,s4_ingl:13,s4_fisi:7,s4_m_port:5.63,s4_m_mate:3.75,s4_m_ingl:8.13,s4_m_fisi:4.38,s4_media:5.47,s4_red:"Não",s4_aprov:false},
+{unidade:"MADUREIRA",nome:"GUILHERME NASCIMENTO",ra:"MT23111651",rank:78,aprov:false,port:9,mate:8,ingl:6,fisi:6,m_port:5.625,m_mate:5.0,m_ingl:3.75,m_fisi:3.75,media:4.5312,red:"Não",s2_rank:22,s2_port:11,s2_mate:10,s2_ingl:15,s2_fisi:6,s2_m_port:6.88,s2_m_mate:6.25,s2_m_ingl:9.38,s2_m_fisi:3.75,s2_media:6.56,s2_red:"Sim",s2_aprov:false,s4_rank:23,s4_port:9,s4_mate:6,s4_ingl:13,s4_fisi:7,s4_m_port:5.63,s4_m_mate:3.75,s4_m_ingl:8.13,s4_m_fisi:4.38,s4_media:5.47,s4_red:"Não",s4_aprov:false,s5_rank:23,s5_port:11,s5_mate:6,s5_ingl:11,s5_fisi:4,s5_m_port:6.88,s5_m_mate:3.75,s5_m_ingl:6.88,s5_m_fisi:2.5,s5_media:5,s5_red:"Sim",s5_aprov:false},
 {unidade:"MADUREIRA",nome:"AMANDA SILVA",ra:"MT23129406",rank:79,aprov:false,port:9,mate:7,ingl:7,fisi:6,m_port:5.625,m_mate:4.375,m_ingl:4.375,m_fisi:3.75,media:4.5312,red:"Não",s3_rank:84,s3_port:8,s3_mate:4,s3_ingl:6,s3_fisi:4,s3_m_port:5,s3_m_mate:2.5,s3_m_ingl:3.75,s3_m_fisi:2.5,s3_media:3.44,s3_red:"Não",s3_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"FELIPE BRUN",ra:"MT23133705",rank:80,aprov:false,port:10,mate:7,ingl:7,fisi:4,m_port:6.25,m_mate:4.375,m_ingl:4.375,m_fisi:2.5,media:4.375,red:"Sim"},
-{unidade:"BANGU",nome:"FILIPE RIBEIRO",ra:"MT19026004",rank:81,aprov:false,port:8,mate:5,ingl:8,fisi:7,m_port:5.0,m_mate:3.125,m_ingl:5.0,m_fisi:4.375,media:4.375,red:"Sim",s2_rank:87,s2_port:10,s2_mate:2,s2_ingl:12,s2_fisi:4,s2_m_port:6.25,s2_m_mate:1.25,s2_m_ingl:7.5,s2_m_fisi:2.5,s2_media:4.38,s2_red:"Sim",s2_aprov:false,s3_rank:68,s3_port:6,s3_mate:8,s3_ingl:11,s3_fisi:2,s3_m_port:3.75,s3_m_mate:5,s3_m_ingl:6.88,s3_m_fisi:1.25,s3_media:4.22,s3_red:"Sim",s3_aprov:false},
-{unidade:"TAQUARA",nome:"ISABELE NUNES",ra:"MT25189374",rank:82,aprov:false,port:8,mate:6,ingl:8,fisi:6,m_port:5.0,m_mate:3.75,m_ingl:5.0,m_fisi:3.75,media:4.375,red:"Sim"},
+{unidade:"BANGU",nome:"FILIPE RIBEIRO",ra:"MT19026004",rank:81,aprov:false,port:8,mate:5,ingl:8,fisi:7,m_port:5.0,m_mate:3.125,m_ingl:5.0,m_fisi:4.375,media:4.375,red:"Sim",s2_rank:87,s2_port:10,s2_mate:2,s2_ingl:12,s2_fisi:4,s2_m_port:6.25,s2_m_mate:1.25,s2_m_ingl:7.5,s2_m_fisi:2.5,s2_media:4.38,s2_red:"Sim",s2_aprov:false,s3_rank:68,s3_port:6,s3_mate:8,s3_ingl:11,s3_fisi:2,s3_m_port:3.75,s3_m_mate:5,s3_m_ingl:6.88,s3_m_fisi:1.25,s3_media:4.22,s3_red:"Sim",s3_aprov:false,s5_rank:39,s5_port:8,s5_mate:4,s5_ingl:4,s5_fisi:6,s5_m_port:5,s5_m_mate:2.5,s5_m_ingl:2.5,s5_m_fisi:3.75,s5_media:3.44,s5_red:"Sim",s5_aprov:false},
+{unidade:"TAQUARA",nome:"ISABELE NUNES",ra:"MT25189374",rank:82,aprov:false,port:8,mate:6,ingl:8,fisi:6,m_port:5.0,m_mate:3.75,m_ingl:5.0,m_fisi:3.75,media:4.375,red:"Sim",s5_rank:35,s5_port:10,s5_mate:4,s5_ingl:6,s5_fisi:6,s5_m_port:6.25,s5_m_mate:2.5,s5_m_ingl:3.75,s5_m_fisi:3.75,s5_media:4.06,s5_red:"Sim",s5_aprov:false},
 {unidade:"BANGU",nome:"MAURICIO MONTEIRO",ra:"MT23132988",rank:83,aprov:false,port:7,mate:7,ingl:8,fisi:6,m_port:4.375,m_mate:4.375,m_ingl:5.0,m_fisi:3.75,media:4.375,red:"Sim",s2_rank:79,s2_port:5,s2_mate:7,s2_ingl:14,s2_fisi:4,s2_m_port:3.13,s2_m_mate:4.38,s2_m_ingl:8.75,s2_m_fisi:2.5,s2_media:4.69,s2_red:"Não",s2_aprov:false,s3_rank:52,s3_port:7,s3_mate:8,s3_ingl:13,s3_fisi:3,s3_m_port:4.38,s3_m_mate:5,s3_m_ingl:8.13,s3_m_fisi:1.88,s3_media:4.84,s3_red:"Não",s3_aprov:false,s4_rank:63,s4_port:6,s4_mate:3,s4_ingl:10,s4_fisi:0,s4_m_port:3.75,s4_m_mate:1.88,s4_m_ingl:6.25,s4_m_fisi:0.00,s4_media:2.97,s4_red:"Sim",s4_aprov:false},
 {unidade:"MADUREIRA",nome:"GABRIEL LIRA",ra:"MT23108715",rank:84,aprov:false,port:11,mate:9,ingl:1,fisi:7,m_port:6.875,m_mate:5.625,m_ingl:0.625,m_fisi:4.375,media:4.375,red:"Não",s2_rank:14,s2_port:15,s2_mate:11,s2_ingl:13,s2_fisi:8,s2_m_port:9.38,s2_m_mate:6.88,s2_m_ingl:8.13,s2_m_fisi:5.0,s2_media:7.34,s2_red:"Não",s2_aprov:false,s3_rank:46,s3_port:11,s3_mate:9,s3_ingl:7,s3_fisi:5,s3_m_port:6.88,s3_m_mate:5.63,s3_m_ingl:4.38,s3_m_fisi:3.13,s3_media:5,s3_red:"Não",s3_aprov:false,s4_rank:8,s4_port:11,s4_mate:8,s4_ingl:12,s4_fisi:8,s4_m_port:6.88,s4_m_mate:5.00,s4_m_ingl:7.50,s4_m_fisi:5.00,s4_media:6.09,s4_red:"Não",s4_aprov:false},
-{unidade:"BANGU",nome:"CAIO FRAGA",ra:"MT23123888",rank:85,aprov:false,port:10,mate:8,ingl:4,fisi:6,m_port:6.25,m_mate:5.0,m_ingl:2.5,m_fisi:3.75,media:4.375,red:"Não",s2_rank:21,s2_port:14,s2_mate:7,s2_ingl:15,s2_fisi:6,s2_m_port:8.75,s2_m_mate:4.38,s2_m_ingl:9.38,s2_m_fisi:3.75,s2_media:6.56,s2_red:"Sim",s2_aprov:false,s3_rank:24,s3_port:10,s3_mate:9,s3_ingl:15,s3_fisi:4,s3_m_port:6.25,s3_m_mate:5.63,s3_m_ingl:9.38,s3_m_fisi:2.5,s3_media:5.94,s3_red:"Sim",s3_aprov:false,s4_rank:28,s4_port:11,s4_mate:3,s4_ingl:14,s4_fisi:5,s4_m_port:6.88,s4_m_mate:1.88,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.16,s4_red:"Sim",s4_aprov:false},
+{unidade:"BANGU",nome:"CAIO FRAGA",ra:"MT23123888",rank:85,aprov:false,port:10,mate:8,ingl:4,fisi:6,m_port:6.25,m_mate:5.0,m_ingl:2.5,m_fisi:3.75,media:4.375,red:"Não",s2_rank:21,s2_port:14,s2_mate:7,s2_ingl:15,s2_fisi:6,s2_m_port:8.75,s2_m_mate:4.38,s2_m_ingl:9.38,s2_m_fisi:3.75,s2_media:6.56,s2_red:"Sim",s2_aprov:false,s3_rank:24,s3_port:10,s3_mate:9,s3_ingl:15,s3_fisi:4,s3_m_port:6.25,s3_m_mate:5.63,s3_m_ingl:9.38,s3_m_fisi:2.5,s3_media:5.94,s3_red:"Sim",s3_aprov:false,s4_rank:28,s4_port:11,s4_mate:3,s4_ingl:14,s4_fisi:5,s4_m_port:6.88,s4_m_mate:1.88,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.16,s4_red:"Sim",s4_aprov:false,s5_rank:17,s5_port:12,s5_mate:6,s5_ingl:14,s5_fisi:5,s5_m_port:7.5,s5_m_mate:3.75,s5_m_ingl:8.75,s5_m_fisi:3.13,s5_media:5.78,s5_red:"Sim",s5_aprov:false},
 {unidade:"BANGU",nome:"JOAO SOUZA",ra:"MT23107709",rank:86,aprov:false,port:11,mate:6,ingl:4,fisi:6,m_port:6.875,m_mate:3.75,m_ingl:2.5,m_fisi:3.75,media:4.2188,red:"Sim"},
 {unidade:"NOVA IGUACU",nome:"GUILHERME WARRAK",ra:"MT24135584",rank:87,aprov:false,port:9,mate:8,ingl:7,fisi:3,m_port:5.625,m_mate:5.0,m_ingl:4.375,m_fisi:1.875,media:4.2188,red:"Sim"},
-{unidade:"MADUREIRA",nome:"ENZO LIMA",ra:"MT23123334",rank:88,aprov:false,port:9,mate:7,ingl:9,fisi:2,m_port:5.625,m_mate:4.375,m_ingl:5.625,m_fisi:1.25,media:4.2188,red:"Não",s2_rank:65,s2_port:13,s2_mate:4,s2_ingl:15,s2_fisi:1,s2_m_port:8.13,s2_m_mate:2.5,s2_m_ingl:9.38,s2_m_fisi:0.63,s2_media:5.16,s2_red:"Sim",s2_aprov:false,s3_rank:43,s3_port:11,s3_mate:5,s3_ingl:14,s3_fisi:3,s3_m_port:6.88,s3_m_mate:3.13,s3_m_ingl:8.75,s3_m_fisi:1.88,s3_media:5.16,s3_red:"Sim",s3_aprov:false,s4_rank:41,s4_port:7,s4_mate:5,s4_ingl:16,s4_fisi:3,s4_m_port:4.38,s4_m_mate:3.13,s4_m_ingl:10.00,s4_m_fisi:1.88,s4_media:4.84,s4_red:"Sim",s4_aprov:false},
+{unidade:"MADUREIRA",nome:"ENZO LIMA",ra:"MT23123334",rank:88,aprov:false,port:9,mate:7,ingl:9,fisi:2,m_port:5.625,m_mate:4.375,m_ingl:5.625,m_fisi:1.25,media:4.2188,red:"Não",s2_rank:65,s2_port:13,s2_mate:4,s2_ingl:15,s2_fisi:1,s2_m_port:8.13,s2_m_mate:2.5,s2_m_ingl:9.38,s2_m_fisi:0.63,s2_media:5.16,s2_red:"Sim",s2_aprov:false,s3_rank:43,s3_port:11,s3_mate:5,s3_ingl:14,s3_fisi:3,s3_m_port:6.88,s3_m_mate:3.13,s3_m_ingl:8.75,s3_m_fisi:1.88,s3_media:5.16,s3_red:"Sim",s3_aprov:false,s4_rank:41,s4_port:7,s4_mate:5,s4_ingl:16,s4_fisi:3,s4_m_port:4.38,s4_m_mate:3.13,s4_m_ingl:10.00,s4_m_fisi:1.88,s4_media:4.84,s4_red:"Sim",s4_aprov:false,s5_rank:21,s5_port:10,s5_mate:6,s5_ingl:12,s5_fisi:5,s5_m_port:6.25,s5_m_mate:3.75,s5_m_ingl:7.5,s5_m_fisi:3.13,s5_media:5.16,s5_red:"Sim",s5_aprov:false},
 {unidade:"MADUREIRA",nome:"BERNARDO AGUIAR",ra:"MT23132731",rank:89,aprov:false,port:7,mate:9,ingl:6,fisi:5,m_port:4.375,m_mate:5.625,m_ingl:3.75,m_fisi:3.125,media:4.2188,red:"Não",s3_rank:77,s3_port:11,s3_mate:6,s3_ingl:7,s3_fisi:1,s3_m_port:6.88,s3_m_mate:3.75,s3_m_ingl:4.38,s3_m_fisi:0.63,s3_media:3.91,s3_red:"Não",s3_aprov:false,s4_rank:56,s4_port:6,s4_mate:4,s4_ingl:11,s4_fisi:3,s4_m_port:3.75,s4_m_mate:2.50,s4_m_ingl:6.88,s4_m_fisi:1.88,s4_media:3.75,s4_red:"Não",s4_aprov:false},
-{unidade:"TAQUARA",nome:"AMANDA ROSA",ra:"MT23131576",rank:90,aprov:false,port:9,mate:5,ingl:6,fisi:6,m_port:5.625,m_mate:3.125,m_ingl:3.75,m_fisi:3.75,media:4.0625,red:"Sim",s4_rank:32,s4_port:10,s4_mate:5,s4_ingl:11,s4_fisi:7,s4_m_port:6.25,s4_m_mate:3.13,s4_m_ingl:6.88,s4_m_fisi:4.38,s4_media:5.16,s4_red:"Não",s4_aprov:false},
+{unidade:"TAQUARA",nome:"AMANDA ROSA",ra:"MT23131576",rank:90,aprov:false,port:9,mate:5,ingl:6,fisi:6,m_port:5.625,m_mate:3.125,m_ingl:3.75,m_fisi:3.75,media:4.0625,red:"Sim",s4_rank:32,s4_port:10,s4_mate:5,s4_ingl:11,s4_fisi:7,s4_m_port:6.25,s4_m_mate:3.13,s4_m_ingl:6.88,s4_m_fisi:4.38,s4_media:5.16,s4_red:"Não",s4_aprov:false,s5_rank:41,s5_port:8,s5_mate:6,s5_ingl:4,s5_fisi:3,s5_m_port:5,s5_m_mate:3.75,s5_m_ingl:2.5,s5_m_fisi:1.88,s5_media:3.28,s5_red:"Não",s5_aprov:false},
 {unidade:"NOVA IGUACU",nome:"LORENNA PAIXÃO",ra:"MT24161218",rank:91,aprov:false,port:7,mate:6,ingl:5,fisi:8,m_port:4.375,m_mate:3.75,m_ingl:3.125,m_fisi:5.0,media:4.0625,red:"Sim",s2_rank:90,s2_port:8,s2_mate:5,s2_ingl:8,s2_fisi:6,s2_m_port:5.0,s2_m_mate:3.13,s2_m_ingl:5.0,s2_m_fisi:3.75,s2_media:4.22,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"LETICIA SILVA",ra:"MT24158479",rank:92,aprov:false,port:10,mate:3,ingl:7,fisi:6,m_port:6.25,m_mate:1.875,m_ingl:4.375,m_fisi:3.75,media:4.0625,red:"Não"},
 {unidade:"MADUREIRA",nome:"MATHEUS OLIVEIRA",ra:"MT23129125",rank:93,aprov:false,port:10,mate:6,ingl:6,fisi:4,m_port:6.25,m_mate:3.75,m_ingl:3.75,m_fisi:2.5,media:4.0625,red:"Não",s3_rank:60,s3_port:10,s3_mate:6,s3_ingl:9,s3_fisi:4,s3_m_port:6.25,s3_m_mate:3.75,s3_m_ingl:5.63,s3_m_fisi:2.5,s3_media:4.53,s3_red:"Não",s3_aprov:false},
@@ -994,14 +1091,14 @@ const RAW_AFA = [
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #106",ra:"MTERRORA4",rank:106,aprov:false,port:11,mate:6,ingl:5,fisi:2,m_port:6.875,m_mate:3.75,m_ingl:3.125,m_fisi:1.25,media:3.75,red:"Não"},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #107",ra:"MT23189895",rank:107,aprov:false,port:11,mate:6,ingl:5,fisi:2,m_port:6.875,m_mate:3.75,m_ingl:3.125,m_fisi:1.25,media:3.75,red:"Não"},
 {unidade:"BANGU",nome:"JOÃO SOUSA",ra:"MT22096168",rank:108,aprov:false,port:10,mate:7,ingl:1,fisi:6,m_port:6.25,m_mate:4.375,m_ingl:0.625,m_fisi:3.75,media:3.75,red:"Não",s2_rank:89,s2_port:11,s2_mate:5,s2_ingl:7,s2_fisi:4,s2_m_port:6.88,s2_m_mate:3.13,s2_m_ingl:4.38,s2_m_fisi:2.5,s2_media:4.22,s2_red:"Sim",s2_aprov:false},
-{unidade:"CAMPO GRANDE",nome:"ADILSON FREITAS",ra:"MT24143216",rank:109,aprov:false,port:6,mate:5,ingl:5,fisi:8,m_port:3.75,m_mate:3.125,m_ingl:3.125,m_fisi:5.0,media:3.75,red:"Não",s2_rank:105,s2_port:2,s2_mate:3,s2_ingl:4,s2_fisi:4,s2_m_port:1.25,s2_m_mate:1.88,s2_m_ingl:2.5,s2_m_fisi:2.5,s2_media:2.03,s2_red:"Sim",s2_aprov:false,s4_rank:67,s4_port:1,s4_mate:5,s4_ingl:8,s4_fisi:4,s4_m_port:0.63,s4_m_mate:3.13,s4_m_ingl:5.00,s4_m_fisi:2.50,s4_media:2.81,s4_red:"Não",s4_aprov:false},
+{unidade:"CAMPO GRANDE",nome:"ADILSON FREITAS",ra:"MT24143216",rank:109,aprov:false,port:6,mate:5,ingl:5,fisi:8,m_port:3.75,m_mate:3.125,m_ingl:3.125,m_fisi:5.0,media:3.75,red:"Não",s2_rank:105,s2_port:2,s2_mate:3,s2_ingl:4,s2_fisi:4,s2_m_port:1.25,s2_m_mate:1.88,s2_m_ingl:2.5,s2_m_fisi:2.5,s2_media:2.03,s2_red:"Sim",s2_aprov:false,s4_rank:67,s4_port:1,s4_mate:5,s4_ingl:8,s4_fisi:4,s4_m_port:0.63,s4_m_mate:3.13,s4_m_ingl:5.00,s4_m_fisi:2.50,s4_media:2.81,s4_red:"Não",s4_aprov:false,s5_rank:42,s5_port:3,s5_mate:8,s5_ingl:6,s5_fisi:4,s5_m_port:1.88,s5_m_mate:5,s5_m_ingl:3.75,s5_m_fisi:2.5,s5_media:3.28,s5_red:"Não",s5_aprov:false},
 {unidade:"BANGU",nome:"DAVI SANTOS",ra:"MT23119332",rank:110,aprov:false,port:9,mate:4,ingl:6,fisi:4,m_port:5.625,m_mate:2.5,m_ingl:3.75,m_fisi:2.5,media:3.5938,red:"Sim",s2_rank:93,s2_port:10,s2_mate:5,s2_ingl:9,s2_fisi:2,s2_m_port:6.25,s2_m_mate:3.13,s2_m_ingl:5.63,s2_m_fisi:1.25,s2_media:4.06,s2_red:"Não",s2_aprov:false},
 {unidade:"BANGU",nome:"LUCAS HIDALGO",ra:"MT23120769",rank:111,aprov:false,port:10,mate:5,ingl:4,fisi:4,m_port:6.25,m_mate:3.125,m_ingl:2.5,m_fisi:2.5,media:3.5938,red:"Não",s2_rank:84,s2_port:14,s2_mate:6,s2_ingl:6,s2_fisi:3,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:3.75,s2_m_fisi:1.88,s2_media:4.53,s2_red:"Não",s2_aprov:false,s3_rank:72,s3_port:10,s3_mate:3,s3_ingl:10,s3_fisi:4,s3_m_port:6.25,s3_m_mate:1.88,s3_m_ingl:6.25,s3_m_fisi:2.5,s3_media:4.22,s3_red:"Não",s3_aprov:false},
 {unidade:"MADUREIRA",nome:"GABRIEL ALMEIDA",ra:"MT23130198",rank:112,aprov:false,port:9,mate:6,ingl:4,fisi:4,m_port:5.625,m_mate:3.75,m_ingl:2.5,m_fisi:2.5,media:3.5938,red:"Não",s2_rank:64,s2_port:14,s2_mate:4,s2_ingl:11,s2_fisi:4,s2_m_port:8.75,s2_m_mate:2.5,s2_m_ingl:6.88,s2_m_fisi:2.5,s2_media:5.16,s2_red:"Sim",s2_aprov:false},
 {unidade:"MADUREIRA",nome:"ENZO ALEGRIO",ra:"MT23129745",rank:113,aprov:false,port:8,mate:4,ingl:7,fisi:4,m_port:5.0,m_mate:2.5,m_ingl:4.375,m_fisi:2.5,media:3.5938,red:"Não",s2_rank:98,s2_port:8,s2_mate:5,s2_ingl:9,s2_fisi:1,s2_m_port:5.0,s2_m_mate:3.13,s2_m_ingl:5.63,s2_m_fisi:0.63,s2_media:3.59,s2_red:"Sim",s2_aprov:false,s3_rank:86,s3_port:7,s3_mate:7,s3_ingl:6,s3_fisi:1,s3_m_port:4.38,s3_m_mate:4.38,s3_m_ingl:3.75,s3_m_fisi:0.63,s3_media:3.28,s3_red:"Não",s3_aprov:false},
 {unidade:"MADUREIRA",nome:"JULIA FERNANDES",ra:"MT22094858",rank:114,aprov:false,port:7,mate:4,ingl:5,fisi:7,m_port:4.375,m_mate:2.5,m_ingl:3.125,m_fisi:4.375,media:3.5938,red:"Não",s2_rank:73,s2_port:14,s2_mate:6,s2_ingl:8,s2_fisi:3,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:5.0,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false,s3_rank:76,s3_port:8,s3_mate:5,s3_ingl:7,s3_fisi:6,s3_m_port:5,s3_m_mate:3.13,s3_m_ingl:4.38,s3_m_fisi:3.75,s3_media:4.06,s3_red:"Não",s3_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"LEVI SILVA",ra:"MT21064100",rank:115,aprov:false,port:7,mate:6,ingl:5,fisi:5,m_port:4.375,m_mate:3.75,m_ingl:3.125,m_fisi:3.125,media:3.5938,red:"Não"},
-{unidade:"BANGU",nome:"BRYAN CARNEIRO",ra:"MT25197468",rank:116,aprov:false,port:6,mate:6,ingl:4,fisi:7,m_port:3.75,m_mate:3.75,m_ingl:2.5,m_fisi:4.375,media:3.5938,red:"Não"},
+{unidade:"BANGU",nome:"BRYAN CARNEIRO",ra:"MT25197468",rank:116,aprov:false,port:6,mate:6,ingl:4,fisi:7,m_port:3.75,m_mate:3.75,m_ingl:2.5,m_fisi:4.375,media:3.5938,red:"Não",s5_rank:33,s5_port:9,s5_mate:10,s5_ingl:6,s5_fisi:3,s5_m_port:5.63,s5_m_mate:6.25,s5_m_ingl:3.75,s5_m_fisi:1.88,s5_media:4.38,s5_red:"Não",s5_aprov:false},
 {unidade:"BANGU",nome:"RITA RIBEIRO",ra:"MT21072566",rank:117,aprov:false,port:8,mate:5,ingl:5,fisi:4,m_port:5.0,m_mate:3.125,m_ingl:3.125,m_fisi:2.5,media:3.4375,red:"Sim"},
 {unidade:"TAQUARA",nome:"BRENO GARCIA",ra:"MT24135089",rank:118,aprov:false,port:7,mate:5,ingl:4,fisi:6,m_port:4.375,m_mate:3.125,m_ingl:2.5,m_fisi:3.75,media:3.4375,red:"Sim",s2_rank:103,s2_port:6,s2_mate:7,s2_ingl:4,s2_fisi:2,s2_m_port:3.75,s2_m_mate:4.38,s2_m_ingl:2.5,s2_m_fisi:1.25,s2_media:2.97,s2_red:"Sim",s2_aprov:false},
 {unidade:"MADUREIRA",nome:"LETHICIA SANTOS",ra:"MT23127327",rank:119,aprov:false,port:4,mate:8,ingl:4,fisi:6,m_port:2.5,m_mate:5.0,m_ingl:2.5,m_fisi:3.75,media:3.4375,red:"Não",s2_rank:96,s2_port:12,s2_mate:3,s2_ingl:7,s2_fisi:3,s2_m_port:7.5,s2_m_mate:1.88,s2_m_ingl:4.38,s2_m_fisi:1.88,s2_media:3.91,s2_red:"Sim",s2_aprov:false},
@@ -1016,15 +1113,15 @@ const RAW_AFA = [
 {unidade:"BANGU",nome:"DANIEL GIUSTI",ra:"MT25187501",rank:128,aprov:false,port:6,mate:6,ingl:5,fisi:3,m_port:3.75,m_mate:3.75,m_ingl:3.125,m_fisi:1.875,media:3.125,red:"Não",s2_rank:95,s2_port:12,s2_mate:1,s2_ingl:8,s2_fisi:4,s2_m_port:7.5,s2_m_mate:0.63,s2_m_ingl:5.0,s2_m_fisi:2.5,s2_media:3.91,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"GABRIEL ALVES",ra:"MT22096762",rank:129,aprov:false,port:5,mate:4,ingl:4,fisi:7,m_port:3.125,m_mate:2.5,m_ingl:2.5,m_fisi:4.375,media:3.125,red:"Não",s2_rank:88,s2_port:9,s2_mate:5,s2_ingl:9,s2_fisi:5,s2_m_port:5.63,s2_m_mate:3.13,s2_m_ingl:5.63,s2_m_fisi:3.13,s2_media:4.38,s2_red:"Não",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #130",ra:"MT25*97146",rank:130,aprov:false,port:4,mate:5,ingl:3,fisi:8,m_port:2.5,m_mate:3.125,m_ingl:1.875,m_fisi:5.0,media:3.125,red:"Não"},
-{unidade:"CAMPO GRANDE",nome:"PEDRO CRUZ",ra:"MT23119860",rank:131,aprov:false,port:8,mate:7,ingl:1,fisi:3,m_port:5.0,m_mate:4.375,m_ingl:0.625,m_fisi:1.875,media:2.9688,red:"Sim",s3_rank:83,s3_port:12,s3_mate:5,s3_ingl:3,s3_fisi:2,s3_m_port:7.5,s3_m_mate:3.13,s3_m_ingl:1.88,s3_m_fisi:1.25,s3_media:3.44,s3_red:"Não",s3_aprov:false,s4_rank:54,s4_port:6,s4_mate:2,s4_ingl:14,s4_fisi:3,s4_m_port:3.75,s4_m_mate:1.25,s4_m_ingl:8.75,s4_m_fisi:1.88,s4_media:3.91,s4_red:"Não",s4_aprov:false},
+{unidade:"CAMPO GRANDE",nome:"PEDRO CRUZ",ra:"MT23119860",rank:131,aprov:false,port:8,mate:7,ingl:1,fisi:3,m_port:5.0,m_mate:4.375,m_ingl:0.625,m_fisi:1.875,media:2.9688,red:"Sim",s3_rank:83,s3_port:12,s3_mate:5,s3_ingl:3,s3_fisi:2,s3_m_port:7.5,s3_m_mate:3.13,s3_m_ingl:1.88,s3_m_fisi:1.25,s3_media:3.44,s3_red:"Não",s3_aprov:false,s4_rank:54,s4_port:6,s4_mate:2,s4_ingl:14,s4_fisi:3,s4_m_port:3.75,s4_m_mate:1.25,s4_m_ingl:8.75,s4_m_fisi:1.88,s4_media:3.91,s4_red:"Não",s4_aprov:false,s5_rank:38,s5_port:4,s5_mate:8,s5_ingl:8,s5_fisi:4,s5_m_port:2.5,s5_m_mate:5,s5_m_ingl:5,s5_m_fisi:2.5,s5_media:3.75,s5_red:"Não",s5_aprov:false},
 {unidade:"BANGU",nome:"SAMUEL CRUZ",ra:"MT23118458",rank:132,aprov:false,port:5,mate:4,ingl:5,fisi:5,m_port:3.125,m_mate:2.5,m_ingl:3.125,m_fisi:3.125,media:2.9688,red:"Não",s3_rank:14,s3_port:10,s3_mate:9,s3_ingl:11,s3_fisi:9,s3_m_port:6.25,s3_m_mate:5.63,s3_m_ingl:6.88,s3_m_fisi:5.63,s3_media:6.09,s3_red:"Sim",s3_aprov:true,s4_rank:25,s4_port:10,s4_mate:7,s4_ingl:13,s4_fisi:4,s4_m_port:6.25,s4_m_mate:4.38,s4_m_ingl:8.13,s4_m_fisi:2.50,s4_media:5.31,s4_red:"Sim",s4_aprov:false},
 {unidade:"NOVA IGUACU",nome:"MARIA SIQUEIRA",ra:"MT25197617",rank:133,aprov:false,port:3,mate:6,ingl:4,fisi:5,m_port:1.875,m_mate:3.75,m_ingl:2.5,m_fisi:3.125,media:2.8125,red:"Sim",s4_rank:70,s4_port:3,s4_mate:2,s4_ingl:4,s4_fisi:3,s4_m_port:1.88,s4_m_mate:1.25,s4_m_ingl:2.50,s4_m_fisi:1.88,s4_media:1.88,s4_red:"Não",s4_aprov:false},
-{unidade:"TAQUARA",nome:"LUCAS PINHEIRO",ra:"MT21067715",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:7,s2_port:14,s2_mate:10,s2_ingl:14,s2_fisi:9,s2_m_port:8.75,s2_m_mate:6.25,s2_m_ingl:8.75,s2_m_fisi:5.63,s2_media:7.34,s2_red:"Sim",s2_aprov:true,s3_rank:27,s3_port:14,s3_mate:9,s3_ingl:14,s3_fisi:0,s3_m_port:8.75,s3_m_mate:5.63,s3_m_ingl:8.75,s3_m_fisi:0,s3_media:5.78,s3_red:"Sim",s3_aprov:false,s4_rank:12,s4_port:11,s4_mate:9,s4_ingl:13,s4_fisi:4,s4_m_port:6.88,s4_m_mate:5.63,s4_m_ingl:8.13,s4_m_fisi:2.50,s4_media:5.78,s4_red:"Sim",s4_aprov:false},
+{unidade:"TAQUARA",nome:"LUCAS PINHEIRO",ra:"MT21067715",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:7,s2_port:14,s2_mate:10,s2_ingl:14,s2_fisi:9,s2_m_port:8.75,s2_m_mate:6.25,s2_m_ingl:8.75,s2_m_fisi:5.63,s2_media:7.34,s2_red:"Sim",s2_aprov:true,s3_rank:27,s3_port:14,s3_mate:9,s3_ingl:14,s3_fisi:0,s3_m_port:8.75,s3_m_mate:5.63,s3_m_ingl:8.75,s3_m_fisi:0,s3_media:5.78,s3_red:"Sim",s3_aprov:false,s4_rank:12,s4_port:11,s4_mate:9,s4_ingl:13,s4_fisi:4,s4_m_port:6.88,s4_m_mate:5.63,s4_m_ingl:8.13,s4_m_fisi:2.50,s4_media:5.78,s4_red:"Sim",s4_aprov:false,s5_rank:7,s5_port:14,s5_mate:7,s5_ingl:11,s5_fisi:8,s5_m_port:8.75,s5_m_mate:4.38,s5_m_ingl:6.88,s5_m_fisi:5,s5_media:6.25,s5_red:"Sim",s5_aprov:false},
 {unidade:"BANGU",nome:"LUCAS CRUZ",ra:"MT20039806",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:9,s2_port:14,s2_mate:11,s2_ingl:14,s2_fisi:8,s2_m_port:8.75,s2_m_mate:6.88,s2_m_ingl:8.75,s2_m_fisi:5.0,s2_media:7.34,s2_red:"Sim",s2_aprov:true,s4_rank:24,s4_port:8,s4_mate:7,s4_ingl:12,s4_fisi:8,s4_m_port:5.00,s4_m_mate:4.38,s4_m_ingl:7.50,s4_m_fisi:5.00,s4_media:5.47,s4_red:"Não",s4_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"GUSTAVO BORGES",ra:"MT25195157",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:11,s2_port:13,s2_mate:13,s2_ingl:11,s2_fisi:9,s2_m_port:8.13,s2_m_mate:8.13,s2_m_ingl:6.88,s2_m_fisi:5.63,s2_media:7.19,s2_red:"Sim",s2_aprov:true,s3_rank:13,s3_port:11,s3_mate:8,s3_ingl:12,s3_fisi:9,s3_m_port:6.88,s3_m_mate:5,s3_m_ingl:7.5,s3_m_fisi:5.63,s3_media:6.25,s3_red:"Sim",s3_aprov:true},
 {unidade:"BANGU",nome:"VANDERSON FREITAS",ra:"MT25197641",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:30,s2_port:13,s2_mate:9,s2_ingl:11,s2_fisi:7,s2_m_port:8.13,s2_m_mate:5.63,s2_m_ingl:6.88,s2_m_fisi:4.38,s2_media:6.25,s2_red:"Sim",s2_aprov:false,s4_rank:35,s4_port:10,s4_mate:5,s4_ingl:11,s4_fisi:6,s4_m_port:6.25,s4_m_mate:3.13,s4_m_ingl:6.88,s4_m_fisi:3.75,s4_media:5.00,s4_red:"Sim",s4_aprov:false},
 {unidade:"BANGU",nome:"JOÃO SILVA",ra:"MT22087209",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:31,s2_port:13,s2_mate:8,s2_ingl:13,s2_fisi:6,s2_m_port:8.13,s2_m_mate:5.0,s2_m_ingl:8.13,s2_m_fisi:3.75,s2_media:6.25,s2_red:"Sim",s2_aprov:false},
-{unidade:"CAMPO GRANDE",nome:"RAMON VALENTE",ra:"MT25201732",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:38,s2_port:13,s2_mate:7,s2_ingl:15,s2_fisi:4,s2_m_port:8.13,s2_m_mate:4.38,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.09,s2_red:"Sim",s2_aprov:false,s4_rank:29,s4_port:8,s4_mate:5,s4_ingl:13,s4_fisi:7,s4_m_port:5.00,s4_m_mate:3.13,s4_m_ingl:8.13,s4_m_fisi:4.38,s4_media:5.16,s4_red:"Sim",s4_aprov:false},
+{unidade:"CAMPO GRANDE",nome:"RAMON VALENTE",ra:"MT25201732",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:38,s2_port:13,s2_mate:7,s2_ingl:15,s2_fisi:4,s2_m_port:8.13,s2_m_mate:4.38,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.09,s2_red:"Sim",s2_aprov:false,s4_rank:29,s4_port:8,s4_mate:5,s4_ingl:13,s4_fisi:7,s4_m_port:5.00,s4_m_mate:3.13,s4_m_ingl:8.13,s4_m_fisi:4.38,s4_media:5.16,s4_red:"Sim",s4_aprov:false,s5_rank:6,s5_port:12,s5_mate:7,s5_ingl:14,s5_fisi:8,s5_m_port:7.5,s5_m_mate:4.38,s5_m_ingl:8.75,s5_m_fisi:5,s5_media:6.41,s5_red:"Não",s5_aprov:false},
 {unidade:"MADUREIRA",nome:"MARIANNA ROMANELLI",ra:"MT25179599",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:39,s2_port:12,s2_mate:8,s2_ingl:15,s2_fisi:4,s2_m_port:7.5,s2_m_mate:5.0,s2_m_ingl:9.38,s2_m_fisi:2.5,s2_media:6.09,s2_red:"Não",s2_aprov:false,s4_rank:6,s4_port:11,s4_mate:8,s4_ingl:16,s4_fisi:5,s4_m_port:6.88,s4_m_mate:5.00,s4_m_ingl:10.00,s4_m_fisi:3.13,s4_media:6.25,s4_red:"Não",s4_aprov:false},
 {unidade:"NOVA IGUACU",nome:"KAUÃ BUIATE",ra:"MT25193970",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:41,s2_port:13,s2_mate:10,s2_ingl:10,s2_fisi:5,s2_m_port:8.13,s2_m_mate:6.25,s2_m_ingl:6.25,s2_m_fisi:3.13,s2_media:5.94,s2_red:"Sim",s2_aprov:false},
 {unidade:"TAQUARA",nome:"PAULO OLIVEIRA",ra:"MT26204339",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:46,s2_port:14,s2_mate:6,s2_ingl:13,s2_fisi:4,s2_m_port:8.75,s2_m_mate:3.75,s2_m_ingl:8.13,s2_m_fisi:2.5,s2_media:5.78,s2_red:"Sim",s2_aprov:false,s3_rank:39,s3_port:12,s3_mate:5,s3_ingl:13,s3_fisi:4,s3_m_port:7.5,s3_m_mate:3.13,s3_m_ingl:8.13,s3_m_fisi:2.5,s3_media:5.31,s3_red:"Não",s3_aprov:false,s4_rank:13,s4_port:11,s4_mate:4,s4_ingl:16,s4_fisi:6,s4_m_port:6.88,s4_m_mate:2.50,s4_m_ingl:10.00,s4_m_fisi:3.75,s4_media:5.78,s4_red:"Não",s4_aprov:false},
@@ -1036,8 +1133,8 @@ const RAW_AFA = [
 {unidade:"MADUREIRA",nome:"SAMYRA VILAR",ra:"MT24153819",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:68,s2_port:14,s2_mate:7,s2_ingl:10,s2_fisi:1,s2_m_port:8.75,s2_m_mate:4.38,s2_m_ingl:6.25,s2_m_fisi:0.63,s2_media:5.0,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"LUISA CARVALHO",ra:"MT24138612",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:71,s2_port:14,s2_mate:3,s2_ingl:9,s2_fisi:5,s2_m_port:8.75,s2_m_mate:1.88,s2_m_ingl:5.63,s2_m_fisi:3.13,s2_media:4.84,s2_red:"Sim",s2_aprov:false},
 {unidade:"BANGU",nome:"GABRIEL PEREIRA",ra:"MT24148454",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:75,s2_port:11,s2_mate:5,s2_ingl:12,s2_fisi:3,s2_m_port:6.88,s2_m_mate:3.13,s2_m_ingl:7.5,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false,s3_rank:87,s3_port:6,s3_mate:4,s3_ingl:8,s3_fisi:3,s3_m_port:3.75,s3_m_mate:2.5,s3_m_ingl:5,s3_m_fisi:1.88,s3_media:3.28,s3_red:"Não",s3_aprov:false},
-{unidade:"BANGU",nome:"DAVI NETO",ra:"MT24136780",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:76,s2_port:11,s2_mate:3,s2_ingl:14,s2_fisi:3,s2_m_port:6.88,s2_m_mate:1.88,s2_m_ingl:8.75,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false,s3_rank:65,s3_port:12,s3_mate:3,s3_ingl:7,s3_fisi:5,s3_m_port:7.5,s3_m_mate:1.88,s3_m_ingl:4.38,s3_m_fisi:3.13,s3_media:4.22,s3_red:"Sim",s3_aprov:false},
-{unidade:"BANGU",nome:"THAIS TAVARES",ra:"MT25198102",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:81,s2_port:13,s2_mate:5,s2_ingl:7,s2_fisi:4,s2_m_port:8.13,s2_m_mate:3.13,s2_m_ingl:4.38,s2_m_fisi:2.5,s2_media:4.53,s2_red:"Sim",s2_aprov:false,s4_rank:53,s4_port:5,s4_mate:4,s4_ingl:12,s4_fisi:4,s4_m_port:3.13,s4_m_mate:2.50,s4_m_ingl:7.50,s4_m_fisi:2.50,s4_media:3.91,s4_red:"Sim",s4_aprov:false},
+{unidade:"BANGU",nome:"DAVI NETO",ra:"MT24136780",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:76,s2_port:11,s2_mate:3,s2_ingl:14,s2_fisi:3,s2_m_port:6.88,s2_m_mate:1.88,s2_m_ingl:8.75,s2_m_fisi:1.88,s2_media:4.84,s2_red:"Sim",s2_aprov:false,s3_rank:65,s3_port:12,s3_mate:3,s3_ingl:7,s3_fisi:5,s3_m_port:7.5,s3_m_mate:1.88,s3_m_ingl:4.38,s3_m_fisi:3.13,s3_media:4.22,s3_red:"Sim",s3_aprov:false,s5_rank:28,s5_port:12,s5_mate:5,s5_ingl:9,s5_fisi:5,s5_m_port:7.5,s5_m_mate:3.13,s5_m_ingl:5.63,s5_m_fisi:3.13,s5_media:4.84,s5_red:"Não",s5_aprov:false},
+{unidade:"BANGU",nome:"THAIS TAVARES",ra:"MT25198102",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:81,s2_port:13,s2_mate:5,s2_ingl:7,s2_fisi:4,s2_m_port:8.13,s2_m_mate:3.13,s2_m_ingl:4.38,s2_m_fisi:2.5,s2_media:4.53,s2_red:"Sim",s2_aprov:false,s4_rank:53,s4_port:5,s4_mate:4,s4_ingl:12,s4_fisi:4,s4_m_port:3.13,s4_m_mate:2.50,s4_m_ingl:7.50,s4_m_fisi:2.50,s4_media:3.91,s4_red:"Sim",s4_aprov:false,s5_rank:31,s5_port:7,s5_mate:7,s5_ingl:12,s5_fisi:3,s5_m_port:4.38,s5_m_mate:4.38,s5_m_ingl:7.5,s5_m_fisi:1.88,s5_media:4.53,s5_red:"Não",s5_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #82",ra:"MT2517095",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:82,s2_port:13,s2_mate:2,s2_ingl:11,s2_fisi:3,s2_m_port:8.13,s2_m_mate:1.25,s2_m_ingl:6.88,s2_m_fisi:1.88,s2_media:4.53,s2_red:"Sim",s2_aprov:false},
 {unidade:"NOVA IGUACU",nome:"GUSTAVO MORAES",ra:"MT24150179",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:83,s2_port:12,s2_mate:5,s2_ingl:7,s2_fisi:5,s2_m_port:7.5,s2_m_mate:3.13,s2_m_ingl:4.38,s2_m_fisi:3.13,s2_media:4.53,s2_red:"Sim",s2_aprov:false},
 {unidade:"TAQUARA",nome:"SOPHIA COSTA",ra:"MT24140030",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:85,s2_port:13,s2_mate:7,s2_ingl:3,s2_fisi:5,s2_m_port:8.13,s2_m_mate:4.38,s2_m_ingl:1.88,s2_m_fisi:3.13,s2_media:4.38,s2_red:"Sim",s2_aprov:false},
@@ -1047,7 +1144,7 @@ const RAW_AFA = [
 {unidade:"TAQUARA",nome:"ALICE SILVA",ra:"MT24144529",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:97,s2_port:11,s2_mate:5,s2_ingl:3,s2_fisi:6,s2_m_port:6.88,s2_m_mate:3.13,s2_m_ingl:1.88,s2_m_fisi:3.75,s2_media:3.91,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"GABRIEL OLIVEIRA",ra:"MT24148793",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:104,s2_port:5,s2_mate:3,s2_ingl:2,s2_fisi:3,s2_m_port:3.13,s2_m_mate:1.88,s2_m_ingl:1.25,s2_m_fisi:1.88,s2_media:2.03,s2_red:"Sim",s2_aprov:false},
 {unidade:"CAMPO GRANDE",nome:"JOÃO SANTOS",ra:"MT25201658",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:106,s2_port:2,s2_mate:3,s2_ingl:1,s2_fisi:5,s2_m_port:1.25,s2_m_mate:1.88,s2_m_ingl:0.63,s2_m_fisi:3.13,s2_media:1.72,s2_red:"Sim",s2_aprov:false},
-{unidade:"TAQUARA",nome:"EDUARDO AUGUSTINHO",ra:"MT21052451",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:107,s2_port:6,s2_mate:0,s2_ingl:2,s2_fisi:2,s2_m_port:3.75,s2_m_mate:0.0,s2_m_ingl:1.25,s2_m_fisi:1.25,s2_media:1.56,s2_red:"Sim",s2_aprov:false,s4_rank:21,s4_port:11,s4_mate:8,s4_ingl:11,s4_fisi:5,s4_m_port:6.88,s4_m_mate:5.00,s4_m_ingl:6.88,s4_m_fisi:3.13,s4_media:5.47,s4_red:"Não",s4_aprov:false},
+{unidade:"TAQUARA",nome:"EDUARDO AUGUSTINHO",ra:"MT21052451",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:107,s2_port:6,s2_mate:0,s2_ingl:2,s2_fisi:2,s2_m_port:3.75,s2_m_mate:0.0,s2_m_ingl:1.25,s2_m_fisi:1.25,s2_media:1.56,s2_red:"Sim",s2_aprov:false,s4_rank:21,s4_port:11,s4_mate:8,s4_ingl:11,s4_fisi:5,s4_m_port:6.88,s4_m_mate:5.00,s4_m_ingl:6.88,s4_m_fisi:3.13,s4_media:5.47,s4_red:"Não",s4_aprov:false,s5_rank:11,s5_port:11,s5_mate:9,s5_ingl:12,s5_fisi:7,s5_m_port:6.88,s5_m_mate:5.63,s5_m_ingl:7.5,s5_m_fisi:4.38,s5_media:6.09,s5_red:"Sim",s5_aprov:false},
 {unidade:"TAQUARA",nome:"ALEXANDRE AUGUSTINHO",ra:"MT21052444",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:108,s2_port:5,s2_mate:0,s2_ingl:2,s2_fisi:2,s2_m_port:3.13,s2_m_mate:0.0,s2_m_ingl:1.25,s2_m_fisi:1.25,s2_media:1.41,s2_red:"Sim",s2_aprov:false},
 {unidade:"SEM UNIDADE",nome:"ALUNO SEM NOME #109",ra:"MTSEM-RA-01",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0,m_mate:0,m_ingl:0,m_fisi:0,media:0,red:"Não",s2_rank:109,s2_port:4,s2_mate:1,s2_ingl:2,s2_fisi:2,s2_m_port:2.5,s2_m_mate:0.63,s2_m_ingl:1.25,s2_m_fisi:1.25,s2_media:1.41,s2_red:"Sim",s2_aprov:false},
 {unidade:"MADUREIRA",nome:"GABRIEL ROSADAS",ra:"MT23111719",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Sim",s3_rank:28,s3_port:11,s3_mate:7,s3_ingl:12,s3_fisi:7,s3_m_port:6.88,s3_m_mate:4.38,s3_m_ingl:7.5,s3_m_fisi:4.38,s3_media:5.78,s3_red:"Sim",s3_aprov:false,s4_rank:14,s4_port:9,s4_mate:7,s4_ingl:14,s4_fisi:7,s4_m_port:5.63,s4_m_mate:4.38,s4_m_ingl:8.75,s4_m_fisi:4.38,s4_media:5.78,s4_red:"Não",s4_aprov:false},
@@ -1066,20 +1163,20 @@ const RAW_AFA = [
 {unidade:"BANGU",nome:"RAFAEL REIS",ra:"MT24136228",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:64,s4_port:6,s4_mate:2,s4_ingl:7,s4_fisi:4,s4_m_port:3.75,s4_m_mate:1.25,s4_m_ingl:4.38,s4_m_fisi:2.50,s4_media:2.97,s4_red:"Não",s4_aprov:false},
 {unidade:"SEM UNIDADE",nome:"SEM NOME",ra:"MT19021595",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:37,s4_port:11,s4_mate:4,s4_ingl:13,s4_fisi:4,s4_m_port:6.88,s4_m_mate:2.50,s4_m_ingl:8.13,s4_m_fisi:2.50,s4_media:5.00,s4_red:"Não",s4_aprov:false},
 
-{unidade:"MADUREIRA",nome:"LANAY LINS",ra:"MT24163974",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:1,s4_port:15,s4_mate:8,s4_ingl:12,s4_fisi:9,s4_m_port:9.38,s4_m_mate:5.00,s4_m_ingl:7.50,s4_m_fisi:5.63,s4_media:6.88,s4_red:"Sim",s4_aprov:true},
+{unidade:"MADUREIRA",nome:"LANAY LINS",ra:"MT24163974",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:1,s4_port:15,s4_mate:8,s4_ingl:12,s4_fisi:9,s4_m_port:9.38,s4_m_mate:5.00,s4_m_ingl:7.50,s4_m_fisi:5.63,s4_media:6.88,s4_red:"Sim",s4_aprov:true,s5_rank:1,s5_port:12,s5_mate:9,s5_ingl:14,s5_fisi:9,s5_m_port:7.5,s5_m_mate:5.63,s5_m_ingl:8.75,s5_m_fisi:5.63,s5_media:6.88,s5_red:"Sim",s5_aprov:true},
 {unidade:"MADUREIRA",nome:"DAVI RODRIGUES",ra:"MT23121965",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:60,s4_port:7,s4_mate:5,s4_ingl:7,s4_fisi:3,s4_m_port:4.38,s4_m_mate:3.13,s4_m_ingl:4.38,s4_m_fisi:1.88,s4_media:3.44,s4_red:"Não",s4_aprov:false},
-{unidade:"MADUREIRA",nome:"ARTHUR NETO",ra:"MT24138562",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:15,s4_port:8,s4_mate:7,s4_ingl:15,s4_fisi:6,s4_m_port:5.00,s4_m_mate:4.38,s4_m_ingl:9.38,s4_m_fisi:3.75,s4_media:5.63,s4_red:"Sim",s4_aprov:false},
+{unidade:"MADUREIRA",nome:"ARTHUR NETO",ra:"MT24138562",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:15,s4_port:8,s4_mate:7,s4_ingl:15,s4_fisi:6,s4_m_port:5.00,s4_m_mate:4.38,s4_m_ingl:9.38,s4_m_fisi:3.75,s4_media:5.63,s4_red:"Sim",s4_aprov:false,s5_rank:16,s5_port:10,s5_mate:8,s5_ingl:16,s5_fisi:4,s5_m_port:6.25,s5_m_mate:5,s5_m_ingl:10,s5_m_fisi:2.5,s5_media:5.94,s5_red:"Sim",s5_aprov:false},
 {unidade:"MADUREIRA",nome:"GABRIEL DOLZANI",ra:"MT23121577",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:18,s4_port:9,s4_mate:5,s4_ingl:13,s4_fisi:8,s4_m_port:5.63,s4_m_mate:3.13,s4_m_ingl:8.13,s4_m_fisi:5.00,s4_media:5.47,s4_red:"Sim",s4_aprov:false},
 {unidade:"MADUREIRA",nome:"LUIZ DIAS",ra:"MT22093330",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:55,s4_port:7,s4_mate:2,s4_ingl:10,s4_fisi:5,s4_m_port:4.38,s4_m_mate:1.25,s4_m_ingl:6.25,s4_m_fisi:3.13,s4_media:3.75,s4_red:"Não",s4_aprov:false},
 {unidade:"MADUREIRA",nome:"GABRIEL SILVA",ra:"MT25198656",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:48,s4_port:10,s4_mate:1,s4_ingl:15,s4_fisi:2,s4_m_port:6.25,s4_m_mate:0.63,s4_m_ingl:9.38,s4_m_fisi:1.25,s4_media:4.38,s4_red:"Sim",s4_aprov:false},
 {unidade:"MADUREIRA",nome:"GIOVANNI BARBATTO",ra:"MT23105059",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:42,s4_port:6,s4_mate:9,s4_ingl:8,s4_fisi:8,s4_m_port:3.75,s4_m_mate:5.63,s4_m_ingl:5.00,s4_m_fisi:5.00,s4_media:4.84,s4_red:"Sim",s4_aprov:false},
 {unidade:"MADUREIRA",nome:"DAVI COSTA",ra:"MT25181447",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:46,s4_port:7,s4_mate:2,s4_ingl:16,s4_fisi:4,s4_m_port:4.38,s4_m_mate:1.25,s4_m_ingl:10.00,s4_m_fisi:2.50,s4_media:4.53,s4_red:"Sim",s4_aprov:false},
 {unidade:"MADUREIRA",nome:"NICOLAS SILVA",ra:"MT23124514",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:30,s4_port:7,s4_mate:5,s4_ingl:14,s4_fisi:7,s4_m_port:4.38,s4_m_mate:3.13,s4_m_ingl:8.75,s4_m_fisi:4.38,s4_media:5.16,s4_red:"Sim",s4_aprov:false},
-{unidade:"MADUREIRA",nome:"SAMUEL MOURA",ra:"MT23111438",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:10,s4_port:10,s4_mate:9,s4_ingl:14,s4_fisi:5,s4_m_port:6.25,s4_m_mate:5.63,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.94,s4_red:"Sim",s4_aprov:false},
-{unidade:"BANGU",nome:"CAYO COSTA",ra:"MT23118631",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:68,s4_port:4,s4_mate:3,s4_ingl:1,s4_fisi:5,s4_m_port:2.50,s4_m_mate:1.88,s4_m_ingl:0.63,s4_m_fisi:3.13,s4_media:2.03,s4_red:"Sim",s4_aprov:false},
+{unidade:"MADUREIRA",nome:"SAMUEL MOURA",ra:"MT23111438",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:10,s4_port:10,s4_mate:9,s4_ingl:14,s4_fisi:5,s4_m_port:6.25,s4_m_mate:5.63,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.94,s4_red:"Sim",s4_aprov:false,s5_rank:4,s5_port:15,s5_mate:7,s5_ingl:15,s5_fisi:5,s5_m_port:9.38,s5_m_mate:4.38,s5_m_ingl:9.38,s5_m_fisi:3.13,s5_media:6.56,s5_red:"Não",s5_aprov:false},
+{unidade:"BANGU",nome:"CAYO COSTA",ra:"MT23118631",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:68,s4_port:4,s4_mate:3,s4_ingl:1,s4_fisi:5,s4_m_port:2.50,s4_m_mate:1.88,s4_m_ingl:0.63,s4_m_fisi:3.13,s4_media:2.03,s4_red:"Sim",s4_aprov:false,s5_rank:44,s5_port:1,s5_mate:5,s5_ingl:5,s5_fisi:4,s5_m_port:0.63,s5_m_mate:3.13,s5_m_ingl:3.13,s5_m_fisi:2.5,s5_media:2.34,s5_red:"Sim",s5_aprov:false},
 {unidade:"MADUREIRA",nome:"LEONARDO FERREIRA",ra:"MT22101067",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:17,s4_port:11,s4_mate:5,s4_ingl:14,s4_fisi:5,s4_m_port:6.88,s4_m_mate:3.13,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.47,s4_red:"Sim",s4_aprov:false},
 {unidade:"MADUREIRA",nome:"ROGER CUNHA",ra:"MT22059950",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:2,s4_port:7,s4_mate:13,s4_ingl:13,s4_fisi:11,s4_m_port:4.38,s4_m_mate:8.13,s4_m_ingl:8.13,s4_m_fisi:6.88,s4_media:6.88,s4_red:"Sim",s4_aprov:false},
-{unidade:"BANGU",nome:"NICHOLAS GONÇALVES",ra:"MT23118466",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:26,s4_port:9,s4_mate:6,s4_ingl:14,s4_fisi:5,s4_m_port:5.63,s4_m_mate:3.75,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.31,s4_red:"Sim",s4_aprov:false},
+{unidade:"BANGU",nome:"NICHOLAS GONÇALVES",ra:"MT23118466",rank:0,aprov:false,port:0,mate:0,ingl:0,fisi:0,m_port:0.0,m_mate:0.0,m_ingl:0.0,m_fisi:0.0,media:0.0,red:"Não",s4_rank:26,s4_port:9,s4_mate:6,s4_ingl:14,s4_fisi:5,s4_m_port:5.63,s4_m_mate:3.75,s4_m_ingl:8.75,s4_m_fisi:3.13,s4_media:5.31,s4_red:"Sim",s4_aprov:false,s5_rank:34,s5_port:7,s5_mate:7,s5_ingl:10,s5_fisi:3,s5_m_port:4.38,s5_m_mate:4.38,s5_m_ingl:6.25,s5_m_fisi:1.88,s5_media:4.22,s5_red:"Não",s5_aprov:false},
 ];
 
 function buildTurma(raw){
@@ -1106,6 +1203,13 @@ function buildTurma(raw){
     const f4=[];if(!a.ok4_port)f4.push('Português');if(!a.ok4_mate)f4.push('Matemática');
     if(!a.ok4_fisi)f4.push('Física');if(!a.ok4_ingl)f4.push('Inglês');
     if(!a.ok4_red)f4.push('Redação');a.motivo4=f4.length?f4.join(', ')+' abaixo do mín.':'';
+    a.ok5_port=(a.s5_m_port||0)>=5.0; a.ok5_mate=(a.s5_m_mate||0)>=5.0;
+    a.ok5_fisi=(a.s5_m_fisi||0)>=5.0; a.ok5_ingl=(a.s5_m_ingl||0)>=5.0;
+    a.ok5_red=(a.s5_red||'')==='Sim';
+    a.s5_gtot=(a.s5_port||0)+(a.s5_mate||0)+(a.s5_fisi||0)+(a.s5_ingl||0);
+    const f5=[];if(!a.ok5_port)f5.push('Português');if(!a.ok5_mate)f5.push('Matemática');
+    if(!a.ok5_fisi)f5.push('Física');if(!a.ok5_ingl)f5.push('Inglês');
+    if(!a.ok5_red)f5.push('Redação');a.motivo5=f5.length?f5.join(', ')+' abaixo do mín.':'';
     const f=[];
     if(!a.ok_port)f.push('Português'); if(!a.ok_mate)f.push('Matemática');
     if(!a.ok_fisi)f.push('Física');    if(!a.ok_ingl)f.push('Inglês');
@@ -1121,12 +1225,14 @@ function buildTurma(raw){
   const sorted2=[...raw].filter(a=>(a.s2_rank||0)>0).sort((a,b)=>(a.s2_rank||999)-(b.s2_rank||999));
   const sorted3=[...raw].filter(a=>(a.s3_rank||0)>0).sort((a,b)=>(a.s3_rank||999)-(b.s3_rank||999));
   const sorted4=[...raw].filter(a=>(a.s4_rank||0)>0).sort((a,b)=>(a.s4_rank||999)-(b.s4_rank||999));
+  const sorted5=[...raw].filter(a=>(a.s5_rank||0)>0).sort((a,b)=>(a.s5_rank||999)-(b.s5_rank||999));
   const avg=k=>raw.reduce((s,x)=>s+(x[k]||0),0)/raw.length;
-  return{list:raw,sorted1,sorted2,sorted3,sorted4,
+  return{list:raw,sorted1,sorted2,sorted3,sorted4,sorted5,
     avgs:{port:avg('m_port'),mate:avg('m_mate'),fisi:avg('m_fisi'),ingl:avg('m_ingl'),media:avg('media')},
     avgs2:{port:avg('s2_m_port'),mate:avg('s2_m_mate'),fisi:avg('s2_m_fisi'),ingl:avg('s2_m_ingl'),media:avg('s2_media')},
     avgs3:{port:avg('s3_m_port'),mate:avg('s3_m_mate'),fisi:avg('s3_m_fisi'),ingl:avg('s3_m_ingl'),media:avg('s3_media')},
-    avgs4:{port:avg('s4_m_port'),mate:avg('s4_m_mate'),fisi:avg('s4_m_fisi'),ingl:avg('s4_m_ingl'),media:avg('s4_media')}};
+    avgs4:{port:avg('s4_m_port'),mate:avg('s4_m_mate'),fisi:avg('s4_m_fisi'),ingl:avg('s4_m_ingl'),media:avg('s4_media')},
+    avgs5:{port:avg('s5_m_port'),mate:avg('s5_m_mate'),fisi:avg('s5_m_fisi'),ingl:avg('s5_m_ingl'),media:avg('s5_media')}};
 }
 
 // ═══ STATE ═══
@@ -1142,11 +1248,12 @@ function simSlot(a,n){
   if(n===2&&(a.s2_rank||0)>0)return{port:a.s2_port||0,mate:a.s2_mate||0,fisi:a.s2_fisi||0,ingl:a.s2_ingl||0,m_port:a.s2_m_port||0,m_mate:a.s2_m_mate||0,m_fisi:a.s2_m_fisi||0,m_ingl:a.s2_m_ingl||0,media:a.s2_media||0,gtot:a.s2_gtot||0,aprov:a.s2_aprov||false,motivo:a.motivo2||'',ok_port:a.ok2_port,ok_mate:a.ok2_mate,ok_fisi:a.ok2_fisi,ok_ingl:a.ok2_ingl,ok_red:a.ok2_red||false,red:a.s2_red||'Não',rank:a.s2_rank||0,simN:2,label:'Sim. 2 (07/03)',avgs:T.avgs2,sorted:T.sorted2};
   if(n===3&&(a.s3_rank||0)>0)return{port:a.s3_port||0,mate:a.s3_mate||0,fisi:a.s3_fisi||0,ingl:a.s3_ingl||0,m_port:a.s3_m_port||0,m_mate:a.s3_m_mate||0,m_fisi:a.s3_m_fisi||0,m_ingl:a.s3_m_ingl||0,media:a.s3_media||0,gtot:a.s3_gtot||0,aprov:a.s3_aprov||false,motivo:a.motivo3||'',ok_port:a.ok3_port,ok_mate:a.ok3_mate,ok_fisi:a.ok3_fisi,ok_ingl:a.ok3_ingl,ok_red:a.ok3_red||false,red:a.s3_red||'Não',rank:a.s3_rank||0,simN:3,label:'Sim. 3 (28/03)',avgs:T.avgs3,sorted:T.sorted3};
   if(n===4&&(a.s4_rank||0)>0)return{port:a.s4_port||0,mate:a.s4_mate||0,fisi:a.s4_fisi||0,ingl:a.s4_ingl||0,m_port:a.s4_m_port||0,m_mate:a.s4_m_mate||0,m_fisi:a.s4_m_fisi||0,m_ingl:a.s4_m_ingl||0,media:a.s4_media||0,gtot:a.s4_gtot||0,aprov:a.s4_aprov||false,motivo:a.motivo4||'',ok_port:a.ok4_port,ok_mate:a.ok4_mate,ok_fisi:a.ok4_fisi,ok_ingl:a.ok4_ingl,ok_red:a.ok4_red||false,red:a.s4_red||'Não',rank:a.s4_rank||0,simN:4,label:'Sim. 4 (25/04)',avgs:T.avgs4,sorted:T.sorted4};
+  if(n===5&&(a.s5_rank||0)>0)return{port:a.s5_port||0,mate:a.s5_mate||0,fisi:a.s5_fisi||0,ingl:a.s5_ingl||0,m_port:a.s5_m_port||0,m_mate:a.s5_m_mate||0,m_fisi:a.s5_m_fisi||0,m_ingl:a.s5_m_ingl||0,media:a.s5_media||0,gtot:a.s5_gtot||0,aprov:a.s5_aprov||false,motivo:a.motivo5||'',ok_port:a.ok5_port,ok_mate:a.ok5_mate,ok_fisi:a.ok5_fisi,ok_ingl:a.ok5_ingl,ok_red:a.ok5_red||false,red:a.s5_red||'Não',rank:a.s5_rank||0,simN:5,label:'Sim. 5 (16/05)',avgs:T.avgs5,sorted:T.sorted5};
   return null;
 }
-function lastSim(a){return simSlot(a,4)||simSlot(a,3)||simSlot(a,2)||simSlot(a,1);}
+function lastSim(a){return simSlot(a,5)||simSlot(a,4)||simSlot(a,3)||simSlot(a,2)||simSlot(a,1);}
 function prevSim(a){
-  for(let n=3;n>=1;n--){if(simSlot(a,n+1)&&simSlot(a,n))return simSlot(a,n);}
+  for(let n=4;n>=1;n--){if(simSlot(a,n+1)&&simSlot(a,n))return simSlot(a,n);}
   return null;
 }
 
@@ -1155,7 +1262,7 @@ function prevSim(a){
   [...new Set(T.list.map(a=>a.unidade))].sort().forEach(u=>{
     const o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);
   });
-  document.getElementById('thTotal').textContent='Total S1+S2 /128';
+  document.getElementById('thTotal').textContent='Total Geral /320';
   renderRanking();
 })();
 
@@ -1194,7 +1301,7 @@ function setSimTab(tab,btn){
   CUR_SIM=tab;
   document.querySelectorAll('.sim-btn').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  const lbl=tab==='geral'?'Total Geral /256':tab==='s4'?'Total Sim.4 /64':tab==='s3'?'Total Sim.3 /64':tab==='s2'?'Total Sim.2 /64':'Total Sim.1 /64';
+  const lbl=tab==='geral'?'Total Geral /320':tab==='s5'?'Total Sim.5 /64':tab==='s4'?'Total Sim.4 /64':tab==='s3'?'Total Sim.3 /64':tab==='s2'?'Total Sim.2 /64':'Total Sim.1 /64';
   document.getElementById('thTotal').textContent=lbl;
   renderRanking();
 }
@@ -1214,17 +1321,21 @@ function renderRanking(){
   let base;
   if(tab==='geral'){
     base=T.list.map(a=>{
-      const has1=a.rank>0, has2=(a.s2_rank||0)>0, has3=(a.s3_rank||0)>0, has4=(a.s4_rank||0)>0;
-      const t1=has1?a.gtot:0, t2=has2?(a.s2_gtot||0):0, t3=has3?(a.s3_gtot||0):0, t4=has4?(a.s4_gtot||0):0;
-      const _sims=(has1?1:0)+(has2?1:0)+(has3?1:0)+(has4?1:0);
-      const _aprov=_sims>0&&[has1&&a.aprov,has2&&(a.s2_aprov||false),has3&&(a.s3_aprov||false),has4&&(a.s4_aprov||false)].some(x=>x);
-      const _motivo=has4&&!a.s4_aprov?(a.motivo4||''):has3&&!a.s3_aprov?(a.motivo3||''):has2&&!a.s2_aprov?(a.motivo2||''):has1&&!a.aprov?(a.motivo||''):'';
-      return {...a,_total:t1+t2+t3+t4,_sims,_aprov,_motivo};
+      const has1=a.rank>0, has2=(a.s2_rank||0)>0, has3=(a.s3_rank||0)>0, has4=(a.s4_rank||0)>0, has5=(a.s5_rank||0)>0;
+      const t1=has1?a.gtot:0, t2=has2?(a.s2_gtot||0):0, t3=has3?(a.s3_gtot||0):0, t4=has4?(a.s4_gtot||0):0, t5=has5?(a.s5_gtot||0):0;
+      const _sims=(has1?1:0)+(has2?1:0)+(has3?1:0)+(has4?1:0)+(has5?1:0);
+      const _aprov=_sims>0&&[has1&&a.aprov,has2&&(a.s2_aprov||false),has3&&(a.s3_aprov||false),has4&&(a.s4_aprov||false),has5&&(a.s5_aprov||false)].some(x=>x);
+      const _motivo=has5&&!a.s5_aprov?(a.motivo5||''):has4&&!a.s4_aprov?(a.motivo4||''):has3&&!a.s3_aprov?(a.motivo3||''):has2&&!a.s2_aprov?(a.motivo2||''):has1&&!a.aprov?(a.motivo||''):'';
+      return {...a,_total:t1+t2+t3+t4+t5,_sims,_aprov,_motivo};
     }).filter(a=>a._sims>0).sort((a,b)=>{
       if(a._sims!==b._sims) return b._sims-a._sims;
       if(a._aprov!==b._aprov) return a._aprov?-1:1;
       return b._total-a._total;
     });
+  } else if(tab==='s5'){
+    base=T.list.filter(a=>(a.s5_rank||0)>0)
+      .map(a=>({...a,_total:a.s5_gtot||0,_rank:a.s5_rank||0,_aprov:a.s5_aprov||false,_motivo:a.motivo5||''}))
+      .sort((a,b)=>{if(a._aprov!==b._aprov)return a._aprov?-1:1;return a._rank-b._rank;});
   } else if(tab==='s4'){
     base=T.list.filter(a=>(a.s4_rank||0)>0)
       .map(a=>({...a,_total:a.s4_gtot||0,_rank:a.s4_rank||0,_aprov:a.s4_aprov||false,_motivo:a.motivo4||''}))
@@ -1260,8 +1371,8 @@ function renderRanking(){
   document.getElementById('aprovRk').textContent=apvN;
   document.getElementById('reprovRk').textContent=tot-apvN;
 
-  const maxT=tab==='geral'?256:64;
-  const avgs=tab==='s4'?T.avgs4:tab==='s3'?T.avgs3:tab==='s2'?T.avgs2:T.avgs;
+  const maxT=tab==='geral'?320:64;
+  const avgs=tab==='s5'?T.avgs5:tab==='s4'?T.avgs4:tab==='s3'?T.avgs3:tab==='s2'?T.avgs2:T.avgs;
 
   document.getElementById('bodyRk').innerHTML=lst.map((a,i)=>{
     const pos=tab==='geral'?i+1:(a._rank||i+1);
@@ -1273,7 +1384,7 @@ function renderRanking(){
       :'<span class="chip chip-reprov">✗ Reprovado</span>';
     const pct=Math.min(100,Math.round(a._total/maxT*100));
     const barCol=pct>=70?'#16a34a':pct>=50?'#d97706':'#dc2626';
-    const simBadge=tab==='geral'&&a._sims<4
+    const simBadge=tab==='geral'&&a._sims<5
       ?' <span style="font-size:10px;background:#fef9c3;color:#a16207;padding:1px 6px;border-radius:8px">'+a._sims+' sim.</span>':'';
     return `<tr class="${rc}" onclick="openAluno('${a.nome.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
       <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
@@ -1292,7 +1403,7 @@ function renderRanking(){
   }).join('');
 
   document.getElementById('statsRk').innerHTML=`
-    <div class="stat-item"><div class="s-label">Total de Alunos</div><div class="s-val">${tot}</div><div class="s-hint">${tab==='geral'?'geral':tab==='s4'?'25/04':tab==='s3'?'28/03':tab==='s2'?'07/03':'28/02'}</div></div>
+    <div class="stat-item"><div class="s-label">Total de Alunos</div><div class="s-val">${tot}</div><div class="s-hint">${tab==='geral'?'geral':tab==='s5'?'16/05':tab==='s4'?'25/04':tab==='s3'?'28/03':tab==='s2'?'07/03':'28/02'}</div></div>
     <div class="stat-item"><div class="s-label">Aprovados</div><div class="s-val" style="color:var(--green)">${apvN}</div><div class="s-hint">${Math.round(apvN/tot*100)}% da turma</div></div>
     <div class="stat-item"><div class="s-label">Reprovados</div><div class="s-val" style="color:var(--red)">${tot-apvN}</div><div class="s-hint">${Math.round((tot-apvN)/tot*100)}%</div></div>
     <div class="stat-item"><div class="s-label">Maior Pontuação</div><div class="s-val" style="color:var(--navy)">${base[0]?base[0]._total:0}</div><div class="s-hint">de ${maxT}</div></div>
@@ -1314,7 +1425,7 @@ function showSug(){
   const afaHits=T.list.filter(a=>norm(a.nome).includes(v)).slice(0,5).map(a=>
     `<div class="sug-item" onclick="selectSug('${esc(a.nome)}')">${a.nome} <span style="color:var(--text3);font-size:12px">[AFA] ${a.unidade||'—'}</span></div>`);
   const examSets=[
-    {T:TEF_S2,exam:'efomm_s2',lbl:'EFOMM 2ºSim'},{T:TEF,exam:'efomm',lbl:'EFOMM 1ºSim'},
+    {T:TEF_S3,exam:'efomm_s3',lbl:'EFOMM 3ºSim'},{T:TEF_S2,exam:'efomm_s2',lbl:'EFOMM 2ºSim'},{T:TEF,exam:'efomm',lbl:'EFOMM 1ºSim'},
     {T:TEN_S3_GERAL,exam:'en_s3_geral',lbl:'EN 3ºSim'},{T:TEN_S2,exam:'en_s2',lbl:'EN 2ºSim'},{T:TEN,exam:'en',lbl:'EN 1ºSim'},
   ];
   const examHits=[];
@@ -1338,7 +1449,7 @@ function buscar(){
   const fi=lst=>lst.find(a=>norm(a.nome)===v||norm(a.nome).includes(v));
   const af=fi(T.list); if(af){openAluno(af.nome);return;}
   const examSets=[
-    {T:TEF_S2,exam:'efomm_s2'},{T:TEF,exam:'efomm'},
+    {T:TEF_S3,exam:'efomm_s3'},{T:TEF_S2,exam:'efomm_s2'},{T:TEF,exam:'efomm'},
     {T:TEN_S3_GERAL,exam:'en_s3_geral'},{T:TEN_S2,exam:'en_s2'},{T:TEN,exam:'en'},
   ];
   for(const {T:et,exam} of examSets){
@@ -1355,6 +1466,7 @@ function openAluno(nome){
   document.getElementById('raInput').value='';
   document.getElementById('raError').style.display='none';
   modal.dataset.nome=nome;
+  modal.dataset.exam='afa';
   modal.style.display='flex';
   setTimeout(()=>document.getElementById('raInput').focus(),100);
 }
@@ -1381,15 +1493,16 @@ function fecharRAModal(){
 function abrirDashboard(a){
   atual=a;
   document.getElementById('dashNome').textContent=a.nome;
-  const has2=(a.s2_rank||0)>0, has3=(a.s3_rank||0)>0, has4=(a.s4_rank||0)>0;
+  const has2=(a.s2_rank||0)>0, has3=(a.s3_rank||0)>0, has4=(a.s4_rank||0)>0, has5=(a.s5_rank||0)>0;
   const rankInfo=a.rank>0?'#'+a.rank+'º (28/02)':'';
   const rank2Info=has2?' · #'+a.s2_rank+'º (07/03)':'';
   const rank3Info=has3?' · #'+a.s3_rank+'º (28/03)':'';
   const rank4Info=has4?' · #'+a.s4_rank+'º (25/04)':'';
-  const lastMedia=has4?a.s4_media:has3?a.s3_media:has2?a.s2_media:a.media;
-  const lastAprov=has4?a.s4_aprov:has3?a.s3_aprov:has2?a.s2_aprov:a.aprov;
+  const rank5Info=has5?' · #'+a.s5_rank+'º (16/05)':'';
+  const lastMedia=has5?a.s5_media:has4?a.s4_media:has3?a.s3_media:has2?a.s2_media:a.media;
+  const lastAprov=has5?a.s5_aprov:has4?a.s4_aprov:has3?a.s3_aprov:has2?a.s2_aprov:a.aprov;
   document.getElementById('dashInfo').textContent=
-    rankInfo+rank2Info+rank3Info+rank4Info+' · '+a.unidade+' · Última MP: '+lastMedia.toFixed(2)+' · '+(lastAprov?'✓ Aprovado':'✗ Reprovado');
+    rankInfo+rank2Info+rank3Info+rank4Info+rank5Info+' · '+a.unidade+' · Última MP: '+lastMedia.toFixed(2)+' · '+(lastAprov?'✓ Aprovado':'✗ Reprovado');
   const dd=document.getElementById('destDiv');
   const _ls=lastSim(a);
   if(_ls&&_ls.rank<=3&&_ls.rank>0){dd.style.display='block';document.getElementById('destText').textContent=`#${_ls.rank}º — AFA (${_ls.label})`;}
@@ -1608,8 +1721,15 @@ function buildRelatorio(){
   var has2=(a.s2_rank||0)>0||(a.s2_media||0)>0;
   var has3=(a.s3_rank||0)>0||(a.s3_media||0)>0;
   var has4=(a.s4_rank||0)>0||(a.s4_media||0)>0;
+  var has5=(a.s5_rank||0)>0||(a.s5_media||0)>0;
 
-  var cur=has4?{
+  var cur=has5?{
+    rank:a.s5_rank||0,media:a.s5_media||0,aprov:a.s5_aprov,motivo:a.motivo5||'',
+    port:a.s5_port||0,mate:a.s5_mate||0,fisi:a.s5_fisi||0,ingl:a.s5_ingl||0,
+    m_port:a.s5_m_port||0,m_mate:a.s5_m_mate||0,m_fisi:a.s5_m_fisi||0,m_ingl:a.s5_m_ingl||0,
+    red:a.s5_red||'Não',ok_port:a.ok5_port,ok_mate:a.ok5_mate,ok_fisi:a.ok5_fisi,ok_ingl:a.ok5_ingl,ok_red:a.ok5_red,
+    N:T.sorted5.length,avgs:T.avgs5
+  }:has4?{
     rank:a.s4_rank||0,media:a.s4_media||0,aprov:a.s4_aprov,motivo:a.motivo4||'',
     port:a.s4_port||0,mate:a.s4_mate||0,fisi:a.s4_fisi||0,ingl:a.s4_ingl||0,
     m_port:a.s4_m_port||0,m_mate:a.s4_m_mate||0,m_fisi:a.s4_m_fisi||0,m_ingl:a.s4_m_ingl||0,
@@ -1635,8 +1755,8 @@ function buildRelatorio(){
     N:T.sorted1.length,avgs:T.avgs
   };
 
-  var prev=has4?{rank:a.s3_rank||0,media:a.s3_media||0}:has3?{rank:a.s2_rank||0,media:a.s2_media||0}:has2?{rank:a.rank||0,media:a.media||0}:null;
-  var simLabel=has4?'4º Simulado':has3?'3º Simulado':has2?'2º Simulado':'1º Simulado';
+  var prev=has5?{rank:a.s4_rank||0,media:a.s4_media||0}:has4?{rank:a.s3_rank||0,media:a.s3_media||0}:has3?{rank:a.s2_rank||0,media:a.s2_media||0}:has2?{rank:a.rank||0,media:a.media||0}:null;
+  var simLabel=has5?'5º Simulado':has4?'4º Simulado':has3?'3º Simulado':has2?'2º Simulado':'1º Simulado';
   var medPct=+(cur.media/10*100).toFixed(1);
 
   function icB(pt){
@@ -2016,6 +2136,139 @@ function buildEstudos(){
   ${!a.ok_red?`<div class="warn-box"><h5>⚠️ Redação não entregue no Sim. 1 — pratique semanalmente</h5><ul>
     <li>A redação é critério eliminatório — nunca deixe de entregar</li></ul></div>`:''}`;
 }
+
+
+// ══════════════════════════════
+// EFOMM 3° Simulado (02/05/2026 + 09/05/2026)
+// EFOMM 3° Simulado — 1° Dia 02/05/2026 — Português · Inglês
+const RAW_EFOMM_S3 = [
+{unidade:"TAQUARA",nome:"YASMIM ROMÃO",ra:"MT23134059",rank:1,aprov:true,status:"Classificado",port:13,ingl:14,m_port:6.5,m_ingl:7,red:"Sim",media:6.75},
+{unidade:"BANGU",nome:"MANUELLE VERNECK",ra:"MT25173634",rank:2,aprov:true,status:"Classificado",port:14,ingl:13,m_port:7,m_ingl:6.5,red:"Sim",media:6.75},
+{unidade:"MADUREIRA",nome:"MARIANNA ROMANELLI",ra:"MT25179599",rank:3,aprov:false,status:"Reprovado",port:9,ingl:17,m_port:4.5,m_ingl:8.5,red:"Sim",media:6.5},
+{unidade:"BANGU",nome:"JOÃO TEODORO",ra:"MT23126717",rank:4,aprov:true,status:"Classificado",port:13,ingl:13,m_port:6.5,m_ingl:6.5,red:"Sim",media:6.5},
+{unidade:"MADUREIRA",nome:"JOÃO DIAS",ra:"MT23122104",rank:5,aprov:false,status:"Reprovado",port:9,ingl:16,m_port:4.5,m_ingl:8,red:"Sim",media:6.25},
+{unidade:"TAQUARA",nome:"NIKOLAS SANTOS",ra:"MT24158446",rank:6,aprov:true,status:"Classificado",port:13,ingl:12,m_port:6.5,m_ingl:6,red:"Sim",media:6.25},
+{unidade:"NOVA IGUACU",nome:"GABRIEL ALVES",ra:"MT24161879",rank:7,aprov:true,status:"Classificado",port:13,ingl:12,m_port:6.5,m_ingl:6,red:"Sim",media:6.25},
+{unidade:"BANGU",nome:"Sophia Bastos",ra:"MT25198466",rank:8,aprov:true,status:"Classificado",port:11,ingl:14,m_port:5.5,m_ingl:7,red:"Sim",media:6.25},
+{unidade:"TAQUARA",nome:"PEDRO CONCEICAO",ra:"MT25189275",rank:9,aprov:true,status:"Classificado",port:15,ingl:10,m_port:7.5,m_ingl:5,red:"Sim",media:6.25},
+{unidade:"NOVA IGUACU",nome:"PEDRO WERNECK",ra:"MT25188095",rank:10,aprov:true,status:"Classificado",port:14,ingl:11,m_port:7,m_ingl:5.5,red:"Sim",media:6.25},
+{unidade:"TAQUARA",nome:"LUCAS PINHEIRO",ra:"MT21067715",rank:11,aprov:true,status:"Classificado",port:13,ingl:12,m_port:6.5,m_ingl:6,red:"Sim",media:6.25},
+{unidade:"MADUREIRA",nome:"MARYA JUND",ra:"MT25169335",rank:12,aprov:true,status:"Classificado",port:12,ingl:12,m_port:6,m_ingl:6,red:"Sim",media:6},
+{unidade:"MADUREIRA",nome:"LUIZ REIS",ra:"MT24139594",rank:13,aprov:true,status:"Classificado",port:14,ingl:10,m_port:7,m_ingl:5,red:"Sim",media:6},
+{unidade:"MADUREIRA",nome:"GUSTAVO OLIVEIRA",ra:"MT22058218",rank:14,aprov:true,status:"Classificado",port:11,ingl:13,m_port:5.5,m_ingl:6.5,red:"Sim",media:6},
+{unidade:"CAMPO GRANDE",nome:"RAMON VALENTE",ra:"MT25201732",rank:15,aprov:true,status:"Classificado",port:12,ingl:12,m_port:6,m_ingl:6,red:"Sim",media:6},
+{unidade:"TAQUARA",nome:"EDUARDO AUGUSTINHO",ra:"MT21052451",rank:16,aprov:true,status:"Classificado",port:11,ingl:12,m_port:5.5,m_ingl:6,red:"Sim",media:5.75},
+{unidade:"BANGU",nome:"MARCOS CARVALHO",ra:"MT20041455",rank:17,aprov:false,status:"Reprovado",port:8,ingl:15,m_port:4,m_ingl:7.5,red:"Sim",media:5.75},
+{unidade:"NOVA IGUACU",nome:"BEATRIZ GAMMINE",ra:"MT22095475",rank:18,aprov:true,status:"Classificado",port:11,ingl:11,m_port:5.5,m_ingl:5.5,red:"Sim",media:5.5},
+{unidade:"NOVA IGUACU",nome:"SIDNEY LOURENÇO",ra:"MT25194226",rank:19,aprov:false,status:"Reprovado",port:5,ingl:17,m_port:2.5,m_ingl:8.5,red:"Sim",media:5.5},
+{unidade:"BANGU",nome:"NICHOLAS GONÇALVES",ra:"MT23118466",rank:20,aprov:true,status:"Classificado",port:10,ingl:11,m_port:5,m_ingl:5.5,red:"Sim",media:5.25},
+{unidade:"FALSE",nome:"SEM NOME",ra:"MT25197691",rank:21,aprov:false,status:"Reprovado",port:12,ingl:9,m_port:6,m_ingl:4.5,red:"Sim",media:5.25},
+{unidade:"BANGU",nome:"DAVI NETO",ra:"MT24136780",rank:22,aprov:true,status:"Classificado",port:11,ingl:10,m_port:5.5,m_ingl:5,red:"Sim",media:5.25},
+{unidade:"TAQUARA",nome:"PAULO OLIVEIRA",ra:"MT26204339",rank:23,aprov:false,status:"Reprovado",port:12,ingl:9,m_port:6,m_ingl:4.5,red:"Sim",media:5.25},
+{unidade:"BANGU",nome:"LÍVIA SILVA",ra:"MT23106347",rank:24,aprov:false,status:"Reprovado",port:13,ingl:7,m_port:6.5,m_ingl:3.5,red:"Sim",media:5},
+{unidade:"MADUREIRA",nome:"JOÃO SANTOS",ra:"MT25188707",rank:25,aprov:true,status:"Classificado",port:10,ingl:10,m_port:5,m_ingl:5,red:"Sim",media:5},
+{unidade:"MADUREIRA",nome:"JOÃO DECOTHÉ",ra:"MT23131030",rank:26,aprov:false,status:"Reprovado",port:11,ingl:9,m_port:5.5,m_ingl:4.5,red:"Sim",media:5},
+{unidade:"NOVA IGUACU",nome:"LUIZA SANTOS",ra:"MT25188046",rank:27,aprov:false,status:"Reprovado",port:7,ingl:12,m_port:3.5,m_ingl:6,red:"Sim",media:4.75},
+{unidade:"MADUREIRA",nome:"DAVI SANTOS",ra:"MT22098230",rank:28,aprov:false,status:"Reprovado",port:9,ingl:10,m_port:4.5,m_ingl:5,red:"Sim",media:4.75},
+{unidade:"CAMPO GRANDE",nome:"ARTHUR ALBUQUERQUE",ra:"MT22097604",rank:29,aprov:false,status:"Reprovado",port:9,ingl:10,m_port:4.5,m_ingl:5,red:"Sim",media:4.75},
+{unidade:"NOVA IGUACU",nome:"DAVI CARVALHO",ra:"MT25188145",rank:30,aprov:false,status:"Reprovado",port:12,ingl:7,m_port:6,m_ingl:3.5,red:"Sim",media:4.75},
+{unidade:"MADUREIRA",nome:"GABRIEL LIRA",ra:"MT23108715",rank:31,aprov:false,status:"Reprovado",port:8,ingl:10,m_port:4,m_ingl:5,red:"Sim",media:4.5},
+{unidade:"NOVA IGUACU",nome:"SAMUEL RIMOLO",ra:"MT25177932",rank:32,aprov:false,status:"Reprovado",port:6,ingl:12,m_port:3,m_ingl:6,red:"Sim",media:4.5},
+{unidade:"BANGU",nome:"LEONARDO BORGES",ra:"MT23131139",rank:33,aprov:false,status:"Reprovado",port:10,ingl:8,m_port:5,m_ingl:4,red:"Sim",media:4.5},
+{unidade:"BANGU",nome:"RITA RIBEIRO",ra:"MT21072566",rank:34,aprov:false,status:"Reprovado",port:11,ingl:6,m_port:5.5,m_ingl:3,red:"Sim",media:4.25},
+{unidade:"BANGU",nome:"GABRIEL ALVES",ra:"MT22096762",rank:35,aprov:false,status:"Reprovado",port:4,ingl:13,m_port:2,m_ingl:6.5,red:"Sim",media:4.25},
+{unidade:"NOVA IGUACU",nome:"GABRIEL GOMES",ra:"MT21063284",rank:36,aprov:false,status:"Reprovado",port:6,ingl:11,m_port:3,m_ingl:5.5,red:"Sim",media:4.25},
+{unidade:"NOVA IGUACU",nome:"LUIS MENDES",ra:"MT25192741",rank:37,aprov:false,status:"Reprovado",port:11,ingl:6,m_port:5.5,m_ingl:3,red:"Sim",media:4.25},
+{unidade:"MADUREIRA",nome:"GABRIEL ALMEIDA",ra:"MT23130198",rank:38,aprov:false,status:"Reprovado",port:8,ingl:8,m_port:4,m_ingl:4,red:"Sim",media:4},
+{unidade:"MADUREIRA",nome:"RAFAELLA SANTOS",ra:"MT24162687",rank:39,aprov:false,status:"Reprovado",port:9,ingl:7,m_port:4.5,m_ingl:3.5,red:"Sim",media:4},
+{unidade:"BANGU",nome:"BERNARDO CARVALHO",ra:"MT23126246",rank:40,aprov:false,status:"Reprovado",port:7,ingl:8,m_port:3.5,m_ingl:4,red:"Sim",media:3.75},
+{unidade:"TAQUARA",nome:"GUILHERME BLUM",ra:"MT19021575",rank:41,aprov:false,status:"Reprovado",port:8,ingl:7,m_port:4,m_ingl:3.5,red:"Sim",media:3.75},
+{unidade:"TAQUARA",nome:"ISABELE NUNES",ra:"MT25189374",rank:42,aprov:false,status:"Reprovado",port:7,ingl:8,m_port:3.5,m_ingl:4,red:"Sim",media:3.75},
+{unidade:"CAMPO GRANDE",nome:"GUSTAVO BORGES",ra:"MT25195157",rank:43,aprov:false,status:"Reprovado",port:7,ingl:8,m_port:3.5,m_ingl:4,red:"Sim",media:3.75},
+{unidade:"BANGU",nome:"JÚLIO SILVA",ra:"MT23128002",rank:44,aprov:false,status:"Reprovado",port:6,ingl:8,m_port:3,m_ingl:4,red:"Sim",media:3.5},
+{unidade:"MADUREIRA",nome:"MANUEL SILVA",ra:"MT24151557",rank:45,aprov:false,status:"Reprovado",port:7,ingl:7,m_port:3.5,m_ingl:3.5,red:"Sim",media:3.5},
+{unidade:"CAMPO GRANDE",nome:"GABRIEL BORGES",ra:"MT19023548",rank:46,aprov:false,status:"Reprovado",port:5,ingl:9,m_port:2.5,m_ingl:4.5,red:"Sim",media:3.5},
+{unidade:"NOVA IGUACU",nome:"MARIA SIQUEIRA",ra:"MT25197617",rank:47,aprov:false,status:"Reprovado",port:5,ingl:7,m_port:2.5,m_ingl:3.5,red:"Sim",media:3},
+{unidade:"NOVA IGUACU",nome:"JHONATAN SILVA",ra:"MT25192337",rank:48,aprov:false,status:"Reprovado",port:4,ingl:8,m_port:2,m_ingl:4,red:"Sim",media:3},
+{unidade:"MADUREIRA",nome:"GABRIEL SILVA",ra:"MT25198656",rank:49,aprov:false,status:"Reprovado",port:5,ingl:6,m_port:2.5,m_ingl:3,red:"Sim",media:2.75},
+{unidade:"BANGU",nome:"DANIEL VALENTIM",ra:"MT25197096",rank:50,aprov:false,status:"Reprovado",port:6,ingl:4,m_port:3,m_ingl:2,red:"Sim",media:2.5},
+{unidade:"BANGU",nome:"PEDRO VELOSO",ra:"MT25198532",rank:51,aprov:false,status:"Reprovado",port:7,ingl:3,m_port:3.5,m_ingl:1.5,red:"Sim",media:2.5},
+{unidade:"CAMPO GRANDE",nome:"ADILSON FREITAS",ra:"MT24143216",rank:52,aprov:false,status:"Reprovado",port:5,ingl:5,m_port:2.5,m_ingl:2.5,red:"Sim",media:2.5},
+{unidade:"CAMPO GRANDE",nome:"PEDRO CRUZ",ra:"MT23119860",rank:53,aprov:false,status:"Reprovado",port:4,ingl:6,m_port:2,m_ingl:3,red:"Sim",media:2.5},
+{unidade:"CAMPO GRANDE",nome:"MARCOS LEITE",ra:"MT25191180",rank:54,aprov:false,status:"Reprovado",port:6,ingl:3,m_port:3,m_ingl:1.5,red:"Sim",media:2.25},
+];
+
+// EFOMM 3° Simulado — 2° Dia 09/05/2026 + Geral — Português · Matemática · Inglês · Física
+const RAW_EFOMM_S3D2 = [
+{unidade:"NOVA IGUACU",nome:"PEDRO WERNECK",ra:"MT25188095",rank:1,aprov:true,status:"Classificado",por:14,mat:15,ing:11,fis:12,m_por:7,m_mat:7.5,m_ing:5.5,m_fis:6,red:"Sim",media:6.5},
+{unidade:"TAQUARA",nome:"LUCAS PINHEIRO",ra:"MT21067715",rank:2,aprov:true,status:"Classificado",por:13,mat:12,ing:12,fis:10,m_por:6.5,m_mat:6,m_ing:6,m_fis:5,red:"Sim",media:5.88},
+{unidade:"TAQUARA",nome:"EDUARDO AUGUSTINHO",ra:"MT21052451",rank:3,aprov:true,status:"Classificado",por:11,mat:11,ing:12,fis:10,m_por:5.5,m_mat:5.5,m_ing:6,m_fis:5,red:"Sim",media:5.5},
+{unidade:"BANGU",nome:"MARCOS CARVALHO",ra:"MT20041455",rank:4,aprov:true,status:"Pós-Classificado",por:8,mat:9,ing:15,fis:9,m_por:4,m_mat:4.5,m_ing:7.5,m_fis:4.5,red:"Sim",media:5.13},
+{unidade:"TAQUARA",nome:"YASMIM ROMÃO",ra:"MT23134059",rank:5,aprov:false,status:"Reprovado",por:13,mat:6,ing:14,fis:5,m_por:6.5,m_mat:3,m_ing:7,m_fis:2.5,red:"Sim",media:4.75},
+{unidade:"TAQUARA",nome:"PEDRO CONCEICAO",ra:"MT25189275",rank:6,aprov:false,status:"Reprovado",por:15,mat:4,ing:10,fis:7,m_por:7.5,m_mat:2,m_ing:5,m_fis:3.5,red:"Sim",media:4.5},
+{unidade:"BANGU",nome:"JOÃO TEODORO",ra:"MT23126717",rank:7,aprov:false,status:"Reprovado",por:13,mat:5,ing:13,fis:5,m_por:6.5,m_mat:2.5,m_ing:6.5,m_fis:2.5,red:"Sim",media:4.5},
+{unidade:"NOVA IGUACU",nome:"BEATRIZ GAMMINE",ra:"MT22095475",rank:8,aprov:false,status:"Reprovado",por:11,mat:8,ing:11,fis:6,m_por:5.5,m_mat:4,m_ing:5.5,m_fis:3,red:"Sim",media:4.5},
+{unidade:"BANGU",nome:"NICHOLAS GONÇALVES",ra:"MT23118466",rank:9,aprov:false,status:"Reprovado",por:10,mat:10,ing:11,fis:5,m_por:5,m_mat:5,m_ing:5.5,m_fis:2.5,red:"Sim",media:4.5},
+{unidade:"FALSE",nome:"SEM NOME",ra:"MT25197691",rank:10,aprov:false,status:"Reprovado",por:12,mat:6,ing:9,fis:8,m_por:6,m_mat:3,m_ing:4.5,m_fis:4,red:"Sim",media:4.38},
+{unidade:"NOVA IGUACU",nome:"DAVI CARVALHO",ra:"MT25188145",rank:11,aprov:false,status:"Reprovado",por:12,mat:9,ing:7,fis:7,m_por:6,m_mat:4.5,m_ing:3.5,m_fis:3.5,red:"Sim",media:4.38},
+{unidade:"CAMPO GRANDE",nome:"RAMON VALENTE",ra:"MT25201732",rank:12,aprov:false,status:"Reprovado",por:12,mat:5,ing:12,fis:5,m_por:6,m_mat:2.5,m_ing:6,m_fis:2.5,red:"Sim",media:4.25},
+{unidade:"MADUREIRA",nome:"LUIZ REIS",ra:"MT24139594",rank:13,aprov:false,status:"Reprovado",por:14,mat:4,ing:10,fis:5,m_por:7,m_mat:2,m_ing:5,m_fis:2.5,red:"Sim",media:4.13},
+{unidade:"MADUREIRA",nome:"JOÃO DIAS",ra:"MT23122104",rank:14,aprov:false,status:"Reprovado",por:9,mat:6,ing:16,fis:2,m_por:4.5,m_mat:3,m_ing:8,m_fis:1,red:"Sim",media:4.13},
+{unidade:"BANGU",nome:"DAVI NETO",ra:"MT24136780",rank:15,aprov:false,status:"Reprovado",por:11,mat:6,ing:10,fis:5,m_por:5.5,m_mat:3,m_ing:5,m_fis:2.5,red:"Sim",media:4},
+{unidade:"MADUREIRA",nome:"JOÃO DECOTHÉ",ra:"MT23131030",rank:16,aprov:false,status:"Reprovado",por:11,mat:9,ing:9,fis:3,m_por:5.5,m_mat:4.5,m_ing:4.5,m_fis:1.5,red:"Sim",media:4},
+{unidade:"MADUREIRA",nome:"MARIANNA ROMANELLI",ra:"MT25179599",rank:17,aprov:false,status:"Reprovado",por:9,mat:1,ing:17,fis:5,m_por:4.5,m_mat:0.5,m_ing:8.5,m_fis:2.5,red:"Sim",media:4},
+{unidade:"NOVA IGUACU",nome:"LUIZA SANTOS",ra:"MT25188046",rank:18,aprov:false,status:"Reprovado",por:7,mat:7,ing:12,fis:6,m_por:3.5,m_mat:3.5,m_ing:6,m_fis:3,red:"Sim",media:4},
+{unidade:"MADUREIRA",nome:"GABRIEL LIRA",ra:"MT23108715",rank:19,aprov:false,status:"Reprovado",por:8,mat:9,ing:10,fis:4,m_por:4,m_mat:4.5,m_ing:5,m_fis:2,red:"Sim",media:3.88},
+{unidade:"MADUREIRA",nome:"DAVI SANTOS",ra:"MT22098230",rank:20,aprov:false,status:"Reprovado",por:9,mat:6,ing:10,fis:4,m_por:4.5,m_mat:3,m_ing:5,m_fis:2,red:"Sim",media:3.63},
+{unidade:"NOVA IGUACU",nome:"MIGUEL COSTA",ra:"MT23134281",rank:21,aprov:false,status:"Reprovado",por:0,mat:13,ing:0,fis:16,m_por:0,m_mat:6.5,m_ing:0,m_fis:8,red:"Não",media:3.63},
+{unidade:"NOVA IGUACU",nome:"GABRIEL GOMES",ra:"MT21063284",rank:22,aprov:false,status:"Reprovado",por:6,mat:5,ing:11,fis:6,m_por:3,m_mat:2.5,m_ing:5.5,m_fis:3,red:"Sim",media:3.5},
+{unidade:"NOVA IGUACU",nome:"SAMUEL RIMOLO",ra:"MT25177932",rank:23,aprov:false,status:"Reprovado",por:6,mat:5,ing:12,fis:5,m_por:3,m_mat:2.5,m_ing:6,m_fis:2.5,red:"Sim",media:3.5},
+{unidade:"BANGU",nome:"GABRIEL ALVES",ra:"MT22096762",rank:24,aprov:false,status:"Reprovado",por:4,mat:7,ing:13,fis:4,m_por:2,m_mat:3.5,m_ing:6.5,m_fis:2,red:"Sim",media:3.5},
+{unidade:"BANGU",nome:"MANUELLE VERNECK",ra:"MT25173634",rank:25,aprov:false,status:"Reprovado",por:14,mat:0,ing:13,fis:0,m_por:7,m_mat:0,m_ing:6.5,m_fis:0,red:"Sim",media:3.38},
+{unidade:"MADUREIRA",nome:"GABRIEL ALMEIDA",ra:"MT23130198",rank:26,aprov:false,status:"Reprovado",por:8,mat:4,ing:8,fis:6,m_por:4,m_mat:2,m_ing:4,m_fis:3,red:"Sim",media:3.25},
+{unidade:"BANGU",nome:"JÚLIO SILVA",ra:"MT23128002",rank:27,aprov:false,status:"Reprovado",por:6,mat:7,ing:8,fis:5,m_por:3,m_mat:3.5,m_ing:4,m_fis:2.5,red:"Sim",media:3.25},
+{unidade:"NOVA IGUACU",nome:"GABRIEL ALVES",ra:"MT24161879",rank:28,aprov:false,status:"Reprovado",por:13,mat:0,ing:12,fis:0,m_por:6.5,m_mat:0,m_ing:6,m_fis:0,red:"Sim",media:3.13},
+{unidade:"TAQUARA",nome:"NIKOLAS SANTOS",ra:"MT24158446",rank:29,aprov:false,status:"Reprovado",por:13,mat:0,ing:12,fis:0,m_por:6.5,m_mat:0,m_ing:6,m_fis:0,red:"Sim",media:3.13},
+{unidade:"BANGU",nome:"Sophia Bastos",ra:"MT25198466",rank:30,aprov:false,status:"Reprovado",por:11,mat:0,ing:14,fis:0,m_por:5.5,m_mat:0,m_ing:7,m_fis:0,red:"Sim",media:3.13},
+{unidade:"BANGU",nome:"LEONARDO BORGES",ra:"MT23131139",rank:31,aprov:false,status:"Reprovado",por:10,mat:5,ing:8,fis:2,m_por:5,m_mat:2.5,m_ing:4,m_fis:1,red:"Sim",media:4.5},
+{unidade:"TAQUARA",nome:"ISABELE NUNES",ra:"MT25189374",rank:32,aprov:false,status:"Reprovado",por:7,mat:4,ing:8,fis:6,m_por:3.5,m_mat:2,m_ing:4,m_fis:3,red:"Sim",media:3.75},
+{unidade:"MADUREIRA",nome:"MARYA JUND",ra:"MT25169335",rank:33,aprov:false,status:"Reprovado",por:12,mat:0,ing:12,fis:0,m_por:6,m_mat:0,m_ing:6,m_fis:0,red:"Sim",media:6},
+{unidade:"MADUREIRA",nome:"GUSTAVO OLIVEIRA",ra:"MT22058218",rank:34,aprov:false,status:"Reprovado",por:11,mat:0,ing:13,fis:0,m_por:5.5,m_mat:0,m_ing:6.5,m_fis:0,red:"Sim",media:3},
+{unidade:"CAMPO GRANDE",nome:"GUSTAVO BORGES",ra:"MT25195157",rank:35,aprov:false,status:"Reprovado",por:7,mat:6,ing:8,fis:3,m_por:3.5,m_mat:3,m_ing:4,m_fis:1.5,red:"Sim",media:3},
+{unidade:"CAMPO GRANDE",nome:"GABRIEL BORGES",ra:"MT19023548",rank:36,aprov:false,status:"Reprovado",por:5,mat:3,ing:9,fis:6,m_por:2.5,m_mat:1.5,m_ing:4.5,m_fis:3,red:"Sim",media:2.88},
+{unidade:"FALSE",nome:"SEM NOME",ra:"MT22058212",rank:37,aprov:false,status:"Reprovado",por:0,mat:11,ing:0,fis:12,m_por:0,m_mat:5.5,m_ing:0,m_fis:6,red:"Não",media:2.88},
+{unidade:"BANGU",nome:"RITA RIBEIRO",ra:"MT21072566",rank:38,aprov:false,status:"Reprovado",por:11,mat:0,ing:6,fis:5,m_por:5.5,m_mat:0,m_ing:3,m_fis:2.5,red:"Sim",media:2.75},
+{unidade:"NOVA IGUACU",nome:"SIDNEY LOURENÇO",ra:"MT25194226",rank:39,aprov:false,status:"Reprovado",por:5,mat:0,ing:17,fis:0,m_por:2.5,m_mat:0,m_ing:8.5,m_fis:0,red:"Sim",media:2.75},
+{unidade:"TAQUARA",nome:"PAULO OLIVEIRA",ra:"MT26204339",rank:40,aprov:false,status:"Reprovado",por:12,mat:0,ing:9,fis:0,m_por:6,m_mat:0,m_ing:4.5,m_fis:0,red:"Sim",media:2.63},
+{unidade:"MADUREIRA",nome:"GABRIEL SILVA",ra:"MT25198656",rank:41,aprov:false,status:"Reprovado",por:5,mat:6,ing:6,fis:4,m_por:2.5,m_mat:3,m_ing:3,m_fis:2,red:"Sim",media:2.63},
+{unidade:"BANGU",nome:"LÍVIA SILVA",ra:"MT23106347",rank:42,aprov:false,status:"Reprovado",por:13,mat:0,ing:7,fis:0,m_por:6.5,m_mat:0,m_ing:3.5,m_fis:0,red:"Sim",media:2.5},
+{unidade:"MADUREIRA",nome:"JOÃO SANTOS",ra:"MT25188707",rank:43,aprov:false,status:"Reprovado",por:10,mat:0,ing:10,fis:0,m_por:5,m_mat:0,m_ing:5,m_fis:0,red:"Sim",media:2.5},
+{unidade:"CAMPO GRANDE",nome:"MARCOS LEITE",ra:"MT25191180",rank:44,aprov:false,status:"Reprovado",por:6,mat:8,ing:3,fis:3,m_por:3,m_mat:4,m_ing:1.5,m_fis:1.5,red:"Sim",media:2.5},
+{unidade:"CAMPO GRANDE",nome:"ARTHUR ALBUQUERQUE",ra:"MT22097604",rank:45,aprov:false,status:"Reprovado",por:9,mat:0,ing:10,fis:0,m_por:4.5,m_mat:0,m_ing:5,m_fis:0,red:"Sim",media:2.38},
+{unidade:"BANGU",nome:"PEDRO VELOSO",ra:"MT25198532",rank:46,aprov:false,status:"Reprovado",por:7,mat:5,ing:3,fis:3,m_por:3.5,m_mat:2.5,m_ing:1.5,m_fis:1.5,red:"Sim",media:2.25},
+{unidade:"NOVA IGUACU",nome:"LUIS MENDES",ra:"MT25192741",rank:47,aprov:false,status:"Reprovado",por:11,mat:0,ing:6,fis:0,m_por:5.5,m_mat:0,m_ing:3,m_fis:0,red:"Sim",media:2.13},
+{unidade:"BANGU",nome:"FILIPE RIBEIRO",ra:"MT19026004",rank:48,aprov:false,status:"Reprovado",por:0,mat:9,ing:0,fis:8,m_por:0,m_mat:4.5,m_ing:0,m_fis:4,red:"Não",media:2.13},
+{unidade:"MADUREIRA",nome:"RAFAELLA SANTOS",ra:"MT24162687",rank:49,aprov:false,status:"Reprovado",por:9,mat:0,ing:7,fis:0,m_por:4.5,m_mat:0,m_ing:3.5,m_fis:0,red:"Sim",media:2},
+{unidade:"RESENDE",nome:"ANA NEVES",ra:"MT22074439",rank:50,aprov:false,status:"Reprovado",por:0,mat:8,ing:0,fis:8,m_por:0,m_mat:4,m_ing:0,m_fis:4,red:"Não",media:2},
+{unidade:"TAQUARA",nome:"GUILHERME BLUM",ra:"MT19021575",rank:51,aprov:false,status:"Reprovado",por:8,mat:0,ing:7,fis:0,m_por:4,m_mat:0,m_ing:3.5,m_fis:0,red:"Sim",media:1.88},
+{unidade:"BANGU",nome:"BERNARDO CARVALHO",ra:"MT23126246",rank:52,aprov:false,status:"Reprovado",por:7,mat:0,ing:8,fis:0,m_por:3.5,m_mat:0,m_ing:4,m_fis:0,red:"Sim",media:3.75},
+{unidade:"CAMPO GRANDE",nome:"PEDRO CRUZ",ra:"MT23119860",rank:53,aprov:false,status:"Reprovado",por:4,mat:4,ing:6,fis:1,m_por:2,m_mat:2,m_ing:3,m_fis:0.5,red:"Sim",media:2.5},
+{unidade:"MADUREIRA",nome:"MANUEL SILVA",ra:"MT24151557",rank:54,aprov:false,status:"Reprovado",por:7,mat:0,ing:7,fis:0,m_por:3.5,m_mat:0,m_ing:3.5,m_fis:0,red:"Sim",media:3.5},
+{unidade:"MADUREIRA",nome:"BERNARDO AGUIAR",ra:"MT23132731",rank:55,aprov:false,status:"Reprovado",por:0,mat:6,ing:0,fis:7,m_por:0,m_mat:3,m_ing:0,m_fis:3.5,red:"Não",media:0},
+{unidade:"NOVA IGUACU",nome:"MARIA SIQUEIRA",ra:"MT25197617",rank:56,aprov:false,status:"Reprovado",por:5,mat:0,ing:7,fis:0,m_por:2.5,m_mat:0,m_ing:3.5,m_fis:0,red:"Sim",media:3},
+{unidade:"NOVA IGUACU",nome:"JHONATAN SILVA",ra:"MT25192337",rank:57,aprov:false,status:"Reprovado",por:4,mat:0,ing:8,fis:0,m_por:2,m_mat:0,m_ing:4,m_fis:0,red:"Sim",media:3},
+{unidade:"NOVA IGUACU",nome:"LORENNA PAIXÃO",ra:"MT24161218",rank:58,aprov:false,status:"Reprovado",por:0,mat:5,ing:0,fis:6,m_por:0,m_mat:2.5,m_ing:0,m_fis:3,red:"Não",media:0},
+{unidade:"BANGU",nome:"DANIEL VALENTIM",ra:"MT25197096",rank:59,aprov:false,status:"Reprovado",por:6,mat:0,ing:4,fis:0,m_por:3,m_mat:0,m_ing:2,m_fis:0,red:"Sim",media:2.5},
+{unidade:"CAMPO GRANDE",nome:"ADILSON FREITAS",ra:"MT24143216",rank:60,aprov:false,status:"Reprovado",por:5,mat:0,ing:5,fis:0,m_por:2.5,m_mat:0,m_ing:2.5,m_fis:0,red:"Sim",media:2.5},
+{unidade:"BANGU",nome:"CAYO COSTA",ra:"MT23118631",rank:61,aprov:false,status:"Reprovado",por:0,mat:1,ing:0,fis:9,m_por:0,m_mat:0.5,m_ing:0,m_fis:4.5,red:"Não",media:0},
+{unidade:"CAMPO GRANDE",nome:"ERICK LIMA",ra:"MT21074042",rank:62,aprov:false,status:"Reprovado",por:0,mat:4,ing:0,fis:6,m_por:0,m_mat:2,m_ing:0,m_fis:3,red:"Não",media:0},
+{unidade:"CAMPO GRANDE",nome:"FERNANDO TRINDADE",ra:"MT22087480",rank:63,aprov:false,status:"Reprovado",por:0,mat:4,ing:0,fis:6,m_por:0,m_mat:2,m_ing:0,m_fis:3,red:"Não",media:0},
+{unidade:"RESENDE",nome:"PALOMA ABREU",ra:"MT22059828",rank:64,aprov:false,status:"Reprovado",por:0,mat:5,ing:0,fis:4,m_por:0,m_mat:2.5,m_ing:0,m_fis:2,red:"Não",media:0},
+{unidade:"NOVA IGUACU",nome:"NATALY LUNA",ra:"MT23130412",rank:65,aprov:false,status:"Reprovado",por:0,mat:4,ing:0,fis:4,m_por:0,m_mat:2,m_ing:0,m_fis:2,red:"Não",media:0},
+{unidade:"BANGU",nome:"LUCAS HIDALGO",ra:"MT23120769",rank:66,aprov:false,status:"Reprovado",por:0,mat:5,ing:0,fis:3,m_por:0,m_mat:2.5,m_ing:0,m_fis:1.5,red:"Não",media:0},
+{unidade:"BANGU",nome:"CAUA LOPES",ra:"MT26203059",rank:67,aprov:false,status:"Reprovado",por:0,mat:4,ing:0,fis:3,m_por:0,m_mat:2,m_ing:0,m_fis:1.5,red:"Não",media:0},
+{unidade:"NOVA IGUACU",nome:"GABRIEL MOREIRA",ra:"MT25187899",rank:68,aprov:false,status:"Reprovado",por:0,mat:2,ing:0,fis:3,m_por:0,m_mat:1,m_ing:0,m_fis:1.5,red:"Não",media:0},
+];
 
 
 // ══════════════════════════════
@@ -2839,6 +3092,9 @@ const TEF_S2D2      = buildExamTurma4D(RAW_EFOMM_S2D2, 'ef');
 const TEN_S2D2      = buildExamTurma4D(RAW_EN_S2D2, 'en');
 const TEF_S2_DAY2   = buildExamTurma2ndDay(RAW_EFOMM_S2D2, 'efomm');
 const TEN_S2_DAY2   = buildExamTurma2ndDay(RAW_EN_S2D2, 'en');
+const TEF_S3        = buildExamTurma(RAW_EFOMM_S3, 'efomm');
+const TEF_S3D2      = buildExamTurma4D(RAW_EFOMM_S3D2, 'ef');
+const TEF_S3_DAY2   = buildExamTurma2ndDay(RAW_EFOMM_S3D2, 'efomm');
 const TEN_S3        = buildExamTurma(RAW_EN_S3D1, 'en');
 const TEN_S3D2      = buildExamTurma4D(RAW_EN_S3D2, 'en');
 const TEN_S3_GERAL  = buildExamTurma4D(RAW_EN_S3_GERAL, 'en');
@@ -2846,13 +3102,14 @@ const TEN_S3_GERAL  = buildExamTurma4D(RAW_EN_S3_GERAL, 'en');
 let fEf='todos', fEn='todos';
 let fEf2D='todos', fEfG='todos', fEn2D='todos', fEnG='todos';
 let fEfS2='todos', fEnS2='todos';
+let fEfS3='todos', fEfS3D2='todos', fEfS3G='todos';
 let fEfS2D2='todos', fEnS2D2='todos';
 let fEfS2G='todos', fEnS2G='todos';
 let fEnS3='todos', fEnS3D2='todos', fEnS3G='todos';
 
 (()=>{
   // populate unit selects
-  [['uniSelEf',TEF],['uniSelEn',TEN],['uniSelEf2d',TEF2D],['uniSelEfG',TEF_GERAL],['uniSelEn2d',TEN2D],['uniSelEnG',TEN_GERAL],['uniSelEfS2',TEF_S2],['uniSelEnS2',TEN_S2],['uniSelEfS2D2',TEF_S2_DAY2],['uniSelEnS2D2',TEN_S2_DAY2],['uniSelEfS2G',TEF_S2D2],['uniSelEnS2G',TEN_S2D2],['uniSelEnS3',TEN_S3],['uniSelEnS3D2',TEN_S3D2],['uniSelEnS3G',TEN_S3_GERAL]].forEach(([id, T])=>{
+  [['uniSelEf',TEF],['uniSelEn',TEN],['uniSelEf2d',TEF2D],['uniSelEfG',TEF_GERAL],['uniSelEn2d',TEN2D],['uniSelEnG',TEN_GERAL],['uniSelEfS2',TEF_S2],['uniSelEnS2',TEN_S2],['uniSelEfS2D2',TEF_S2_DAY2],['uniSelEnS2D2',TEN_S2_DAY2],['uniSelEfS2G',TEF_S2D2],['uniSelEnS2G',TEN_S2D2],['uniSelEfS3',TEF_S3],['uniSelEfS3D2',TEF_S3_DAY2],['uniSelEfS3G',TEF_S3D2],['uniSelEnS3',TEN_S3],['uniSelEnS3D2',TEN_S3D2],['uniSelEnS3G',TEN_S3_GERAL]].forEach(([id, T])=>{
     const sel=document.getElementById(id);
     [...new Set(T.list.map(a=>a.unidade))].sort().forEach(u=>{
       const o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);
@@ -2870,6 +3127,9 @@ let fEnS3='todos', fEnS3D2='todos', fEnS3G='todos';
   renderEnS2D2();
   renderEfommS2Geral();
   renderEnS2Geral();
+  renderEfommS3();
+  renderEfommS3D2();
+  renderEfommS3Geral();
   renderEnS3();
   renderEnS3D2();
   renderEnS3Geral();
@@ -2897,6 +3157,7 @@ function switchEfSim(sim,btn){
   if(btn)btn.classList.add('active');
   document.getElementById('efSim1Wrap').style.display = sim==='s1'?'block':'none';
   document.getElementById('efSim2Wrap').style.display = sim==='s2'?'block':'none';
+  document.getElementById('efSim3Wrap').style.display = sim==='s3'?'block':'none';
 }
 function switchEfTab(tab,btn){
   document.querySelectorAll('#efSim1Wrap .sub-tab-btn').forEach(b=>b.classList.remove('active'));
@@ -2911,6 +3172,13 @@ function switchEfS2Tab(tab,btn){
   document.getElementById('efS2D1Wrap').style.display    = tab==='d1'?'block':'none';
   document.getElementById('efS2D2Wrap').style.display    = tab==='d2'?'block':'none';
   document.getElementById('efS2GeralWrap').style.display = tab==='geral'?'block':'none';
+}
+function switchEfS3Tab(tab,btn){
+  document.querySelectorAll('#efSim3Wrap .sub-tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('efS3D1Wrap').style.display    = tab==='d1'?'block':'none';
+  document.getElementById('efS3D2Wrap').style.display    = tab==='d2'?'block':'none';
+  document.getElementById('efS3GeralWrap').style.display = tab==='geral'?'block':'none';
 }
 function switchEnSim(sim,btn){
   document.querySelectorAll('#enSimTabs .sub-tab-btn').forEach(b=>b.classList.remove('active'));
@@ -3060,6 +3328,42 @@ function setFEnS2G(f,btn){
   document.getElementById('uniWrapEnS2G').style.display=f==='unidade'?'block':'none';
   renderEnS2Geral();
 }
+function renderEfommS3(){
+  renderExam(TEF_S3, fEfS3,
+    {search:'searchEfS3',uniSel:'uniSelEfS3',total:'totalEfS3',aprov:'aprovEfS3',reprov:'reprovEfS3',body:'bodyEfS3',stats:'statsEfS3'},
+    40, 'efomm_s3', 'Classificados');
+}
+function renderEfommS3D2(){
+  renderExam(TEF_S3_DAY2, fEfS3D2,
+    {search:'searchEfS3D2',uniSel:'uniSelEfS3D2',total:'totalEfS3D2',aprov:'aprovEfS3D2',reprov:'reprovEfS3D2',body:'bodyEfS3D2',stats:'statsEfS3D2'},
+    40, 'efomm_s3d2', 'Classificados');
+}
+function renderEfommS3Geral(){
+  renderExam(TEF_S3D2, fEfS3G,
+    {search:'searchEfS3G',uniSel:'uniSelEfS3G',total:'totalEfS3G',aprov:'aprovEfS3G',reprov:'reprovEfS3G',body:'bodyEfS3G',stats:'statsEfS3G'},
+    80, 'efomm_s3_geral', 'Classificados');
+}
+function setFEfS3(f,btn){
+  fEfS3=f;
+  document.querySelectorAll('#efS3D1Wrap .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('uniWrapEfS3').style.display=f==='unidade'?'block':'none';
+  renderEfommS3();
+}
+function setFEfS3D2(f,btn){
+  fEfS3D2=f;
+  document.querySelectorAll('#efS3D2Wrap .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('uniWrapEfS3D2').style.display=f==='unidade'?'block':'none';
+  renderEfommS3D2();
+}
+function setFEfS3G(f,btn){
+  fEfS3G=f;
+  document.querySelectorAll('#efS3GeralWrap .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('uniWrapEfS3G').style.display=f==='unidade'?'block':'none';
+  renderEfommS3Geral();
+}
 function renderEnS3(){
   renderExam(TEN_S3, fEnS3,
     {search:'searchEnS3',uniSel:'uniSelEnS3',total:'totalEnS3',aprov:'aprovEnS3',reprov:'reprovEnS3',body:'bodyEnS3',stats:'statsEnS3'},
@@ -3166,7 +3470,7 @@ function renderEn(){
 let curExam = 'afa'; // 'afa' | 'efomm' | 'en'
 
 function openExamAluno(exam, nome){
-  const T2 = exam==='efomm'?TEF:exam==='efomm2d'?TEF2D:exam==='ef_geral'?TEF_GERAL:exam==='efomm_s2'?TEF_S2:exam==='efomm_s2d2'?TEF_S2_DAY2:exam==='efomm_s2_geral'?TEF_S2D2:exam==='en'?TEN:exam==='en2d'?TEN2D:exam==='en_geral'?TEN_GERAL:exam==='en_s2'?TEN_S2:exam==='en_s2d2'?TEN_S2_DAY2:exam==='en_s2_geral'?TEN_S2D2:exam==='en_s3'?TEN_S3:exam==='en_s3d2'?TEN_S3D2:exam==='en_s3_geral'?TEN_S3_GERAL:TEN_S2;
+  const T2 = exam==='efomm'?TEF:exam==='efomm2d'?TEF2D:exam==='ef_geral'?TEF_GERAL:exam==='efomm_s2'?TEF_S2:exam==='efomm_s2d2'?TEF_S2_DAY2:exam==='efomm_s2_geral'?TEF_S2D2:exam==='efomm_s3'?TEF_S3:exam==='efomm_s3d2'?TEF_S3_DAY2:exam==='efomm_s3_geral'?TEF_S3D2:exam==='en'?TEN:exam==='en2d'?TEN2D:exam==='en_geral'?TEN_GERAL:exam==='en_s2'?TEN_S2:exam==='en_s2d2'?TEN_S2_DAY2:exam==='en_s2_geral'?TEN_S2D2:exam==='en_s3'?TEN_S3:exam==='en_s3d2'?TEN_S3D2:exam==='en_s3_geral'?TEN_S3_GERAL:TEN_S2;
   const candidato = T2.list.find(a=>a.nome===nome);
   if(!candidato) return;
   const modal = document.getElementById('raModal');
@@ -3185,7 +3489,7 @@ confirmarRA = function(){
   const exam  = modal.dataset.exam || 'afa';
   if(exam === 'afa'){ _origConfirmarRA(); return; }
   const nome  = modal.dataset.nome;
-  const T2    = exam==='efomm'?TEF:exam==='efomm2d'?TEF2D:exam==='ef_geral'?TEF_GERAL:exam==='efomm_s2'?TEF_S2:exam==='efomm_s2d2'?TEF_S2_DAY2:exam==='efomm_s2_geral'?TEF_S2D2:exam==='en'?TEN:exam==='en2d'?TEN2D:exam==='en_geral'?TEN_GERAL:exam==='en_s2'?TEN_S2:exam==='en_s2d2'?TEN_S2_DAY2:exam==='en_s2_geral'?TEN_S2D2:exam==='en_s3'?TEN_S3:exam==='en_s3d2'?TEN_S3D2:exam==='en_s3_geral'?TEN_S3_GERAL:TEN_S2;
+  const T2    = exam==='efomm'?TEF:exam==='efomm2d'?TEF2D:exam==='ef_geral'?TEF_GERAL:exam==='efomm_s2'?TEF_S2:exam==='efomm_s2d2'?TEF_S2_DAY2:exam==='efomm_s2_geral'?TEF_S2D2:exam==='efomm_s3'?TEF_S3:exam==='efomm_s3d2'?TEF_S3_DAY2:exam==='efomm_s3_geral'?TEF_S3D2:exam==='en'?TEN:exam==='en2d'?TEN2D:exam==='en_geral'?TEN_GERAL:exam==='en_s2'?TEN_S2:exam==='en_s2d2'?TEN_S2_DAY2:exam==='en_s2_geral'?TEN_S2D2:exam==='en_s3'?TEN_S3:exam==='en_s3d2'?TEN_S3D2:exam==='en_s3_geral'?TEN_S3_GERAL:TEN_S2;
   let candidato = T2.list.find(a=>a.nome===nome&&(a.ra||'').trim().toUpperCase()===document.getElementById('raInput').value.trim().toUpperCase());
   if(!candidato) candidato = T2.list.find(a=>a.nome===nome);
   if(!candidato){
@@ -3217,7 +3521,7 @@ function buildExamRelatorio(exam, a, T2){
   var isEF=exam==='efomm'||exam.startsWith('ef');
   var label=isEF?'EFOMM':'EN';
   var MIN_NOTA=5.0;
-  var is1day=exam==='efomm'||exam==='efomm_s2'||exam==='en'||exam==='en_s2'||exam==='en_s3';
+  var is1day=exam==='efomm'||exam==='efomm_s2'||exam==='efomm_s3'||exam==='en'||exam==='en_s2'||exam==='en_s3';
   var subjs;
   if(is1day&&isEF){
     subjs=[{l:'Português',nota:a.m_port||0,avg:T2.avgs.port||0,ok:a.ok_port},{l:'Inglês',nota:a.m_ingl||0,avg:T2.avgs.ingl||0,ok:a.ok_ingl}];
@@ -3228,7 +3532,7 @@ function buildExamRelatorio(exam, a, T2){
   }
   var medPct=+(a.media/10*100).toFixed(1);
   var N=T2.list.length;
-  var simLabelMap={'efomm':'1º Simulado EFOMM','efomm_s2':'2º Simulado EFOMM','efomm2d':'1º Sim EFOMM 2º Dia','efomm_s2d2':'2º Sim EFOMM 2º Dia','ef_geral':'1º Sim EFOMM Geral','efomm_s2_geral':'2º Sim EFOMM Geral','en':'1º Simulado EN','en_s2':'2º Simulado EN','en2d':'1º Sim EN 2º Dia','en_s2d2':'2º Sim EN 2º Dia','en_geral':'1º Sim EN Geral','en_s2_geral':'2º Sim EN Geral'};
+  var simLabelMap={'efomm':'1º Simulado EFOMM','efomm_s2':'2º Simulado EFOMM','efomm_s3':'3º Simulado EFOMM','efomm2d':'1º Sim EFOMM 2º Dia','efomm_s2d2':'2º Sim EFOMM 2º Dia','efomm_s3d2':'3º Sim EFOMM 2º Dia','ef_geral':'1º Sim EFOMM Geral','efomm_s2_geral':'2º Sim EFOMM Geral','efomm_s3_geral':'3º Sim EFOMM Geral','en':'1º Simulado EN','en_s2':'2º Simulado EN','en_s3':'3º Simulado EN','en2d':'1º Sim EN 2º Dia','en_s2d2':'2º Sim EN 2º Dia','en_s3d2':'3º Sim EN 2º Dia','en_geral':'1º Sim EN Geral','en_s2_geral':'2º Sim EN Geral','en_s3_geral':'3º Sim EN Geral'};
   var simLabel=simLabelMap[exam]||exam;
   function icB(pt){
     if(pt>=70)return'<span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:800;background:#d1fae5;color:#065f46;border:1px solid #6ee7b7">🟢 Sólido</span>';
@@ -3284,21 +3588,24 @@ function buildExamDashboard(exam, a, T2){
   if(a.rank<=3){dd.style.display='block';document.getElementById('destText').textContent=`#${a.rank}º — ${label}`;}
   else dd.style.display='none';
 
+  const isGeral = ['ef_geral','en_geral','efomm_s2_geral','en_s2_geral','efomm_s3_geral','en_s3_geral'].includes(exam);
+
   buildExamNotas(exam, a, T2);
   buildExamGrafico(exam, a, T2);
   buildExamAnalise(exam, a, T2);
+  if(isGeral) buildExamEstudos(exam, a, T2);
+  else document.getElementById('pEstudos').innerHTML='';
   buildExamRelatorio(exam, a, T2);
 
-  // Set up tabs — no Chance de Classificação or Plano de Estudos for day 1
   const tabsBar = document.querySelector('.tabs-bar-inner');
   tabsBar.innerHTML=`
     <button class="tab-btn active" onclick="goTab('pNotas',this)">📊 Desempenho</button>
     <button class="tab-btn" onclick="goTab('pGrafico',this)">📈 Gráficos</button>
     <button class="tab-btn" onclick="goTab('pAnalise',this)">📋 Análise de Performance</button>
+    ${isGeral?`<button class="tab-btn" onclick="goTab('pEstudos',this)">📚 Plano de Estudos</button>`:''}
     <button class="tab-btn" onclick="goTab('pRelatorio',this)">📋 Relatório</button>
   `;
   document.getElementById('pPlano').innerHTML='';
-  document.getElementById('pEstudos').innerHTML='';
   goTab('pNotas', tabsBar.querySelector('.tab-btn'));
   document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
   document.getElementById('dashboard').style.display='block';
@@ -3307,10 +3614,10 @@ function buildExamDashboard(exam, a, T2){
 
 function buildExamNotas(exam, a, T2){
   const isEF  = exam==='efomm'||exam.startsWith('ef');
-  const is4D  = ['efomm2d','en2d','ef_geral','en_geral','en_s3d2','en_s3_geral'].includes(exam);
+  const is4D  = ['efomm2d','en2d','ef_geral','en_geral','efomm_s2d2','efomm_s2_geral','en_s2d2','en_s2_geral','efomm_s3d2','efomm_s3_geral','en_s3d2','en_s3_geral'].includes(exam);
   const label    = isEF?'EFOMM':'EN';
   const apvLabel = isEF?'Classificado':'Aprovado';
-  const dayTag   = exam==='efomm'||exam==='en'?'1º Dia · 14/03/2026':exam==='efomm2d'||exam==='en2d'?'2º Dia · 21/03/2026':exam==='efomm_s2'||exam==='en_s2'?'2º Simulado · 11/04/2026':exam==='en_s3'?'3º Sim · 1º Dia · 02/05/2026':exam==='en_s3d2'?'3º Sim · 2º Dia · 09/05/2026':exam==='en_s3_geral'?'3º Simulado · Geral':'Geral (ambos os dias)';
+  const dayTag   = exam==='efomm'||exam==='en'?'1º Dia · 14/03/2026':exam==='efomm2d'||exam==='en2d'?'2º Dia · 21/03/2026':exam==='efomm_s2'||exam==='en_s2'?'2º Simulado · 11/04/2026':exam==='efomm_s3'?'3º Sim · 1º Dia · 02/05/2026':exam==='en_s3'?'3º Sim · 1º Dia · 02/05/2026':exam==='en_s3d2'?'3º Sim · 2º Dia · 09/05/2026':exam==='en_s3_geral'||exam==='efomm_s3_geral'?'3º Simulado · Geral':exam==='efomm_s3d2'?'3º Sim · 2º Dia · 09/05/2026':'Geral (ambos os dias)';
 
   let discs;
   if(is4D){
@@ -3321,7 +3628,7 @@ function buildExamNotas(exam, a, T2){
       {nome:'Inglês',    emoji:'🌐', cor:'#10b981', ac:a.ing||0, nota:a.m_ing||0, ok:a.ok_ing, tq:qIng, key:'ing'},
       {nome:'Física',    emoji:'⚡', cor:'#f59e0b', ac:a.fis||0, nota:a.m_fis||0, ok:a.ok_fis, tq:qFis, key:'fis'},
     ];
-  } else if(exam==='efomm'||exam==='efomm_s2'){
+  } else if(exam==='efomm'||exam==='efomm_s2'||exam==='efomm_s3'){
     discs=[
       {nome:'Português', emoji:'📖', cor:'#3b82f6', ac:a.port, nota:a.m_port, ok:a.ok_port, tq:20, key:'port'},
       {nome:'Inglês',    emoji:'🌐', cor:'#10b981', ac:a.ingl, nota:a.m_ingl, ok:a.ok_ingl, tq:20, key:'ingl'},
@@ -3407,9 +3714,9 @@ function buildExamNotas(exam, a, T2){
         <td><strong style="color:${d.cor}">${d.emoji} ${d.nome}</strong></td>
         <td style="text-align:center">${d.ac}</td>
         <td style="text-align:center;font-weight:800;color:${d.ok?'#16a34a':'#dc2626'}">${d.nota.toFixed(2)}</td>
-        <td style="text-align:center;color:var(--text3)">${T2.avgs[d.nome==='Português'?'port':d.nome==='Matemática'?'mate':d.nome==='Inglês'?'ingl':'fisi'].toFixed(2)}</td>
-        <td style="text-align:center;font-weight:700;color:${d.nota>=T2.avgs[d.nome==='Português'?'port':d.nome==='Matemática'?'mate':d.nome==='Inglês'?'ingl':'fisi']?'#16a34a':'#dc2626'}">
-          ${(d.nota-T2.avgs[d.nome==='Português'?'port':d.nome==='Matemática'?'mate':d.nome==='Inglês'?'ingl':'fisi']).toFixed(2)}
+        <td style="text-align:center;color:var(--text3)">${((T2.avgs[d.key])||0).toFixed(2)}</td>
+        <td style="text-align:center;font-weight:700;color:${d.nota>=(T2.avgs[d.key]||0)?'#16a34a':'#dc2626'}">
+          ${(d.nota-(T2.avgs[d.key]||0)).toFixed(2)}
         </td>
         <td style="text-align:center">${d.ok?'<span class="chip chip-aprov" style="font-size:10px">✓</span>':'<span class="chip chip-reprov" style="font-size:10px">✗</span>'}</td>
       </tr>`).join('')}
@@ -3421,11 +3728,13 @@ function buildExamGrafico(exam, a, T2){
   if(chartObjRadar){chartObjRadar.destroy();chartObjRadar=null;}
   if(chartObjBar){chartObjBar.destroy();chartObjBar=null;}
 
-  const isEfomm = exam==='efomm'||exam==='efomm_s2';
-  const labels  = isEfomm ? ['Português','Inglês'] : ['Matemática','Inglês'];
-  const vals    = isEfomm ? [a.m_port,a.m_ingl]   : [a.m_mate,a.m_ingl];
-  const avgV    = isEfomm ? [T2.avgs.port,T2.avgs.ingl] : [T2.avgs.mate,T2.avgs.ingl];
-  const cors    = isEfomm ? ['#3b82f6','#10b981'] : ['#8b5cf6','#10b981'];
+  const isEF_g  = exam==='efomm'||exam.startsWith('ef');
+  const isEfomm = exam==='efomm'||exam==='efomm_s2'||exam==='efomm_s3';
+  const is4D_g  = ['efomm2d','en2d','ef_geral','en_geral','efomm_s2d2','efomm_s2_geral','en_s2d2','en_s2_geral','efomm_s3d2','efomm_s3_geral','en_s3d2','en_s3_geral'].includes(exam);
+  const labels  = is4D_g ? ['Português','Matemática','Inglês','Física'] : isEfomm ? ['Português','Inglês'] : ['Matemática','Inglês'];
+  const vals    = is4D_g ? [a.m_por||0,a.m_mat||0,a.m_ing||0,a.m_fis||0] : isEfomm ? [a.m_port,a.m_ingl] : [a.m_mate,a.m_ingl];
+  const avgV    = is4D_g ? [T2.avgs.por||0,T2.avgs.mat||0,T2.avgs.ing||0,T2.avgs.fis||0] : isEfomm ? [T2.avgs.port,T2.avgs.ingl] : [T2.avgs.mate,T2.avgs.ingl];
+  const cors    = is4D_g ? ['#3b82f6','#8b5cf6','#10b981','#f59e0b'] : isEfomm ? ['#3b82f6','#10b981'] : ['#8b5cf6','#10b981'];
 
   document.getElementById('pGrafico').innerHTML=`
   <div class="card fade-in">
@@ -3467,16 +3776,16 @@ function buildExamGrafico(exam, a, T2){
       data:{
         labels,
         datasets:[
-          {label:'Acertos',  data: isEfomm?[a.port,a.ingl]:[a.mate,a.ingl],
+          {label:'Acertos',  data: is4D_g?[a.por||0,a.mat||0,a.ing||0,a.fis||0]:isEfomm?[a.port,a.ingl]:[a.mate,a.ingl],
            backgroundColor: cors.map(c=>c+'cc'), borderColor:cors, borderWidth:2, borderRadius:6},
         ]
       },
       options:{
         indexAxis:'y',
         responsive:true,
-        plugins:{legend:{display:false},title:{display:true,text:`Acertos por Disciplina (de ${isEfomm?20:'-'} / ${isEfomm?20:18})`}},
+        plugins:{legend:{display:false},title:{display:true,text:`Acertos por Disciplina`}},
         scales:{
-          x:{min:0, max:isEfomm?20:22, ticks:{stepSize:isEfomm?4:5}, grid:{color:'#e5e9f0'}},
+          x:{min:0, max:is4D_g?(isEF_g?20:22):isEfomm?20:22, ticks:{stepSize:5}, grid:{color:'#e5e9f0'}},
           y:{grid:{display:false}}
         }
       }
@@ -3485,10 +3794,15 @@ function buildExamGrafico(exam, a, T2){
 }
 
 function buildExamAnalise(exam, a, T2){
-  const isEfomm = exam==='efomm'||exam==='efomm_s2';
-  const is4D = ['efomm2d','en2d','ef_geral','en_geral'].includes(exam);
-  // EFOMM: Por(20q)+Ing(20q) | EN: Mat(22q)+Ing(18q)
-  const discs = isEfomm ? [
+  const isEF    = exam==='efomm'||exam.startsWith('ef');
+  const isEfomm = exam==='efomm'||exam==='efomm_s2'||exam==='efomm_s3';
+  const is4D    = ['efomm2d','en2d','ef_geral','en_geral','efomm_s2d2','efomm_s2_geral','en_s2d2','en_s2_geral','efomm_s3d2','efomm_s3_geral','en_s3d2','en_s3_geral'].includes(exam);
+  const discs   = is4D ? [
+    {nome:'Português', emoji:'📖',cor:'#3b82f6',ac:a.por||0,nota:a.m_por||0,ok:a.ok_por||false,tq:isEF?20:18,key:'por'},
+    {nome:'Matemática',emoji:'📐',cor:'#8b5cf6',ac:a.mat||0,nota:a.m_mat||0,ok:a.ok_mat||false,tq:isEF?20:22,key:'mat'},
+    {nome:'Inglês',    emoji:'🌐',cor:'#10b981',ac:a.ing||0,nota:a.m_ing||0,ok:a.ok_ing||false,tq:isEF?20:18,key:'ing'},
+    {nome:'Física',    emoji:'⚡',cor:'#f59e0b',ac:a.fis||0,nota:a.m_fis||0,ok:a.ok_fis||false,tq:isEF?20:22,key:'fis'},
+  ] : isEfomm ? [
     {nome:'Português',emoji:'📖',cor:'#3b82f6',ac:a.port,nota:a.m_port,ok:a.ok_port,tq:20,key:'port'},
     {nome:'Inglês',   emoji:'🌐',cor:'#10b981',ac:a.ingl,nota:a.m_ingl,ok:a.ok_ingl,tq:20,key:'ingl'},
   ] : [
@@ -3577,6 +3891,117 @@ function buildExamAnalise(exam, a, T2){
       🎯 <strong>Foco:</strong> ${roi[0].nome} (ROI: ${roi[0].roiVal})${roi[1]?' → '+roi[1].nome+' (ROI: '+roi[1].roiVal+')':''}.
     </div>
   </div>`;
+}
+
+function buildExamEstudos(exam, a, T2){
+  const isEF     = exam==='efomm'||exam.startsWith('ef');
+  const isEf1D   = exam==='efomm'||exam==='efomm_s2'||exam==='efomm_s3';
+  const isEn1D   = exam==='en'||exam==='en_s2'||exam==='en_s3';
+  const is4D     = ['efomm2d','en2d','ef_geral','en_geral','efomm_s2d2','efomm_s2_geral','en_s2d2','en_s2_geral','efomm_s3d2','efomm_s3_geral','en_s3d2','en_s3_geral'].includes(exam);
+  const examLabel = isEF?'EFOMM':'EN';
+
+  let discs;
+  if(is4D){
+    discs=[
+      {nome:'Português', emoji:'📖',cor:'#3b82f6',nota:a.m_por||0, ok:a.ok_por||false, medido:true},
+      {nome:'Matemática',emoji:'📐',cor:'#8b5cf6',nota:a.m_mat||0, ok:a.ok_mat||false, medido:true},
+      {nome:'Inglês',    emoji:'🌐',cor:'#10b981',nota:a.m_ing||0, ok:a.ok_ing||false, medido:true},
+      {nome:'Física',    emoji:'⚡',cor:'#f59e0b',nota:a.m_fis||0, ok:a.ok_fis||false, medido:true},
+    ];
+  } else if(isEf1D){
+    discs=[
+      {nome:'Português', emoji:'📖',cor:'#3b82f6',nota:a.m_port||0, ok:a.ok_port||false, medido:true},
+      {nome:'Matemática',emoji:'📐',cor:'#8b5cf6',nota:0,           ok:false,            medido:false},
+      {nome:'Inglês',    emoji:'🌐',cor:'#10b981',nota:a.m_ingl||0, ok:a.ok_ingl||false, medido:true},
+      {nome:'Física',    emoji:'⚡',cor:'#f59e0b',nota:0,           ok:false,            medido:false},
+    ];
+  } else {
+    discs=[
+      {nome:'Português', emoji:'📖',cor:'#3b82f6',nota:0,            ok:false,             medido:false},
+      {nome:'Matemática',emoji:'📐',cor:'#8b5cf6',nota:a.m_mate||0,  ok:a.ok_mate||false,  medido:true},
+      {nome:'Inglês',    emoji:'🌐',cor:'#10b981',nota:a.m_ingl||0,  ok:a.ok_ingl||false,  medido:true},
+      {nome:'Física',    emoji:'⚡',cor:'#f59e0b',nota:0,            ok:false,             medido:false},
+    ];
+  }
+
+  const sorted=[...discs].sort((x,y)=>x.nota-y.nota);
+  const prio=(i)=>i===0?{label:'🔴 Prioridade Máxima',cor:'#dc2626',bg:'#fef2f2'}
+                 :i===1?{label:'🟠 Alta Prioridade',   cor:'#ea580c',bg:'#fff7ed'}
+                 :i===2?{label:'🟡 Prioridade Média',  cor:'#d97706',bg:'#fffbeb'}
+                 :      {label:'🟢 Manutenção',         cor:'#16a34a',bg:'#f0fdf4'};
+
+  const TOPICOS={
+    'Português':['Interpretação de Texto','Gramática — Classes Gramaticais','Análise Sintática','Concordância Verbal e Nominal','Regência Verbal e Nominal','Crase','Pontuação','Ortografia e Acentuação','Figuras de Linguagem','Redação — Dissertação Argumentativa'],
+    'Matemática':['Conjuntos e Lógica','Funções do 1º e 2º Grau','Função Exponencial e Logarítmica','Trigonometria','Geometria Plana','Geometria Espacial','Progressões (PA e PG)','Combinatória e Probabilidade','Polinômios e Equações','Matrizes e Determinantes'],
+    'Física':['Cinemática Escalar e Vetorial','Dinâmica — Leis de Newton','Energia, Trabalho e Potência','Gravitação Universal','Hidrostática','Termologia e Termodinâmica','Óptica Geométrica','Ondulatória e Acústica','Eletrostática','Eletrodinâmica e Magnetismo'],
+    'Inglês':['Interpretação de Texto','Tempos Verbais (Tenses)','Modal Verbs','Voz Passiva (Passive Voice)','Reported Speech','Condicionais (If Clauses)','Vocabulário Contextual','Preposições e Phrasal Verbs','Artigos e Determinantes','Coesão e Coerência Textual'],
+  };
+
+  // 7 days × 3 subjects × 2h = 42h/week (21 slots: 6+6+5+4)
+  const pool=[...Array(6).fill(sorted[0]),...Array(6).fill(sorted[1]),...Array(5).fill(sorted[2]),...Array(4).fill(sorted[3])];
+  const DIAS=['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
+  const semana=[];
+  let idx_pool=0;
+  for(let d=0;d<7;d++){
+    const day_discs=[],used=new Set();
+    let attempts=0;
+    while(day_discs.length<3&&attempts<40){
+      const cand=pool[(idx_pool+attempts)%pool.length];
+      if(!used.has(cand.nome)){used.add(cand.nome);day_discs.push(cand);pool.splice((idx_pool+attempts)%pool.length,1);}
+      attempts++;
+    }
+    while(day_discs.length<3)day_discs.push(sorted[day_discs.length%sorted.length]);
+    semana.push({dia:DIAS[d],discs:day_discs});
+  }
+
+  const simLabel={'efomm':'1º Sim EFOMM','efomm2d':'1º Sim EFOMM Geral','ef_geral':'1º Sim EFOMM Geral','efomm_s2':'2º Sim EFOMM','efomm_s2d2':'2º Sim EFOMM Geral','efomm_s2_geral':'2º Sim EFOMM Geral','efomm_s3':'3º Sim EFOMM','efomm_s3d2':'3º Sim EFOMM Geral','efomm_s3_geral':'3º Sim EFOMM Geral','en':'1º Sim EN','en2d':'1º Sim EN Geral','en_geral':'1º Sim EN Geral','en_s2':'2º Sim EN','en_s2d2':'2º Sim EN Geral','en_s2_geral':'2º Sim EN Geral','en_s3':'3º Sim EN','en_s3d2':'3º Sim EN Geral','en_s3_geral':'3º Sim EN Geral'}[exam]||exam;
+
+  document.getElementById('pEstudos').innerHTML=`
+  <div class="card fade-in">
+    <div class="card-head"><h2>📚 Plano de Estudos — ${a.nome.split(' ')[0]}</h2></div>
+    <p class="card-sub">Gerado com base no ${simLabel}. Disciplinas com menor nota têm mais dias de foco. <strong>3 matérias por dia · 2h cada · 6h/dia.</strong></p>
+    ${!is4D?`<div style="padding:10px 14px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;font-size:12px;color:#92400e;margin-top:8px">⚠️ Disciplinas sem dados neste simulado foram priorizadas automaticamente. Use o simulado Geral para notas completas.</div>`:''}
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>🎯 Prioridade por Disciplina</h2></div>
+    <p class="card-sub">Ordenado da maior para a menor dificuldade (${simLabel}).</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      ${sorted.map((d,i)=>{const p=prio(i);return`
+        <div style="border:2px solid ${p.cor}33;background:${p.bg};border-radius:12px;padding:16px;border-left:4px solid ${p.cor}">
+          <div style="font-size:13px;font-weight:900;color:var(--navy)">${d.emoji} ${d.nome}</div>
+          <div style="font-size:28px;font-weight:900;color:${!d.medido?'#94a3b8':d.nota<5?'#dc2626':d.nota<7?'#d97706':'#16a34a'};margin:4px 0">${d.medido?d.nota.toFixed(2):'—'}</div>
+          ${!d.medido?`<div style="font-size:11px;color:var(--text3)">Não avaliado neste sim.</div>`:''}
+          <div style="margin-top:6px"><span style="background:${p.cor};color:#fff;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:800">${p.label}</span></div>
+          <div style="margin-top:8px;height:6px;background:#e5e9f0;border-radius:3px;overflow:hidden">
+            <div style="height:100%;width:${d.medido?Math.min(100,d.nota/10*100).toFixed(0):0}%;background:${p.cor};border-radius:3px"></div>
+          </div>
+        </div>`}).join('')}
+    </div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>📆 Cronograma Semanal</h2></div>
+    <p class="card-sub">3 matérias por dia · 2 horas cada · total de 6h/dia · 42h/semana</p>
+    <table class="dtable"><thead><tr>
+      <th>Dia</th>
+      <th>Matéria 1 <span style="font-weight:500;font-size:10px">(2h)</span></th>
+      <th>Matéria 2 <span style="font-weight:500;font-size:10px">(2h)</span></th>
+      <th>Matéria 3 <span style="font-weight:500;font-size:10px">(2h)</span></th>
+      <th>Total</th>
+    </tr></thead><tbody>
+      ${semana.map(s=>`<tr>
+        <td style="font-weight:800;color:var(--navy);white-space:nowrap">${s.dia}</td>
+        ${s.discs.map(d=>`<td><div style="font-weight:700;color:${d.cor}">${d.emoji} ${d.nome}</div></td>`).join('')}
+        <td style="font-weight:900;color:var(--navy);text-align:center">6h</td>
+      </tr>`).join('')}
+    </tbody><tfoot><tr><td colspan="5" style="font-size:12px;color:var(--text3)">Total semanal: 42 horas · Cada sessão de 2h = teoria + exercícios</td></tr></tfoot>
+    </table>
+  </div>
+  <div class="info-box"><h5>💡 Como usar este plano</h5><ul>
+    <li>Siga o cronograma respeitando a <strong>ordem de prioridade</strong> — disciplinas em 🔴 primeiro</li>
+    <li>Cada sessão de 2h: <strong>30min teoria</strong> + <strong>1h30 exercícios</strong> de provas ${examLabel} anteriores</li>
+    <li>Ao final de cada semana, revise os tópicos onde errou mais questões</li>
+    <li>Pratique redação ao menos <strong>1× por semana</strong> mesmo fora do cronograma</li>
+  </ul></div>`;
 }
 
 // Override voltar to also restore tabs for AFA
